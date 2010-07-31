@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <fields>
+        <fullName>Amount__c</fullName>
+        <label>Amount</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <label>Category</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Expense (Money going out)</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Volunteer/Product or Service Donation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Correspondence__c</fullName>
+        <label>Correspondence</label>
+        <referenceTo>Correspondence__c</referenceTo>
+        <relationshipName>Revenue_Expense_Ledger</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <label>Description</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Fundraising_Event__c</fullName>
+        <label>Fundraising Event</label>
+        <referenceTo>Fundraising_Event__c</referenceTo>
+        <relationshipName>Revenue_Expense_Ledger</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+    </fields>
+    <fields>
+        <fullName>Instructions__c</fullName>
+        <formula>&apos;Record event expenses for reimbursement.&apos;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Instructions</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Person_to_Reimburse__c</fullName>
+        <inlineHelpText>Enter the name of person who paid for the expense.  Reimbursement of individuals for specified expenses is done by the Chapter lead.</inlineHelpText>
+        <label>Person to Reimburse</label>
+        <length>150</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Reference_Number__c</fullName>
+        <inlineHelpText>To help track expenses, an invoice number, check number etc.</inlineHelpText>
+        <label>Reference Number</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <label>Expense</label>
+    <nameField>
+        <displayFormat>Ledger-{00000}</displayFormat>
+        <label>Expense</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Expenses</pluralLabel>
+    <recordTypes>
+        <fullName>Expense_Line_Item</fullName>
+        <active>true</active>
+        <description>Enter an Expense Line Item</description>
+        <label>Expense Line Item</label>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Expense %28Money going out%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>New_Revenue_and_Expense_Item</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>url</linkType>
+        <masterLabel>New Revenue and Expense Item</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/a0R/e?CF00NS0000000ctB0={!Correspondence__c.Fundraising_Event__c}&amp;CF00NS0000000ctB0_lkid={!Correspondence__c.Fundraising_EventId__c}&amp;CF00NS0000000mFOE={!Correspondence__c.Name}&amp;CF00NS0000000mFOE_lkid={!Correspondence__c.Id}&amp;retURL=/{!Correspondence__c.Id}</url>
+    </webLinks>
+</CustomObject>

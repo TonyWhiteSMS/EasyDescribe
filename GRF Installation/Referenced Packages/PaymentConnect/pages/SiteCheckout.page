@@ -1,0 +1,281 @@
+<apex:page controller="pymt.SiteCheckoutPageController"  showHeader="false" sidebar="false" cache="false" standardStylesheets="false">
+
+<apex:composition template="{!$Site.Template}">
+  <apex:define name="body">
+    <div class="pc_page_content_top"></div>
+    <div class="pc_page_content">
+    <div class="pc_page_content_inner"> 
+    
+    <apex:form id="checkoutForm" styleClass="pc_checkout_form" onsubmit="return validateForm();">
+        <script language="javascript">
+        var enableValidation=false;
+        function validateForm() {
+
+            if (!enableValidation) return true;
+            enableValidation=false;
+            
+              // check required fields
+              if (document.getElementById('{!$Component.checkoutForm.processCard}').disabled==true) {
+                 // validation done only on processTransaction action.  Skip if processTransaction button is disabled.
+                 return true;
+              }           
+              var fname = document.getElementById("{!$Component.checkoutForm.billingfirstname}");
+              var lname = document.getElementById("{!$Component.checkoutForm.billinglastname}");
+              if (fname.value == "" || lname.value == "") {
+                  alert("Please provide the billing contact name.");
+                  return false;
+              }
+          
+              var address = document.getElementById("{!$Component.checkoutForm.billingstreet}");
+              if (address.value == "") {
+                  alert("Please provide the billing address.");
+                  return false;
+              }
+          
+              var city = document.getElementById("{!$Component.checkoutForm.billingcity}");
+              if (city.value == "") {
+                  alert("Please provide the billing city.");
+                  return false;
+              }
+          
+              var state = document.getElementById("{!$Component.checkoutForm.billingstate}");
+              if (state.value == "") {
+                  alert("Please provide the billing state/province.");
+                  return false;
+              }
+          
+              var zip = document.getElementById("{!$Component.checkoutForm.billingpostalcode}");
+              if (zip.value == "") {
+                  alert("Please provide the billing postal code.");
+                  return false;
+              }
+          
+              var country = document.getElementById("{!$Component.checkoutForm.billingcountry}");
+              if (country.value == "") {
+                  alert("Please provide a 2 character billing country code.");
+                  return false;
+              }
+          
+              var cardNumber = document.getElementById("{!$Component.checkoutForm.ccNumber}");
+              if (cardNumber.value == "") {
+                  alert("Please enter your credit card number.");
+                  return false;
+              }
+              
+              var cvvNumber = document.getElementById("{!$Component.checkoutForm.cvvNumber}");
+              if (cvvNumber.value == "") {
+                  alert("Please enter your CVV number.");
+                  return false;
+              }
+              
+              return true;
+          }
+          </script>
+        <apex:outputField id="processorConnectionId"
+            value="{!payment.pymt__Processor_Connection__c}"
+            rendered="false" />
+        <apex:outputField id="testMode"
+            value="{!payment.pymt__Is_Test_Transaction__c}"
+            rendered="false" />
+        <apex:outputField id="paymentStatus"
+            value="{!payment.pymt__Status__c}" rendered="false" />
+        <apex:outputField id="last4"
+            value="{!payment.pymt__Last_4_Digits__c}" rendered="false" />
+
+        <apex:outputPanel id="cardEntryPanel" rendered="{!IF(submitStatus == 'completed',false, true)}">
+            <apex:pageMessages />   
+            <h1>Checkout</h1>
+            <p>Transaction amount:&nbsp;<apex:outputField value="{!payment.pymt__Amount__c}" /></p>
+            <br/>
+            <apex:outputPanel id="cardInfo" rendered="{!IF(submitStatus == "completed",false,true)}">
+            <apex:outputPanel rendered="{!hasCartItems}" >
+            <h2>Items</h2>
+            <table class="pc_cart_item_table"  id="cartItemTable" >
+            <tr class="table_headings" >
+            <th>Item</th>
+            <th>Product Code</th>
+            <th>Quantity</th>
+            <th class="currency_column">Unit Price</th>
+            </tr>
+            <apex:repeat value="{!attachedCartItems}" var="item" >
+                <tr><td>
+                <apex:outputText value="{!item.name}" />
+                </td><td>
+                <apex:outputText value="{!item.pymt__Product_Code__c}" />
+                </td><td>
+                <apex:outputText value="{!item.pymt__Quantity__c}" />
+                </td><td class="currency_column">
+                <apex:outputField value="{!item.pymt__Unit_Price__c}" />
+                </td></tr>          
+            </apex:repeat>
+            </table>
+            <br/>
+            </apex:outputPanel>
+            <div class="pc_checkout_totals" >
+            <table>
+            <tr>
+                <td>Tax</td>
+                <td class="currency_column"><apex:outputField value="{!payment.pymt__Tax__c}"/></td>
+            </tr>
+            <tr>
+                <td>Shipping</td>
+                <td class="currency_column"><apex:outputField value="{!payment.pymt__Shipping__c}"/></td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td class="currency_column"><apex:outputField value="{!payment.pymt__Amount__c}"/></td>
+            </tr>
+            </table>
+            <br/>
+            </div>
+            <h2>Billing Information</h2>
+            <table>  
+                <tr>
+                    <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingfirstname">First Name</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_medium_input_field" id="billingfirstname" value="{!fnameOnCard}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billinglastname">Last Name</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_medium_input_field" id="billinglastname" value="{!lnameOnCard}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingstreet">Address</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_long_input_field" id="billingstreet"
+                        value="{!billingstreet}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcity">City</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_medium_input_field" id="billingcity" value="{!billingcity}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingstate">State/Province</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_medium_input_field"  id="billingstate" value="{!billingstate}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingpostalcode">Postal Code</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_medium_input_field"  id="billingpostalcode"
+                        value="{!billingpostalcode}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcountry">Country</apex:outputLabel></td>
+                    <td><apex:inputText styleClass="pc_short_input_field"  id="billingcountry"
+                        value="{!billingcountry}" /></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardTypeSelectList">Card Type</apex:outputLabel></td>
+                        <td><apex:selectList size="1" id="cardTypeSelectList"
+                            multiselect="false" value="{!cardType}">
+                            <apex:selectOptions value="{!cardTypeOptions}" />
+                        </apex:selectList><img id="pc_accepted_card_logos" src="/s.gif"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="ccNumber">Credit Card Number</apex:outputLabel></td>
+                        <td><apex:inputText id="ccNumber" styleClass="pc_long_input_field" value="{!creditCardNumber}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cvvNumber">CVV Number</apex:outputLabel></td>
+                        <td><apex:inputText id="cvvNumber" styleClass="pc_short_input_field" value="{!cvv}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardExp">Card Expiration</apex:outputLabel></td>
+                        <td>
+                            <apex:selectList id="expMonth" value="{!expirationMonth}" size="1"> 
+                                <apex:selectOptions value="{!expMonthOptions}" />
+                             </apex:selectList> &nbsp;
+                            <apex:selectList id="expYear" value="{!expirationYear}" size="1"> 
+                                <apex:selectOptions value="{!expYearOptions}" />
+                            </apex:selectList>                      
+                        </td>
+                    </tr>
+            </table>
+            </apex:outputPanel>
+        
+        <br />
+        <apex:outputPanel id="buttons">
+            <table>
+                <tr>
+                    <td class="labelColumn">&nbsp;</td>
+                    <td><apex:commandButton id="cancel" value="Cancel"
+                        action="{!cancelTransaction}" rendered="{!(cancelURL<>null && NOT(ISNULL(cancelURL)))}"/> 
+                        <apex:commandButton id="processCard" value="Submit Payment" status="formActionStatus"
+                        action="{!processTransaction}" disabled="{!disableForm}" rerender="checkoutForm"  onclick="enableValidation=true;"/>
+                    <apex:actionStatus id="formActionStatus">
+                        <apex:facet name="start">
+                            <apex:outputPanel >&nbsp;
+                                <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"
+                                    style="vertical-align:middle;" alt="" />
+                                    &nbsp;Processing...
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" /> 
+                        </apex:facet> 
+                    </apex:actionStatus>
+
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel id="successPanel" rendered="{!IF(submitStatus == 'completed',true,false)}">
+            <h1>Transaction Completed</h1>
+            <p>Your payment has been received. Thank you!  Please print this page for your records.</p>
+            <p>Date:&nbsp;<apex:outputField value="{!payment.pymt__Date__c}" /></p>
+            <p>Amount Received:&nbsp;<apex:outputField value="{!payment.pymt__Amount__c}" />&nbsp; <apex:outputField value="{!payment.pymt__Currency_ISO_Code__c}" /></p>
+            <apex:outputPanel rendered="{!hasCartItems}" >
+            <h2>Items</h2>
+            <table class="pc_cart_item_table" id="cartItemTable2" >
+            <tr class="table_headings" >
+            <th>Item</th>
+            <th>Product Code</th>
+            <th>Quantity</th>
+            <th class="currency_column">Unit Price</th>
+            </tr>
+            <apex:repeat value="{!attachedCartItems}" var="item" >
+                <tr><td>
+                <apex:outputText value="{!item.name}" />
+                </td><td>
+                <apex:outputText value="{!item.pymt__Product_Code__c}" />
+                </td><td>
+                <apex:outputText value="{!item.pymt__Quantity__c}" />
+                </td><td class="currency_column">
+                <apex:outputField value="{!item.pymt__Unit_Price__c}" />
+                </td></tr>          
+            </apex:repeat>
+            </table>
+            </apex:outputPanel>
+            <br/>
+            <h2>Received From: </h2>
+            <p>
+            {!fnameOnCard}&nbsp;{!lnameOnCard}<br/>
+            {!billingstreet}<br/>
+            {!billingcity}, {!billingstate}&nbsp;{!billingpostalcode}<br/>
+            {!billingcountry}<br/></p>
+            <h2>Paid To:</h2>
+            <p>
+            {!$Organization.Name}<br/>
+            {!$Organization.Street}<br/>
+            {!$Organization.State}, {!$Organization.City}&nbsp;{!$Organization.PostalCode}<br/>
+            {!$Organization.Country}<br/>
+            {!$Organization.Phone}<br/></p>
+            
+            <apex:commandButton id="finish" value="Finished" onclick="" action="{!finishTransaction}" rendered="{!finishURL <> null}"/> 
+        </apex:outputPanel>
+
+    </apex:form>
+    </div><!--  pc_page_content_inner -->
+    </div><!--  pc_page_content -->
+
+    </apex:define>
+</apex:composition>
+</apex:page>

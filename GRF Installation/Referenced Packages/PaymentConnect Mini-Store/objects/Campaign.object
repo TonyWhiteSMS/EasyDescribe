@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Banner_Image__c</fullName>
+        <inlineHelpText>Deprecated: Please use a Site template file to stylize this campaign landing page.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Donation_Options__c</fullName>
+        <inlineHelpText>Donation options to display on the landing page.</inlineHelpText>
+        <label>Donation Options</label>
+        <picklist>
+            <picklistValues>
+                <fullName>One Time</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>MultiselectPicklist</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LP_Cancel_URL__c</fullName>
+        <inlineHelpText>Page that should be displayed when the user cancels a payment.</inlineHelpText>
+        <label>Payment Cancellation URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>LP_Confirmation_URL__c</fullName>
+        <inlineHelpText>Page that should be displayed when the user completes a payment.</inlineHelpText>
+        <label>Payment Confirmation Page</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>LP_Expiration_Date__c</fullName>
+        <inlineHelpText>Date page is to be removed from the web</inlineHelpText>
+        <label>Expiration Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LP_HTML_Content__c</fullName>
+        <inlineHelpText>HTML content to display on the landing page.</inlineHelpText>
+        <label>HTML Content</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>12</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LP_Meta_Description__c</fullName>
+        <inlineHelpText>Meta description content to add to the page.</inlineHelpText>
+        <label>Meta Description</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>8</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LP_Meta_Keywords__c</fullName>
+        <inlineHelpText>Keywords to add to the page content.</inlineHelpText>
+        <label>Keywords</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>8</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LP_One_Time_Contribution_Options__c</fullName>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>LP_Publication_Date__c</fullName>
+        <inlineHelpText>Date page is to be made available on the web</inlineHelpText>
+        <label>Publication Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LP_Recurring_Contribution_Options__c</fullName>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>LP_Status__c</fullName>
+        <label>Landing Page Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Published</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Archived</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>LP_Title__c</fullName>
+        <label>Landing Page Title</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Landing_Page_Type__c</fullName>
+        <label>Landing Page Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Mini-Store</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Donation Page</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Logo_Image__c</fullName>
+        <inlineHelpText>Deprecated: Please use a Site template file to stylize this campaign landing page.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Payments__c</fullName>
+        <inlineHelpText>Total number of completed payments made for this campaign.</inlineHelpText>
+        <label>Number of Payments</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>On_Payment_Completed__c</fullName>
+        <inlineHelpText>Value to copy into the OnPaymentCompleted trigger field of new Payments as they are created.</inlineHelpText>
+        <label>On Payment Completed</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payments_Made__c</fullName>
+        <inlineHelpText>Total of completed payments for this campaign.</inlineHelpText>
+        <label>Payments Made</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Processor_Connection__c</fullName>
+        <inlineHelpText>Payment processor connection to use with buy-now/donate-now links on campaign landing page.</inlineHelpText>
+        <label>Processor Connection</label>
+        <referenceTo>pymt__Processor_Connection__c</referenceTo>
+        <relationshipLabel>Campaigns</relationshipLabel>
+        <relationshipName>Campaigns</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Stylesheet_URL__c</fullName>
+        <inlineHelpText>Deprecated: Please use a Site template file to stylize this campaign landing page.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Suggested_Donation_Amounts__c</fullName>
+        <inlineHelpText>Semi-colon separated list of suggested contribution options to show on landing page.</inlineHelpText>
+        <label>Suggested Donation Amounts</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <recordTypes>
+        <fullName>Campaign_Mini_Store</fullName>
+        <active>true</active>
+        <description>Modified Campaign record supporting the sale of products from a public campaign landing page using PaymentConnect.</description>
+        <label>Mini-Store Campaign</label>
+        <picklistValues>
+            <picklist>Donation_Options__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One Time</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LP_Status__c</picklist>
+            <values>
+                <fullName>Archived</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Published</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Landing_Page_Type__c</picklist>
+            <values>
+                <fullName>Mini-Store</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Aborted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Donation_Campaign</fullName>
+        <active>true</active>
+        <description>Modified Campaign record supporting donation compaings and payment processing PaymentConnect.</description>
+        <label>Donation Campaign</label>
+        <picklistValues>
+            <picklist>Donation_Options__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One Time</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LP_Status__c</picklist>
+            <values>
+                <fullName>Archived</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Published</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Landing_Page_Type__c</picklist>
+            <values>
+                <fullName>Donation Page</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Aborted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Planned</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Advertisement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <webLinks>
+        <fullName>Rich_Text_Editor</fullName>
+        <availability>online</availability>
+        <description>WYSIWYG editor for landing page HTML content (supports the PaymentConnect Campaigns Add-on)</description>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Rich Text Editor</masterLabel>
+        <openType>sidebar</openType>
+        <page>LandingPageEditor</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Update_Payments_Made</fullName>
+        <availability>online</availability>
+        <description>Updates the payments made &quot;rollup&quot; field.</description>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Update Payments Made</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/16.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/16.0/apex.js&quot;)}
+
+var result = sforce.apex.execute(&apos;cmpgn/CampaignLandingPage&apos; ,&apos;updatePaymentTotal&apos;,{campaignIds:[&quot;{!Campaign.Id}&quot;]}, null, false);
+alert(&apos;Update requested\n&apos;+result);
+window.location.reload();</url>
+    </webLinks>
+</CustomObject>

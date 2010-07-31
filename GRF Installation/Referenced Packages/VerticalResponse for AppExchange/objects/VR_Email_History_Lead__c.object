@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>VerticalResponse email campaign statistics for salesforce.com Leads</description>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Bounced__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Bounced indicates that the email sent to the recipient was undeliverable</description>
+        <label>Bounced</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_Hash__c</fullName>
+        <description>VerticalResponse campaign hash</description>
+        <label>Campaign Hash</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Clicked_Links__c</fullName>
+        <description>The specific links that were clicked will be noted in this section</description>
+        <label>Clicked Links</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Clicked__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Clicked indicates that the recipient clicked on at least one link within the email.</description>
+        <label>Clicked</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Company_Hash__c</fullName>
+        <description>VerticalResponse company hash</description>
+        <label>Company Hash</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Email_ID__c</fullName>
+        <description>VerticalResponse email campaign ID</description>
+        <label>Email ID</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Email_Type__c</fullName>
+        <description>Type of email campaign sent using VerticalResponse</description>
+        <label>Email Type</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <description>Corresponds to the salesforce.com Lead who was sent a VerticalResponse email</description>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>VR Email History Lead</relationshipLabel>
+        <relationshipName>VR_Email_History_Lead</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>List_Type__c</fullName>
+        <description>Corresponds to the type of mailing list used for the email campaign</description>
+        <label>List Type</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Mail_Date__c</fullName>
+        <description>This is the date and time the email campaign was launched</description>
+        <label>Mail Date</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Opened__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Opened indicates that the recipient opened the HTML version of the email campaign</description>
+        <label>Opened</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Sent indicates the recipient was included on the mailing list at the time of launch</description>
+        <label>Sent</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Unsubscribed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Unsubscribed indicates the recipient opted-out of the email</description>
+        <label>Unsubscribed</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>VR Email History Lead</label>
+    <nameField>
+        <label>Email Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>VR Email History Lead</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>

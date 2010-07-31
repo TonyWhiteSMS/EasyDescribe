@@ -1,0 +1,162 @@
+<apex:page controller="GRF_PaymentConnectController" showHeader="false" sidebar="false" standardStylesheets="false" 
+id="donation">
+
+<!--- This is a modification of Payment Connect's Donation Page--->
+
+<apex:stylesheet value="http://www.helpsudaninternational.org/assets/css/grassrootsforce.css"/> 
+<div id="container"> 
+<head>
+  <apex:iframe scrolling="false" height="200px"
+       src="GRF_PageHeader?id={!grf_eventid}"/>
+</head>
+ <body bgcolor="#ffffff">
+   <div id="mainContent" > 
+            <div class="content">
+      
+<style>
+.pc_page_content { 
+    width:700px;
+    margin-left:auto;
+    margin-right:auto;
+    }
+    
+.pc_long_input_field {
+    width:250px;
+}
+
+.pc_short_input_field {
+    width:75px;
+}
+</style>
+
+<div class="pc_page_content" >
+
+    <h1>Payment by Credit Card</h1>
+    
+    
+    <apex:messages styleClass="message" id="messageBox" /> 
+    <apex:outputPanel id="donorInformation"
+            rendered="{!IF(viewState == 'get_donor_info',true,false)}">
+        <apex:form id="donationForm" styleclass="pc_billing_info_form">
+           
+            <p>Please provide your billing address:</p>
+            <table>
+                <tr>
+                    <td>First Name:</td>
+                    <td><apex:inputText id="firstname" styleclass="pc_long_input_field"
+                     value="{!contact.firstname}" Required="true" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td><apex:inputText id="lastname" styleclass="pc_long_input_field"  required="true"
+                     value="{!contact.lastname}" /></td>
+                </tr>
+                <tr>
+                    <td>Email Address:</td>
+                    <td><apex:inputText id="email" styleclass="pc_long_input_field"  required="true"
+                    value="{!contact.email}" /></td>
+                </tr>
+                <tr>
+                    <td>Company Name (optional):</td>
+                    <td><apex:inputText styleclass="pc_long_input_field"
+                     value="{!companyName}" /></td>
+                </tr>
+                <tr>
+                    <td>Street:</td>
+                    <td><apex:inputText styleclass="pc_long_input_field" id="street"
+                     required="true" value="{!contact.mailingstreet}" /></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><apex:inputText styleclass="pc_long_input_field"  id="city"
+                     required="true" value="{!contact.mailingcity}" /></td>
+                </tr>
+                <tr>
+                    <td>State/Province:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field" id="state"
+                     required="true" value="{!contact.mailingstate}" /></td>
+                </tr>
+                <tr>
+                    <td>Postal Code:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field"  id="postalcode"
+                     required="true" value="{!contact.mailingpostalcode}" /></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field" id="country"
+                     value="{!contact.mailingcountry}" /></td>
+                </tr>
+                 <tr>
+                    <td>Donation Amount:</td>
+                    <td><apex:outputText id="donationamount" value="${!otherDonationAmount}"/>
+    
+                     </td>
+                </tr>
+                 <tr>
+                    <td>Admission Fee:</td>
+                    <td>  <apex:outputText id="admissionfee" value="${!grf_admissionfee}"
+                     rendered="{!IF(grf_admissionfee =='0',false,true)}"
+                    />
+                        
+                    
+                    </td>
+                </tr>
+            </table>
+            <apex:outputPanel id="payment">
+                   
+               
+              </apex:outputpanel> 
+
+            <apex:outputPanel id="contributionOptions"
+                rendered="{!IF(viewState = 'get_donor_info',false,false)}">
+                <div id="pc_contribution_options">
+                    <h2>Donation Amount</h2>
+                    <apex:selectRadio id="suggestedDonationOptions"
+                                        value="{!selectedDonationAmount}" layout="pageDirection">
+                                        <apex:selectOptions value="{!suggestedDonationOptions}" />
+                                        <apex:ActionSupport event="onclick"
+                                            action="{!nullAction}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButton" />
+                                        
+                                    </apex:selectRadio> &nbsp;&nbsp;&nbsp; $&nbsp; 
+                                    <apex:inputText id="otherDonationAmount"
+                                     styleclass="pc_short_input_field" value="{!otherDonationAmount}">
+                                        <apex:ActionSupport event="onclick"
+                                            action="{!clickOtherAmount}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButton" />
+                                        <apex:ActionSupport event="onchange"
+                                            action="{!clickOtherAmount}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButtont" />
+                                    </apex:inputText>
+                                    <br/><br/>
+                     <apex:outputPanel id="recurringCheckbox" rendered="{!showRecurring}" >
+                    <apex:inputCheckbox value="{!isRecurring}" /> Make this a recurring donation ({!recurringPeriod}). 
+                    <br/><br/>Number of recurring donations (optional): 
+                    <apex:inputText styleclass="pc_short_input_field"  value="{!occurrences}" />
+                    </apex:outputPanel>
+                </div> 
+            </apex:outputPanel>
+            <p>&nbsp;</p>
+
+            <apex:commandButton id="ccButton" value="Credit Card Payment"
+                action="{!creditCardDonation}"
+                rendered="{!IF(AND(viewState =='get_donor_info',OR(processorName =='paypal',
+                processorName =='authorize.net')),true,false)}" 
+                disabled="{!AND(isRecurring,processorName == 'authorize.net')}" 
+                />
+             <apex:commandLink action="{!paypalDonation}"  target="_top">
+                <apex:image style="vertical-align:middle;" url="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"
+                rendered="{!IF(AND(viewState =='get_donor_info', processorName =='paypal', 
+                showPayPalButton ==true),true,false)}" />
+                </apex:commandLink>
+            <apex:commandButton value="Google Checkout Donation"
+                action="{!googleDonation}"
+                rendered="{!IF(AND(viewState =='get_donor_info', processorName =='google'),true,false)}" />
+        </apex:form>
+    </apex:outputPanel>
+</div>
+    </div>
+    
+</div></body>
+    </div>
+</apex:page>

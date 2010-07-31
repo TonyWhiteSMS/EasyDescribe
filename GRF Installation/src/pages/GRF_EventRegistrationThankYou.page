@@ -1,0 +1,102 @@
+<apex:page controller="GRF_EventRegistrationController" showHeader="false"
+    sidebar="false" standardStylesheets="false">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <apex:stylesheet value="http://www.helpsudaninternational.org/assets/css/grassrootsforce.css"/> 
+  <div id="container"> 
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>   
+    <title>HELPSudan Benefit Event-Thank you</title>
+   <apex:iframe scrolling="false" height="200px"
+       src="GRF_PageHeader?id={!theEvent.id}"/>
+    </head>
+    <body bgcolor="#ffffff">
+   <div id="mainContent" > 
+            <div class="content">
+      
+              <apex:outputPanel rendered="{!If(theEvent.Site_Type__c='Registration',
+         true,false)}" >
+    <div class="details"> 
+    
+  <h3><apex:outputText escape="false"  value=" Event Reminder:"/></h3>
+    <p>
+       <strong><apex:outputText escape="false" 
+       rendered="{!If(theEvent.Event_Date_Time_When__c='',false,true)}"
+         value=" When: &nbsp;"/></strong>
+       <apex:outputText escape="false" value="{!theEvent.Event_Date_Time_When__c}"/><br />
+     
+       <strong><apex:outputText escape="false"
+        rendered="{!if(theEvent.Event_Location_Where__c='',false,true)}"
+         value="Where: &nbsp;"/></strong>
+       <apex:outputText escape="false" value="{!theEvent.Event_Location_Where__c}"/>
+       <apex:outputLink rendered="{!if(theEvent.Event_Map_URL__c='',false,true)}"
+          value="{!theEvent.Event_Map_URL__c}" >
+          &nbsp;&nbsp; map >></apex:outputLink> <br /> 
+   
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.Event_Cost_How_Much__c='',false,true)}"
+       value="Cost: &nbsp;"/></strong>
+          <apex:outputText escape="false" value="{!theEvent.Event_Cost_How_Much__c}"/><br />
+   
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.For_more_information_contact__c='',false,true)}"
+       value="Contact: &nbsp;"/></strong>
+          <apex:outputText escape="false" 
+          value="{!theEvent.For_more_information_contact__c}"/><br /> 
+ 
+ 
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.Event_Reason_and_Policies_Why__c='',false,true)}"
+        value="More Info: &nbsp;"/></strong>
+     <apex:outputText escape="false"
+      value="{!theEvent.Event_Reason_and_Policies_Why__c}"/> 
+  </p>
+  <!-- end details --></div> 
+    <div class="leftColumn"> 
+    <p><div class="details">           
+         <strong><apex:outputText value="Event:"/> &nbsp;</strong>
+         <apex:outputText value="{!theEvent.Name}"/><br/>
+         <strong><apex:outputText value="Sponsored by:"/> &nbsp;</strong>
+         <apex:outputText value="{!theEvent.Chapter__r.Name}"/><br/>
+         <strong><apex:outputText value="Name:"/> &nbsp;</strong>
+         <apex:outputText value="{!c.First_Name__c}"/>  &nbsp;
+         <apex:outputText value="{!c.Last_Name__c}"/> <br/>
+        
+         <strong><apex:outputText value="Notes/Comments:"/> &nbsp;</strong> 
+         <apex:outputText value="{!c.Comments__c}"/> <br/>
+         <strong><apex:outputText value="Number Attending:"/> &nbsp;</strong>
+     
+           <apex:outputText value="{0, number, ###}">
+               <apex:param value="{!c.Number_Planning_to_Attend__c}"/>       
+           </apex:outputText><br/>
+         <strong><apex:outputText value="Admissions Fee (per person):"/> &nbsp;</strong>$
+         
+      
+                <apex:outputText value="{0, number, ###,###.00}">
+               <apex:param value="{!theEvent.Event_Admission_Fee__c}"/>       
+           </apex:outputText><br/>
+    
+
+         <strong><apex:outputText value="Donation/Pledge:"/> &nbsp;</strong>$
+          <apex:outputText value="{0, number, ###,###.00}">
+               <apex:param value="{!c.Amount_Donated_through_Org_Website__c}"/>       
+           </apex:outputText><br/>
+             
+                  <strong><apex:outputText value="Payment Status:"/> &nbsp;</strong>
+          <apex:outputText value="{!c.Payment_Method__c}"/>
+          <apex:outputText value="-Not yet paid"
+                   rendered="{!if (c.Status__c='',true,false)}"         />
+          <apex:outputText value="{!c.Status__c}"/>
+         <br/>
+                     
+                
+                  
+                </div></p></div>
+  </apex:outputPanel>
+               <apex:pageBlock title="Thank you for your support!">
+               <h3><apex:outputText escape="false"  
+        value=" Please print this page for your records, an email confirmation will be sent."/></h3>
+             
+               </apex:pageBlock>
+         
+            </div>     </div>     </body></div>
+    </html></apex:page>

@@ -1,0 +1,13 @@
+<apex:page controller="GRF_EventRegistrationController" showHeader="false"
+  sidebar="false" standardStylesheets="true" title="{!theEvent.Name}">
+
+<apex:stylesheet value="http://www.helpsudaninternational.org/assets/css/grassrootsforce.css"/> 
+  <apex:iframe scrolling="false" height="200px"
+       src="GRF_PageHeader?id={!theEvent.id}"/>
+
+  <br/>
+  <h1>An error has occurred on this site.</h1>
+  <br/>
+  Please contact the site owner for assistance.
+</div>
+</apex:page>

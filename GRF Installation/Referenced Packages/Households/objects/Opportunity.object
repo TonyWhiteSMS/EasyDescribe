@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>CurrentGenerators__c</fullName>
+        <label>Current Generator(s) - DEPRECATED</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>DeliveryInstallationStatus__c</fullName>
+        <label>Delivery/Installation Status- DEPRECATED</label>
+        <picklist>
+            <picklistValues>
+                <fullName>In progress</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Yet to begin</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>MainCompetitors__c</fullName>
+        <label>Main Competitor(s) - DEPRECATED</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>OrderNumber__c</fullName>
+        <label>Order Number - DEPRECATED</label>
+        <length>8</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>TrackingNumber__c</fullName>
+        <label>Tracking Number - DEPRECATED</label>
+        <length>12</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>systemHouseholdContactRoleProcessor__c</fullName>
+        <inlineHelpText>Controls if Household contact roles are created for Opportunities</inlineHelpText>
+        <label>_SYSTEM: HOUSEHOLD CONTACT ROLEPROCESSOR</label>
+        <picklist>
+            <picklistValues>
+                <fullName>All Opportunities</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No Opportunities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+</CustomObject>

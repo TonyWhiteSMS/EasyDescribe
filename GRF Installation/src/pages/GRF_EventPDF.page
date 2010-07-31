@@ -1,0 +1,307 @@
+<apex:page controller="GRF_EventRegistrationController" showHeader="false"
+ sidebar="false" standardStylesheets="true" title="{!theEvent.Name}">
+
+<apex:stylesheet value="http://www.helpsudaninternational.org/assets/css/grassrootsforce.css"/> 
+ 
+<div id="container"> 
+  <div id="header"> 
+   <div class="HSlogo" >
+      <apex:image url="{!theEvent.Organization_Logo_URL__c}"
+           rendered="{!if(theEvent.Chapter_Logo_URL__c='',false,true)}" 
+           width="{!theEvent.Organization_Logo_Width__c}" 
+           height="{!theEvent.Organization_Logo_Height__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>
+    <apex:image rendered="{!if(theEvent.Chapter_Logo_URL__c='',true,false)}"
+              width="{!theEvent.Organization_Logo_Width__c}" 
+           height="{!theEvent.Organization_Logo_Height__c}"
+             url="{!theEvent.Organization_Logo_Ch_Alt_Text__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>  
+    </div> 
+   <div class="otherLogo">
+      <apex:outputPanel rendered="{!if(theEvent.Chapter_Logo_URL__c='',false,true)}">
+      <apex:image rendered="{!if(theEvent.Chapter_Logo_Height__c=null,false,true)}"
+           url="{!theEvent.Chapter_Logo_URL__c}"
+           width="{!theEvent.Chapter_Logo_Width__c}" 
+           height="{!theEvent.Chapter_Logo_Height__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>
+      <apex:image rendered="{!if(theEvent.Chapter_Logo_Height__c=null,true,false)}"
+           url="{!theEvent.Chapter_Logo_URL__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>       
+    </apex:outputPanel>
+   
+      <p> <apex:outputText rendered="{!if(theEvent.Chapter_Logo_URL__c='',true,false)}" 
+      value="{!theEvent.Chapter_Logo_Alt_Text__c}" /></p>
+      
+    
+     </div>  
+     
+   <div id="headline">
+  <div class="text"><apex:outputText value="{!theEvent.Event_Title__c}"/> </div>
+  
+     <div class="text"><font color="red">
+  <apex:outputText value="This page is currently under construction"
+   rendered="{!if(theEvent.Event_Plan_Reviewed__c,false,true)}" /></font> </div>
+ 
+       <!-- end #headline --> </div> 
+  <!-- end #header --></div> 
+  
+  <div id="mainContent" > 
+  <div class="clearfix"> 
+  <div class="leftColumn">     
+
+  <p> <h2> <apex:outputText escape="false" value="{!theEvent.Event_Tagline__c}"/></h2></p>
+   <p> <apex:outputText escape="false" value="{!theEvent.Event_Description__c}"/> </p>
+ 
+    <apex:outputPanel rendered="{!If(theEvent.Site_Type__c='Registration',
+         true,false)}" >
+    <div class="details"> 
+    
+  <h3><apex:outputText escape="false"  value=" Details:"/></h3>
+    <p>
+       <strong><apex:outputText escape="false" 
+       rendered="{!If(theEvent.Event_Date_Time_When__c='',false,true)}"
+         value=" When: &nbsp;"/></strong>
+       <apex:outputText escape="false" value="{!theEvent.Event_Date_Time_When__c}"/><br />
+     
+       <strong><apex:outputText escape="false"
+        rendered="{!if(theEvent.Event_Location_Where__c='',false,true)}"
+         value="Where: &nbsp;"/></strong>
+       <apex:outputText escape="false" value="{!theEvent.Event_Location_Where__c}"/>
+       <apex:outputLink rendered="{!if(theEvent.Event_Map_URL__c='',false,true)}"
+          value="{!theEvent.Event_Map_URL__c}" >
+          &nbsp;&nbsp; map >></apex:outputLink> <br /> 
+   
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.Event_Cost_How_Much__c='',false,true)}"
+       value="Cost: &nbsp;"/></strong>
+          <apex:outputText escape="false" value="{!theEvent.Event_Cost_How_Much__c}"/><br />
+   
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.For_more_information_contact__c='',false,true)}"
+       value="Contact: &nbsp;"/></strong>
+          <apex:outputText escape="false" 
+          value="{!theEvent.For_more_information_contact__c}"/><br /> 
+ 
+ 
+    <strong><apex:outputText escape="false" 
+    rendered="{!if(theEvent.Event_Reason_and_Policies_Why__c='',false,true)}"
+        value="More Info: &nbsp;"/></strong>
+     <apex:outputText escape="false"
+      value="{!theEvent.Event_Reason_and_Policies_Why__c}"/> 
+  </p>
+  <!-- end details --></div> 
+  
+  </apex:outputPanel>
+ 
+ 
+    <apex:outputPanel rendered="{!If(theEvent.Support__c='',false,false)}">
+  <div class="details"> 
+  
+  <h3><apex:outputText escape="false" 
+         value="Support:"/></h3>
+    <p>
+       <apex:outputText escape="false" value="{!theEvent.Support__c}"/><br />
+     
+  </p>
+  
+  <apex:form > 
+   
+<table border="0" cellspacing="3" cellpadding="3" width="100%"> 
+  <tr> 
+    <td width="25%" > <apex:outputText value="First Name" /> 
+    </td> 
+    <td width="25%"> 
+       <apex:inputText size="19" id="FirstName" value="{!c.First_Name__c}" required="true"/> 
+    </td> 
+    <td width="25%"><apex:outputText value="Last Name"/> 
+    </td> 
+    <td  width="25%"> 
+       <apex:inputText size="19" id="LastName" value="{!c.Last_Name__c}" required="true"/> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td>   
+      <apex:outputText value="Email"/> 
+    </td> 
+    <td>    
+      <apex:inputText size="19"  id="E-mail" value="{!c.Email__c}" required="true"/> 
+    </td> 
+    
+      <td>
+       <apex:outputText value="Comments"/> 
+       </td>
+       <td>
+       <apex:inputTextarea cols="32" id="Comments" value="{!c.Comments__c}"
+          required="false" />
+       </td>
+     
+   </tr>
+   <tr>
+    <td> <apex:outputText value="Donation"/ >   </td> 
+    <td>
+      <apex:inputText Size="19" id="DonationAmount" value="{!c.Amount_Donated_through_Org_Website__c}"  />
+    </td> 
+    <td></td>
+    <td> <apex:commandLink action="{!Register}">
+       <apex:image value="http://www.helpsudaninternational.org/assets/images/btn_donateRound.jpg"/>
+       </apex:commandLink>   
+     </td> 
+   </tr> 
+</table> 
+
+</apex:form>
+ 
+  
+  <!-- end details --></div> 
+  
+  </apex:outputPanel>
+  
+  
+ 
+   <apex:outputPanel rendered="{!If (theEvent.Event_Commentary__c='',false,true)}">
+    <div class="details"> 
+     <h3><apex:outputText escape="false" 
+     value="Update:"/></h3>       
+    <p><apex:outputText escape="false" value="{!theEvent.Event_Commentary__c}"/> </p>
+    <br/>
+    <p><apex:outputText escape="false" value="Funds raised to date:{!theEvent.Funds_Raised_to_Date__c}"
+       rendered="{!If (theEvent.Funds_Raised_to_Date__c>1,true,false)}"/> </p>
+    <!-- end details --></div> 
+     </apex:outputPanel>
+     
+     
+     
+     
+      <apex:outputPanel dir="" 
+        rendered="{!If(theEvent.Site_Type__c='Registration',false,false)}" >
+              <div class="details"> 
+   <h3><apex:outputText escape="false"  value="Register and Donate:"/></h3>
+         <p> <apex:outputText escape="false" 
+         value="{!theEvent.Registration_Description__c}"/></p>
+   
+     <apex:form > 
+     
+   
+   
+<table border="0" cellspacing="3" cellpadding="3"> 
+  <tr> 
+    <td width="25%"><apex:outputText value="First Name" /> </td>
+    <td  width="25%"><apex:inputText size="19" 
+         id="FirstName" value="{!c.First_Name__c}" required="true"/>
+    </td> 
+    <td width="30%"><apex:outputText value="Last Name"/> </td>
+    <td width="20%"><apex:inputText size="19" id="LastName" 
+        value="{!c.Last_Name__c}" required="true"/> 
+    </td>   
+  </tr>
+  <tr>
+    <td><apex:outputText value="Email"/> </td>
+    <td><apex:inputText size="10" id="E-mail" value="{!c.Email__c}" required="true"/>   
+    </td> 
+    <td colspan="2" align="left"><apex:outputText value="Number Attending"/>&nbsp;
+   <apex:inputText size="13" id="Attendees"
+         value="{!c.Number_Planning_to_Attend__c}" required="true"/> 
+    </td>
+    </tr>
+    <tr>
+    <td><apex:outputText value="Comments"/> </td>
+    <td><apex:inputTextarea cols="29" id="Comments"  value="{!c.Comments__c}" required="false" /> 
+    </td>
+    <td colspan="2"><apex:outputText value="Donation Amount"/>&nbsp;&nbsp;
+     <apex:inputText size="13" id="DonationAmount" value="{!c.Amount_Donated_through_Org_Website__c}"  />
+    </td> 
+  </tr>
+  </table>
+   <apex:outputText value="Payment Method"/>
+    <apex:selectRadio id="PaymentMethod" value="{!c.Payment_Method__c}"  >
+   <table>
+     <tr>
+   
+          
+        <td>     <apex:selectOption itemValue="Website" 
+            itemLabel="{!TheEvent.Payment_Method_Website__c}"
+            rendered="{!If (TheEvent.Payment_Method_Website__c='',false,true)}"/>
+      </td><td>
+            <apex:selectOption itemValue="Door" itemLabel="{!TheEvent.Payment_Method_Door__c}"
+            rendered="{!If (TheEvent.Payment_Method_Door__c='',false,true)}"/>
+      </td><td>
+            <apex:selectOption itemValue="Chapter" 
+            itemLabel="{!TheEvent.Payment_Method_Chapter__c}"
+            rendered="{!If (TheEvent.Payment_Method_Chapter__c='',false,true)}"/>
+      </td><td>
+              <apex:selectOption itemValue="Organization" 
+              itemLabel="TheEvent.Payment_Method_Organization__c"
+            rendered="{!If (TheEvent.Payment_Method_Organization__c='',false,true)}"/>
+      </td></tr></table>
+      
+        </apex:selectRadio> <br></br>
+        <apex:commandLink action="{!Register}" >
+          <apex:image value="http://www.helpsudaninternational.org/assets/images/btn_register.gif"/>   
+         </apex:commandLink>
+</apex:form>  
+  <!-- end details --></div> 
+ </apex:outputpanel> 
+  <!-- end .leftColumn --></div> 
+ 
+
+    <div class="rightCallout"> 
+ 
+<div class="image">
+<!-- image field will populate this div, max width is 240px wide, variable height-->
+    <apex:outputPanel rendered="{!if(theEvent.Event_Picture_URL__c='',false,true)}">
+      <apex:image rendered="{!if(theEvent.Event_Picture_Height__c=null,false,true)}"
+           url="{!theEvent.Event_Picture_URL__c}"
+           width="{!theEvent.Event_Picture_Width__c}" 
+           height="{!theEvent.Event_Picture_Height__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>
+      <apex:image rendered="{!if(theEvent.Event_Picture_Height__c=null,true,false)}"
+           url="{!theEvent.Event_Picture_URL__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>       
+    </apex:outputPanel>
+
+
+
+<br/></div> 
+<div class="image">      
+      <apex:iframe src="http://www.flickr.com/slideShow/index.gne?
+user_id={!theEvent.Flickr_User_Id__c}&tags={!theEvent.Flickr_Tags__c}"
+ frameBorder="0" width="250" height="250" scrolling="no"
+  rendered="{!if(theEvent.Flickr_User_Id__c='',false,true)}"/>
+  
+
+
+</div> 
+ <!--- Disabled for Printouts
+   <p><h3>
+    <apex:outputText value="{!theEvent.Social_Media_Links_Label__c}"/>
+    <apex:outputLink value="http://www.facebook.com/{!theEvent.Facebook_Username__c}"
+     rendered="{!If (theEvent.Facebook_Username__c='',false,false)}">
+     <apex:image value="{!$Resource.Facebook_Icon}"  /></apex:outputLink>
+    <apex:outputLink value="http://www.Twitter.com/{!theEvent.Twitter_Username__c}" 
+    rendered="{!If (theEvent.Twitter_Username__c='',false,false)}">
+   <apex:image value="{!$Resource.Twitter_Icon}"  /></apex:outputLink> </h3></p>
+  
+  --->
+ 
+  
+  <apex:include pageName="GRF_EventComponentTwitter" 
+             rendered="{!If (theEvent.Twitter_Search_Terms__c='',false,false)}"/> 
+             <script src="http://widgets.twimg.com/j/2/widget.js"></script> 
+
+ 
+  <!-- end .rightCallout --> </div>
+  
+             
+  <!-- end #clearFix --></div> 
+  <!-- end #mainContent --></div> 
+  <apex:include pageName="{!theEvent.Custom_Page_Name__c}" 
+            rendered="true"/> 
+ <div id="footer"> 
+ 
+   
+  
+    <!-- end #footer --></div> 
+  
+  <!-- end #container--></div>
+
+</apex:page>

@@ -1,0 +1,120 @@
+<apex:page controller="pymt.SiteQuoteController"  showHeader="false" sidebar="false" cache="false"  standardStylesheets="false">
+
+<title>{!$Organization.Name} Sales Quote: {!opportunity.name}</title>
+<apex:composition template="{!$Site.Template}">
+  <apex:define name="body">
+    <div class="pc_page_content_top"></div>
+    <div class="pc_page_content"  id="pc_sitequote_page">
+    <div class="pc_page_content_inner">
+    
+    <apex:form id="checkoutForm" styleClass="pc_quote_review_form">
+
+            <apex:pageMessages />   
+            <apex:outputPanel id="quotebody" rendered="{!NOT(disableForm)}">
+            <h1>Sales Quote: {!opportunity.name}</h1>
+            <h2>Account Information</h2>
+            <p>{!account.name}<br/>
+            {!account.billingstreet}<br/>
+            {!account.billingcity},&nbsp;
+            {!account.billingstate}&nbsp;{!account.billingpostalcode}<br/>
+            {!account.billingcountry}</p>
+            <h2>Primary Contact</h2>
+            <p>{!contact.name}<br/>
+            {!contact.mailingstreet}<br/>
+            {!contact.mailingcity},&nbsp;
+            {!contact.mailingstate}&nbsp;{!contact.mailingpostalcode}<br/>
+            {!contact.mailingcountry}</p>
+            <apex:outputPanel id="description" rendered="{!showDescription}" >
+            <h2>Description</h2>
+            <apex:outputText styleClass="pc_quote_description" value="{!opportunity.description}"   />
+            <br/>
+            </apex:outputPanel>
+            <br/>
+            <apex:outputPanel id="lineItemTable" rendered="{!opportunity.HasOpportunityLineItem}">
+            <table class="pc_opp_line_item_table"  >
+                <tr class="table_headings">
+                    <th>Description
+                    </th>
+                    <th>Notes
+                    </th>
+                    <th>Quantity
+                    </th>
+                    <th class="currency_column">Unit Price
+                    </th>
+                    <th class="currency_column">Total Price
+                    </th>
+                </tr>
+                <apex:repeat value="{!lineItems}" var="item" >
+                <tr>
+                    <td>
+                     {!item.pricebookentry.name}
+                    </td>
+                    <td>
+                     {!item.description}
+                    </td>
+                    <td>
+                        {!item.quantity}
+                    </td>
+                    <td class="currency_column">
+                        <apex:outputField value="{!item.unitprice}" />
+                     </td>
+                    <td  class="currency_column">
+                        <apex:outputField value="{!item.totalprice}" />
+                     </td>
+                </tr>
+            </apex:repeat>
+            </table>
+            </apex:outputPanel>
+            <div class="pc_quote_amount_box" id="pc_quote_amount_box">
+                <apex:outputPanel rendered="{!NOT(hasRecurringAmount)}" >
+                Total Amount: &nbsp;<apex:outputField value="{!opportunity.amount}" />
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!hasRecurringAmount}" >
+                One-Time Amount: &nbsp;<apex:outputField value="{!Opportunity.amount}" /><br/>
+                Recurring Amount: &nbsp;<apex:outputField value="{!Opportunity.pymt__Recurring_Amount__c}"  />&nbsp;every&nbsp;<apex:outputField value="{!opportunity.pymt__Frequency__c}"  />
+                &nbsp;<apex:outputField value="{!Opportunity.pymt__Period__c}"  />&nbsp;{!IF(NOT(ISNULL(opportunity.pymt__Occurrences__c)), "x "+TEXT(opportunity.pymt__Occurrences__c),"")}
+                
+                </apex:outputPanel>
+            </div> 
+            </apex:outputPanel>
+            <br />
+            <div class="pc_quote_expiration">
+            <apex:outputPanel rendered="{!NOT(ISNULL(opportunity.pymt__SiteQuote_Expiration__c))}">
+            Quote Expiration Date:&nbsp;<apex:outputField value="{!opportunity.pymt__SiteQuote_Expiration__c}" />
+            </apex:outputPanel>
+            </div>
+        <apex:outputPanel id="buttons">
+            <table>
+                <tr>
+                    <td class="labelColumn">&nbsp;</td>
+                    <td><apex:commandButton id="cancel" value="Cancel"
+                        action="{!cancelTransaction}" onclick="" rendered="{!cancelURL <> null}"/>
+                        <apex:commandButton id="processCard" value="Pay Online" status="formActionStatus"
+                        action="{!processQuote}" disabled="{!disableForm}" rerender="checkoutForm" />
+                    <apex:actionStatus id="formActionStatus">
+                        <apex:facet name="start">
+                            <apex:outputPanel >&nbsp;
+                                <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"
+                                    style="vertical-align:middle;" alt="" />
+                                    &nbsp;Processing...
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:facet name="stop">
+                            <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" /> 
+                        </apex:facet>
+                    </apex:actionStatus>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+
+
+
+    </apex:form>
+    </div><!--  pc_page_content_inner -->
+    </div><!--  pc_page_content -->
+</apex:define>
+</apex:composition> 
+</apex:page>

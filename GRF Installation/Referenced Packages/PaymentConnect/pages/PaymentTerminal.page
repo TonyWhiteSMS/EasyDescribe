@@ -1,0 +1,542 @@
+<apex:page standardController="pymt__PaymentX__c" extensions="pymt.PaymentTerminalController" tabStyle="pymt__PaymentX__c">
+<script type="text/javascript" src="{!URLFOR($Resource.PaymentConnect, 'includes/tooltip/wz_tooltip.js')}"></script>
+<style>
+
+
+.labelColumn {
+    text-align: right;
+    width: 150px;
+}
+</style>
+
+<script type="text/javascript" >
+function cvvToolTipText() {
+    var imgUrl = "{!URLFOR($Resource.PaymentConnect, 'images/mini_cvv2.gif')}";
+    return "Card verficiation or security code. <br/><img src=\'"+imgUrl+"\'>";
+}
+
+function gatewaySimTipText() {
+   var txt = "PaymentConnect is currently in \<strong>gateway simulation mode</strong>. \<br/>";
+   
+   txt += "In this mode PaymentConnect will simulate responses from your payment processor ";
+   txt += "and by-pass actual credit card charges, refunds, etc. To run live transactions, ";
+   txt += "have your Salesforce administrator turn gateway simulation mode \<strong>off</strong> ";
+   txt += "under PaymentConnect Settings.";
+   return txt;
+}
+
+</script>
+    
+   <!-- Title Bar -->
+<div class="bPageTitle" style="margin-bottom: 0px">
+    <div class="ptBody secondaryPalette">
+        <div class="content" style="float: left">
+            <img title="Payment Terminal" class="pageTitleIcon" alt="Payment Terminal" src="/s.gif"/>
+            <h1 class="pageType">Payment Terminal<span class="titleSeparatingColon">:</span></h1>
+            <h2 class="pageDescription">Enter Transaction Details&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+        </div>
+        <div style="float: left; margin-left: 150px">
+            <apex:form id="selectProcessor">
+                <span style="{!IF(simulationMode,'color:red;font-weight:bold;','')}">Processor Connection: &nbsp;<apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" disabled="false">
+                    <apex:actionSupport event="onchange" rerender="cardType" status="formActionStatus"/>
+                    <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+                </apex:selectList>&nbsp;
+                <apex:outputLink target="_blank"
+                    value="{!$SControl.PaymentX_Terminal_Help}')">
+                    <apex:image style="vertical-align:text-top;" url="{!URLFOR($Resource.pymt__PaymentConnect, 'images/help.png')}" title="Payment Terminal Help"/>
+                </apex:outputLink>
+                <apex:outputPanel id="gatewaySimIcon" rendered="{!simulationMode}">
+                <span  id="gatewaySimPopup-_help" class="helpbutton" onMouseover="Tip(gatewaySimTipText(), WIDTH, -250);" onMouseout="UnTip();" >
+                <apex:image style="vertical-align:text-top;" url="{!URLFOR($Resource.pymt__PaymentConnect, 'images/error.png')}"  />
+                </span>
+                </apex:outputPanel>
+                </span>
+            </apex:form>        
+        </div>
+    </div>
+</div> &nbsp;
+<apex:pageMessages id="pageMessages" />
+    <apex:form id="terminalForm" onsubmit="return validateForm();">
+<script language="javascript">
+var enableValidation=false;
+function validateForm() {
+
+    if (!enableValidation) { return true;}
+    enableValidation=false;  
+    
+    // check required fields
+    var name = document.getElementById("{!$Component.terminalForm.terminalPageBlock.paymentName}");
+    if (name.value == "") {
+        alert("Please provide name for this payment.");
+        return false;
+    }
+
+    
+    var field = document.getElementById("{!$Component.terminalForm.terminalPageBlock.contact}");
+    if (field.value == "") {
+        alert("Please enter a value for the {!$ObjectType.Contact.Label} field.");
+        return false;
+    }
+
+    field = document.getElementById("{!$Component.terminalForm.terminalPageBlock.totalAmount}");
+    if (field.value == "" || parseInt(field.value) === 0) {
+        alert("Please specify the total amount.");
+        return false;
+    }
+
+
+    var paymentTypeCard = document.getElementById("{!$Component.terminalForm.terminalPageBlock.paymentType}:0");
+    var paymentTypeCardAuth = document.getElementById("{!$Component.terminalForm.terminalPageBlock.paymentType}:1");
+    if (paymentTypeCard.checked || paymentTypeCardAuth.checked) {
+        var cardNum = document.getElementById("{!$Component.terminalForm.terminalPageBlock.ccNumber}");
+        if (cardNum.value == "") {
+            alert("Please provide a credit card number.");
+            return false;
+        }
+    }
+
+    var paymentTypeECheck = document.getElementById("{!$Component.terminalForm.terminalPageBlock.paymentType}:2");
+    if (paymentTypeECheck.checked) {
+
+        var accountNum = document.getElementById("{!$Component.terminalForm.terminalPageBlock.bankAccountNumber}");
+        if (accountNum.value == "") {
+            alert("Please provide an account number.");
+            return false;
+        }
+        var nameOnAcct = document.getElementById("{!$Component.terminalForm.terminalPageBlock.bankAcctName}");
+        if (nameOnAcct.value == "") {
+            alert("Please provide the name associated with this bank account.");
+            return false;
+        }
+        var routingNum = document.getElementById("{!$Component.terminalForm.terminalPageBlock.routingNumber}");
+        if (routingNum.value == "") {
+            alert("Please provide a routing number.");
+            return false;
+        }
+    }
+
+    return true;
+}
+</script>    
+    
+        <apex:outputField id="processorConnectionId"
+            value="{!pymt__PaymentX__c.pymt__Processor_Connection__c}" rendered="false" />
+        <apex:outputField id="testMode"
+            value="{!pymt__PaymentX__c.pymt__Is_Test_Transaction__c}" rendered="false" />
+        <apex:outputField id="paymentStatus" value="{!pymt__PaymentX__c.pymt__Status__c}"
+            rendered="false" />
+        <apex:outputField id="last4" value="{!pymt__PaymentX__c.pymt__Last_4_Digits__c}"
+            rendered="false" />
+       <apex:pageBlock id="terminalPageBlock">
+        <apex:outputPanel >
+            <div style="width: 650px; text-align: right;"><apex:actionStatus id="formActionStatus">
+                <apex:facet name="start">
+                    <apex:outputPanel >&nbsp;
+              <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"
+                            style="vertical-align:middle;" alt="busy..." />
+              &nbsp;Updating Page</apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+                </apex:facet>
+            </apex:actionStatus></div>
+            
+            <table>
+                <tr>
+                    <td>
+                    <table>
+                        <tr>
+                            <td class="labelColumn"
+                                style="width: 120px; vertical-align: top;"><apex:outputLabel for="paymentname">Payment Name</apex:outputLabel></td>
+                            <td><apex:inputField id="paymentname"
+                                value="{!pymt__PaymentX__c.name}" />
+                                <br/><br/><br/>
+                            </td>
+                                
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;">
+                            <apex:outputLabel for="amount">Amount</apex:outputLabel></td>
+                            <td><apex:inputText id="amount" value="{!preTaxAmount}">
+                                <apex:actionSupport event="onchange" action="{!calculateAmount}"
+                                    rerender="shippingAmount, tax, taxPercent, totalAmount" status="formActionStatus"
+                                    oncomplete="document.getElementById('{!$Component.shippingAmount}').focus();"
+                                 />
+                            </apex:inputText></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="shippingAmount">Shipping &amp; Handling</apex:outputLabel>
+                            </td>
+                            <td><apex:inputField id="shippingAmount"
+                                value="{!pymt__PaymentX__c.pymt__Shipping__c}">
+                                <apex:actionSupport event="onchange" action="{!calculateAmount}"
+                                    rerender="amount, tax, taxPercent, totalAmount" status="formActionStatus"
+                                     />
+                            </apex:inputField></td>
+
+                        </tr>
+                    </table>
+                    </td>
+                    <td>
+                    <apex:outputPanel >
+                    <table>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="opportunity">{!$ObjectType.Opportunity.Label}</apex:outputLabel></td>
+                            <td><apex:inputField id="opportunity"
+                                value="{!pymt__PaymentX__c.pymt__Opportunity__c}" />
+                            <apex:commandButton value="Load" styleclass="btnSharing"  action="{!loadOpportunity}" 
+                                                rerender="amount, tax, shippingAmount, totalAmount, pageMessages"
+                                                alt="Click Load to update this page" status="formActionStatus"
+                                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="account">{!$ObjectType.Account.Label}</apex:outputLabel></td>
+                            <td><apex:inputField id="account"
+                                value="{!pymt__PaymentX__c.pymt__Account__c}" />
+                            <apex:commandButton value="Load" styleclass="btnSharing" action="{!loadAccount}" 
+                                                rerender="billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry, pageMessages" 
+                                                status="formActionStatus" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="contact">{!$ObjectType.Contact.Label}</apex:outputLabel></td>
+                            <td><apex:inputField id="contact"
+                                value="{!pymt__PaymentX__c.pymt__Contact__c}" />
+                            <apex:commandButton value="Load" styleclass="btnSharing" action="{!loadContact}" 
+                                                rerender="shippingname, billingname, amounts, billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry, pageMessages"
+                                                status="formActionStatus" />
+                            </td>
+                            
+                        </tr>
+                    </table>
+                    </apex:outputPanel>
+                </td>
+            </tr>
+        </table>
+        </apex:outputPanel>
+        <br/>
+        <apex:outputPanel id="amounts">
+            <table>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="tax">Tax</apex:outputLabel></td>
+                    <td><apex:inputField id="tax" value="{!pymt__PaymentX__c.pymt__Tax__c}">
+                        <apex:actionSupport event="onchange"
+                            action="{!calculateTaxPercentThenAmount}" rerender="amount, shippingAmount, taxPercent, totalAmount"
+                            status="formActionStatus"
+                            oncomplete="document.getElementById('{!$Component.taxPercent}').focus();"
+                             />
+                        </apex:inputField>                  
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <apex:inputText style="width:50px;" id="taxPercent"
+                        value="{!taxPercent}">
+                        <apex:actionSupport event="onchange" action="{!calculateAmount}"
+                            rerender="amount, shippingAmount, tax, taxPercent, totalAmount" status="formActionStatus"
+                            oncomplete="document.getElementById('{!$Component.applyTaxToShipping}').focus();"
+                             />
+                    </apex:inputText> % &nbsp; <apex:inputCheckbox id="applyTaxToShipping"
+                        value="{!applyTaxToShipping}">
+                        <apex:actionSupport event="onchange" action="{!calculateAmount}"
+                            rerender="amount, shippingAmount, tax, taxPercent, totalAmount, applyTaxToShipping" status="formActionStatus"
+                            oncomplete="document.getElementById('{!$Component.totalAmount}').focus();"
+                             />
+                    </apex:inputCheckbox> Apply Tax to Shipping
+                    </td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="totalAmount">Total Amount</apex:outputLabel></td>
+                    <td><apex:inputField id="totalAmount"
+                        value="{!pymt__PaymentX__c.pymt__Amount__c}" /> &nbsp; <apex:outputField id="currencyCode" value="{!pymt__PaymentX__c.pymt__Currency_ISO_Code__c}" />
+                        </td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        <br />
+        <apex:outputPanel id="paymentTypePanel">
+            <apex:outputPanel id="paymentTypes">
+                <table>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="paymentType">Payment Type: </apex:outputLabel></td>
+                        <td><apex:selectRadio id="paymentType" value="{!paymentType}">
+                            <apex:selectOptions value="{!paymentTypeOptions}" />
+                            <apex:actionSupport event="onchange" id="selectPaymentType"
+                                action="{!nullAction}" rerender="paymentTypePanels"
+                                status="formActionStatus"
+                                oncomplete="document.getElementById('{!$Component.paymentType}').focus();" />
+                            <apex:actionSupport event="onclick" id="clickPaymentType"
+                                action="{!nullAction}" rerender="paymentTypePanels"
+                                status="formActionStatus"
+                                oncomplete="document.getElementById('{!$Component.paymentType}').focus();" />
+                        </apex:selectRadio></td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel id="paymentTypePanels">
+            <apex:outputPanel id="cardInfo"
+                rendered="{!((paymentType == 'creditcard')||(paymentType == 'creditcardauth'))}">
+                <table>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardTypeSelectList">Card Type</apex:outputLabel></td>
+                        <td><apex:selectList size="1" id="cardTypeSelectList"
+                            multiselect="false" value="{!cardType}">
+                            <apex:selectOptions value="{!cardTypeOptions}" />
+                        </apex:selectList></td>
+                    </tr> 
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="ccNumber">Credit Card Number</apex:outputLabel></td>
+                        <td><apex:inputText id="ccNumber" value="{!creditCardNumber}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;">
+                            <apex:outputLabel for="cvvNumber">CVV Number
+                            <span id="cvvHelpPopup-_help" class="helpbutton" onMouseover="Tip(cvvToolTipText());" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+                            </span>
+                            
+                            </apex:outputLabel></td>
+                        <td><apex:inputText id="cvvNumber" value="{!cvv}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardExp">Card Expiration</apex:outputLabel></td>
+                        <td>
+                            <apex:selectList id="expMonth" value="{!expirationMonth}" size="1"> 
+                                <apex:selectOptions value="{!expMonthOptions}" />
+                            </apex:selectList> &nbsp;
+                            <apex:selectList id="expYear" value="{!expirationYear}" size="1"> 
+                                <apex:selectOptions value="{!expYearOptions}" />
+                            </apex:selectList>                      
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <apex:outputPanel id="echeckInfo"
+                rendered="{!IF(paymentType == 'echeck',true,false)}">
+                <table>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="echeckTypeSelectList">ECheck Type</apex:outputLabel></td>
+                        <td><apex:selectList size="1" id="echeckTypeSelectList"
+                            multiselect="false" value="{!selectedECheckType}">
+                            <apex:selectOption itemValue="ARC"
+                                itemLabel="ARC - Accounts Receivable Conversion" />
+                            <apex:selectOption itemValue="BOC"
+                                itemLabel="BOC - Back Office Conversion" />
+                            <apex:selectOption itemValue="CCD"
+                                itemLabel="CCD - Cash Concentration or Disbursement" />
+                            <apex:selectOption itemValue="PPD"
+                                itemLabel="PPD - Prearranged Payment and Deposit Entry" />
+                            <apex:selectOption itemValue="TEL"
+                                itemLabel="TEL - Telephone-Initiated Entry" />
+                        </apex:selectList></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn">Account Type</td>
+                        <td><apex:selectList size="1" id="accountTypeSelectList"
+                            multiselect="false" value="{!selectedBankAccountType}">
+                            <apex:selectOption itemValue="checking" itemLabel="Checking" />
+                            <apex:selectOption itemValue="businesschecking"
+                                itemLabel="Business Checking" />
+                            <apex:selectOption itemValue="savings" itemLabel="Savings" />
+                        </apex:selectList></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="bankName">Bank Name</apex:outputLabel></td>
+                        <td><apex:inputText id="bankName" value="{!bankName}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="bankAcctName">Bank Account Name
+                            <span id="bankAcctName-_help" class="helpbutton" 
+                                onMouseover="Tip('(Required) The name on the bank account.  This is usually the customer or business name.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+                            </span>                        
+                        </apex:outputLabel></td>
+                        <td><apex:inputText id="bankAcctName"
+                            value="{!bankAccountName}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="bankAccountNumber">Bank Account Number</apex:outputLabel></td>
+                        <td><apex:inputText id="bankAccountNumber"
+                            value="{!bankAccountNumber}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="routingNumber">Routing Number
+                            <span id="routingNumber-_help" class="helpbutton" 
+                                onMouseover="Tip('(Required) The first 9 numbers from the left at the bottom of your check are your Bank Routing Number. This number is always 9 digits.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+                            </span>                        
+                        </apex:outputLabel></td>
+                        <td><apex:inputText id="routingNumber"
+                            value="{!bankRoutingNumber}" /></td>
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="checkNumber">Check Number
+                            <span id="checkNumber-_help" class="helpbutton" 
+                                onMouseover="Tip('A check number is required for ARC and BOC eCheck types.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+                            </span>
+                            </apex:outputLabel></td>
+                        <td><apex:inputText id="checkNumber"
+                            value="{!pymt__PaymentX__c.pymt__Check_Number__c}" /> &nbsp;ARC/BOC eChecks
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <br />
+        <apex:outputPanel id="addresses">
+            <table>
+                <tr>
+                    <td>
+                    <table>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="loadBillingFrom">Load Address From:</apex:outputLabel></td>
+                            <td><apex:outputPanel >
+                                <apex:selectRadio id="selectBillingFrom"
+                                    value="{!loadBillingFrom}">
+                                    <apex:selectOptions value="{!billingAddressFromOptions}" />
+                                    <apex:actionSupport event="onchange"
+                                        action="{!loadBillingAddressFields}"
+                                        rerender=" billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, pageMessages"
+                                        status="formActionStatus" />
+                                    <apex:actionSupport event="onclick"
+                                        action="{!loadBillingAddressFields}"
+                                        rerender=" billingstreet, billingcity, billingstate, billingpostalcode, billingcountry, pageMessages"
+                                        status="formActionStatus" />
+                                </apex:selectRadio>
+                            </apex:outputPanel></td>
+                        </tr>
+                    </table>
+                    </td>
+                    <td>
+                    <table>
+                        <tr>
+                            <td class="labelColumn"></td>
+                            <td><apex:selectRadio id="selectShippingFrom"
+                                value="{!loadShippingFrom}">
+                                <apex:selectOptions value="{!shippingAddressFromOptions}" />
+                                <apex:actionSupport event="onchange"
+                                    action="{!loadShippingAddressFields}"
+                                    rerender="shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry, pageMessages"
+                                    status="formActionStatus" />
+                                <apex:actionSupport event="onclick"
+                                    action="{!loadShippingAddressFields}"
+                                    rerender="shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry, pageMessages"
+                                    status="formActionStatus" />
+                            </apex:selectRadio></td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <table>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingname">Billing Name</apex:outputLabel></td>
+                            <td><apex:inputText id="billingname"
+                                value="{!billingname}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingstreet">Billing Address</apex:outputLabel></td>
+                            <td><apex:inputText id="billingstreet"
+                                value="{!billingstreet}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcity">City</apex:outputLabel></td>
+                            <td><apex:inputText id="billingcity" value="{!billingcity}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingstate">State</apex:outputLabel></td>
+                            <td><apex:inputText id="billingstate"
+                                value="{!billingstate}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingpostalcode">Postal Code</apex:outputLabel></td>
+                            <td><apex:inputText id="billingpostalcode"
+                                value="{!billingpostalcode}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcountry">Country</apex:outputLabel></td>
+                            <td><apex:inputText id="billingcountry"
+                                value="{!billingcountry}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"></td>
+                            <td><apex:commandButton value="Store Address"
+                                styleclass="btnSharing" action="{!saveBillingAddress}"
+                                rendered="true" 
+                                status="formActionStatus"
+                                rerender="pageMessages" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    </td>
+                    <td>
+                    <table>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="shippingname">Shipping Name</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingname"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_Name__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="shippingstreet">Shipping Address</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingstreet"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_Street__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="shippingcity">City</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingcity"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_City__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="shippingstate">State</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingstate"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_State__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="shippingpostalcode">Postal Code</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingpostalcode"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_Postal_Code__c}" /></td>
+                        </tr>
+                        <tr> 
+                            <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="shippingcountry">Country</apex:outputLabel></td>
+                            <td><apex:inputText id="shippingcountry"
+                                value="{!pymt__PaymentX__c.pymt__Ship_To_Country__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><apex:commandButton value="Store Address"
+                                styleclass="btnSharing" action="{!saveShippingAddress}"
+                                rendered="true" 
+                                status="formActionStatus"
+                                rerender="pageMessages" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    </td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+        <apex:outputPanel id="buttons">
+            <table>
+                <tr>
+                    <td class="labelColumn">&nbsp;</td>
+                    <td><apex:commandButton id="cancel" value="Cancel"
+                           action="{!cancelFromTerminal}" onclick="enableValidation=false;"/> 
+                        <apex:commandButton id="continue" value="Review Transaction "
+                           action="{!preparePayment}" disabled="{!disableForm}" onclick="enableValidation=true;"/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </apex:outputPanel>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

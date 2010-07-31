@@ -1,0 +1,51 @@
+<apex:page showHeader="false" id="SiteTemplate" standardStylesheets="false">
+<style>
+
+/* mini store landing page */
+.pc_product_name {
+    font-size:12px;
+    font-weight: bold;
+}
+
+.pc_product_description {
+    margin-bottom:5px;
+}
+
+.pc_product_pic {
+    width: 100px;
+}
+
+.pc_ministore_products_table td {
+    vertical-align:top;
+}
+
+.pc_page_content img {
+    border: none;
+}
+
+.pc_qty_input_field {
+    width:50px;
+} 
+</style>
+ <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.pymt__PaymentConnect,'styles/sites_default.css')}" />
+    <div class="pc_frame">
+    <div class="pc_frame_inner">
+    
+    <apex:insert name="header">
+    <!--  Add custom banner and navigation here -->
+        <div class="pc_frame_top">
+            <img class="pc_logo" src="/s.gif" />
+        </div>
+    </apex:insert>
+
+    <apex:insert name="body"/>
+
+    <apex:insert name="footer">
+    <!--  Add custom footer here -->
+    <div style="text-align:right;width:100%;font-size:.5em;font-weight:bold;font:Verdana;color:#A4A4A4;">Powered by Linvio PaymentConnect</div>
+    </apex:insert>
+    
+    </div><!--  end pc_frame_inner -->
+    </div><!--  end pc_frame -->
+
+</apex:page>

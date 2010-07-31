@@ -1,0 +1,220 @@
+<apex:page controller="pymt.SiteSubscribeARBPageController"  showHeader="false" sidebar="false" cache="false"  standardStylesheets="false">
+
+<apex:composition template="{!$Site.Template}">
+<apex:define name="body">
+  <div class="pc_page_content_top"></div>
+  <div class="pc_page_content"  id="pc_sitesubscribearb_page">
+    <div class="pc_page_content_inner"> 
+    
+      <apex:form id="checkoutForm" styleClass="pc_subscription_checkout_form"  onsubmit="return validateForm();">
+        <script language="javascript">
+        var enableValidation=false;
+        function validateForm() {
+
+            if (!enableValidation) return true;
+            enableValidation=false;
+            
+              if (document.getElementById('{!$Component.checkoutForm.createSubscription}').disabled==true) {
+                 // validation done only on createSubscription action.  Skip if createSubscription button is disabled.
+                 return true;
+              }
+              
+              var fname = document.getElementById("{!$Component.checkoutForm.billingfirstname}");
+              var lname = document.getElementById("{!$Component.checkoutForm.billinglastname}");
+              if (fname.value == "" || lname.value == "") {
+                  alert("Please provide the billing contact name.");
+                  return false;
+              }
+          
+              var address = document.getElementById("{!$Component.checkoutForm.billingstreet}");
+              if (address.value == "") {
+                  alert("Please provide the billing address.");
+                  return false;
+              }
+          
+              var city = document.getElementById("{!$Component.checkoutForm.billingcity}");
+              if (city.value == "") {
+                  alert("Please provide the billing city.");
+                  return false;
+              }
+          
+              var state = document.getElementById("{!$Component.checkoutForm.billingstate}");
+              if (state.value == "") {
+                  alert("Please provide the billing state/province.");
+                  return false;
+              }
+          
+              var zip = document.getElementById("{!$Component.checkoutForm.billingpostalcode}");
+              if (zip.value == "") {
+                  alert("Please provide the billing postal code.");
+                  return false;
+              }
+          
+              var country = document.getElementById("{!$Component.checkoutForm.billingcountry}");
+              if (country.value == "") {
+                  alert("Please provide a 2 character billing country code.");
+                  return false;
+              }
+          
+              var cardNumber = document.getElementById("{!$Component.checkoutForm.ccNumber}");
+              if (cardNumber.value == "") {
+                  alert("Please enter your credit card number.");
+                  return false;
+              }
+              
+              var cvvNumber = document.getElementById("{!$Component.checkoutForm.cvvNumber}");
+              if (cvvNumber.value == "") {
+                  alert("Please enter your CVV number.");
+                  return false;
+              }
+              
+              return true;
+          }
+          </script>
+        <apex:outputPanel id="cardEntryPanel" rendered="{!IF(submitStatus == 'completed',false, true)}">
+          <apex:pageMessages />
+          <h1>Recurring Payment Summary</h1>
+          <br/>
+          <apex:outputPanel rendered="{!NOT(ISNULL(profile.pymt__Trial_Occurrences__c))}">
+            <p>Trial Amount: &nbsp;
+              <apex:outputField value="{!profile.pymt__Trial_Amount__c}"/> 
+              every {!profile.pymt__Frequency__c} {!profile.Period__c} x &nbsp;
+              <apex:outputField value="{!profile.pymt__Trial_Occurrences__c}"/>
+            </p>
+          </apex:outputPanel>
+          <p>Subscription Amount: &nbsp;
+            <apex:outputField value="{!profile.pymt__Amount__c}"/>
+            every {!profile.pymt__Frequency__c} {!profile.pymt__Period__c} {!IF(NOT(ISNULL(profile.pymt__Total_Occurrences__c)), "x "+TEXT(profile.pymt__Total_Occurrences__c),"")}</p>
+          <br/>
+          <apex:outputPanel id="cardInfo" rendered="{!IF(submitStatus == "completed",false,true)}">
+            <h2>Payment Details</h2>
+            <table>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingfirstname">First Name</apex:outputLabel></td>
+                    <td><apex:inputText id="billingfirstname" value="{!fnameOnCard}" /></td>
+                </tr>
+                <tr>
+                    <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billinglastname">Last Name</apex:outputLabel></td>
+                    <td><apex:inputText id="billinglastname" value="{!lnameOnCard}" /></td>
+                </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: top;"><apex:outputLabel for="billingstreet">Address</apex:outputLabel></td>
+                <td><apex:inputText id="billingstreet"
+                        value="{!billingStreet}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcity">City</apex:outputLabel></td>
+                <td><apex:inputText id="billingcity" value="{!billingCity}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingstate">State/Province</apex:outputLabel></td>
+                <td><apex:inputText id="billingState" value="{!billingstate}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingpostalcode">Postal Code</apex:outputLabel></td>
+                <td><apex:inputText id="billingpostalcode"
+                        value="{!billingPostalCode}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="billingcountry">Country</apex:outputLabel></td>
+                <td><apex:inputText id="billingcountry"
+                        value="{!billingCountry}" /></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardTypeSelectList">Card Type</apex:outputLabel></td>
+                <td><apex:selectList size="1" id="cardTypeSelectList" multiselect="false" value="{!cardType}">
+                    <apex:selectOptions value="{!cardTypeOptions}" />
+                    <apex:actionSupport event="onchange" action="{!nullAction}" rerender="soloMaestroFields" />
+                  </apex:selectList></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="ccNumber">Credit Card Number</apex:outputLabel></td>
+                <td><apex:inputText styleclass="pc_long_input_field" id="ccNumber" value="{!cardNumber}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cvvNumber">CVV Number</apex:outputLabel></td>
+                <td><apex:inputText styleclass="pc_short_input_field" id="cvvNumber" value="{!cardCode}" /></td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="cardExp">Expiration</apex:outputLabel></td>
+                <td><apex:selectList id="expMonth" value="{!expirationMonth}" size="1">
+                    <apex:selectOptions value="{!expMonthOptions}" />
+                  </apex:selectList>
+                  &nbsp;
+                  <apex:selectList id="expYear" value="{!expirationYear}" size="1">
+                    <apex:selectOptions value="{!expYearOptions}" />
+                  </apex:selectList></td>
+              </tr>
+            </table>
+          </apex:outputPanel>
+          <br />
+          <apex:outputPanel id="buttons">
+            <table>
+              <tr>
+                <td class="labelColumn">&nbsp;</td>
+                <td><apex:commandButton id="cancel" value="Cancel"
+                        action="{!cancelTransaction}" onclick="enableValidation=false;" rendered="{!(cancelURL<>null && NOT(ISNULL(cancelURL)))}"/>
+                  <apex:commandButton id="createSubscription" value="Subscribe" status="formActionStatus"
+                        action="{!createSubscription}" onclick="enableValidation=true;" disabled="{!disableForm}" rerender="checkoutForm" />
+                  <apex:actionStatus id="formActionStatus">
+                    <apex:facet name="start">
+                      <apex:outputPanel >&nbsp;
+                        <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"
+                                    style="vertical-align:middle;" alt="" />
+                        &nbsp;Processing... </apex:outputPanel>
+                    </apex:facet>
+                    <apex:facet name="stop">
+                      <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+                    </apex:facet>
+                  </apex:actionStatus></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+          </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel id="successPanel" rendered="{!IF(submitStatus == 'completed',true,false)}">
+          <h1>Receipt</h1>
+          <p>Your subscription has been processed. Thank you!  Please print this page for your records.</p>
+          <h2>Payment Summary:</h2>
+          <br/>
+          <p>Subscription for:&nbsp;{!profile.Name}</p>
+          <p>Start Date:&nbsp;<apex:outputField value="{!profile.pymt__Subscription_Start_Date__c}" /></p>
+          <p>Description:&nbsp;<apex:outputField value="{!profile.pymt__Description__c}" /></p>
+          <apex:outputPanel rendered="{!NOT(ISNULL(profile.pymt__Trial_Amount__c))}">
+            <p>Trial Amount: &nbsp;
+              <apex:outputField value="{!profile.pymt__Trial_Amount__c}"/>
+              every&nbsp;
+              <apex:outputField value="{!profile.pymt__Frequency__c}"/>
+              {!profile.pymt__Trial_Period__c} {!IF(NOT(ISNULL(profile.pymt__Trial_Occurrences__c)), "x "+TEXT(profile.pymt__Trial_Occurrences__c),"")}</p>
+          </apex:outputPanel>
+          <p>Subscription Amount: &nbsp;
+            <apex:outputField value="{!profile.pymt__Amount__c}"/>
+            every&nbsp;
+            <apex:outputField value="{!profile.pymt__Frequency__c}"/>
+            {!profile.Period__c} {!IF(NOT(ISNULL(profile.Total_Occurrences__c)), "x "+TEXT(profile.Total_Occurrences__c),"")}</p>
+          <br/>
+          <h2>Received from: </h2>
+          <p> {!contact.name}<br/>
+            {!billingStreet}<br/>
+            {!billingCity}, {!billingState}&nbsp;{!billingPostalCode}<br/>
+            {!billingCountry}<br/>
+          </p>
+          <h2>Paid to:</h2>
+          <p> {!$Organization.Street}<br/>
+            {!$Organization.City}, {!$Organization.City}&nbsp;{!$Organization.PostalCode}<br/>
+            {!$Organization.Country}<br/>
+            {!$Organization.Phone}<br/>
+          </p>
+          <apex:commandButton id="finish" value="Finished" action="{!finishTransaction}" onclick="" rendered="{!finishURL <> null}"/>
+        </apex:outputPanel>
+      </apex:form>
+    </div><!--  pc_page_content_inner -->
+  </div><!--  pc_page_content -->
+</apex:define>
+</apex:composition>
+</apex:page>

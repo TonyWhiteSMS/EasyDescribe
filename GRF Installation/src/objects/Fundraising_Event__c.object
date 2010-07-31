@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Admission_Fees_Paid__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Admission Fees Paid</label>
+        <summarizedField>Correspondence__c.Admissions_Fee_Paid_Through_Org_Website__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Payment Completed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Admission_Fees__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Admission Fees Not Collected</label>
+        <summarizedField>Correspondence__c.Admissions_Fee_Paid_Through_Org_Website__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Correspondence Reviewed, New Correspondence</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Attendance_Confirmed_and_Paid__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Attendance (people) - Paid</label>
+        <summarizedField>Correspondence__c.Number_Planning_to_Attend__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Payment Completed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Attendance_Not_Paid__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Attendance (people) - Fees Not Collected</label>
+        <summarizedField>Correspondence__c.Number_Planning_to_Attend__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>New Correspondence, Correspondence Reviewed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Budgeted_Costs__c</fullName>
+        <inlineHelpText>$ Amount budgeted for expenses such as food, space rental. Do not include in kind donations (such as space that donated for free) or expenses that you organization is paying for and not including in ticket price. If 100% is donated, this is $0.</inlineHelpText>
+        <label>Budgeted Costs</label>
+        <precision>16</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Certification_Date__c</fullName>
+        <inlineHelpText>Enter the date that you entered the Certification Signature indicating that all expenses and all revenue collected to date, and that you are not expecting to receive future revenue from this event.</inlineHelpText>
+        <label>Certification Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Certification_Signature__c</fullName>
+        <inlineHelpText>Write in your full name to indicate that you have entered all expenses and all revenue collected to date, and that you are not expecting to receive future revenue from this event.</inlineHelpText>
+        <label>Certification Signature</label>
+        <length>50</length>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Certification_Statement__c</fullName>
+        <defaultValue>&apos;By entering your name and date below, you are indicating that you have entered all expenses and all revenue collected to date, and that you are not expecting to receive future revenue from this event.&apos;</defaultValue>
+        <inlineHelpText>No information needs to be entered in this field. By entering your name and date below, you are indicating that you have entered all expenses and all revenue collected to date, and that you are not expecting to receive future revenue from this event.</inlineHelpText>
+        <label>Close Out and Certification Statement</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Contact_Co_Leader_Email__c</fullName>
+        <label>Chapter Contact Co-Leader Email</label>
+        <type>Email</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Contact_Co_Leader_Name__c</fullName>
+        <inlineHelpText>This is a text field for a second contact from your organization who is responsible for organization the event.</inlineHelpText>
+        <label>Chapter Contact Co-Leader Name</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Contact_Email__c</fullName>
+        <formula>Chapter_Contact__r.Email</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Chapter Contact Email</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Contact__c</fullName>
+        <inlineHelpText>This is a lookup field and is automatically populated with the person who completed the web form.</inlineHelpText>
+        <label>Chapter Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Fundraising Sites</relationshipLabel>
+        <relationshipName>Fundraising_Sites</relationshipName>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Logo_Alt_Text__c</fullName>
+        <inlineHelpText>If you do not have logo, enter the text you want to display, most likely the name of your organization.</inlineHelpText>
+        <label>Chapter Logo Alt Text</label>
+        <length>25</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Logo_Graphic__c</fullName>
+        <formula>IMAGE(Chapter_Logo_URL__c  , &quot;Chapter Logo&quot;  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Chapter Logo Display</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Logo_Height__c</fullName>
+        <inlineHelpText>If your Chapter Logo is not the right size for the web page, you can adjust the image size here. If you do this, you will need to set both the height and the width.</inlineHelpText>
+        <label>Optional:Chapter Logo Height in Pixels</label>
+        <precision>3</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Logo_URL__c</fullName>
+        <inlineHelpText>Use this to add your organization&apos;s logo. Go to your web site and right click on your organization&apos;s logo. IN IE: Go to &quot;Properties&quot; and copy the URL. IN CHROME: select &quot;Copy image URL.&quot; Then paste that URL in this field.</inlineHelpText>
+        <label>Chapter Logo URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Chapter_Logo_Width__c</fullName>
+        <inlineHelpText>If your Chapter Logo is not the right size for the web page, you can adjust the image size here. If you do this, you will need to set both the height and the width.</inlineHelpText>
+        <label>Optional:Chapter Logo Width in Pixels</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Chapter__c</fullName>
+        <label>Chapter</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Fundraising_Events</relationshipName>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Close_Out_Approval__c</fullName>
+        <label>Close Out Approval</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Create_Site__c</fullName>
+        <label>Select the Type of Site to Create</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Custom_Page_HTML__c</fullName>
+        <label>Custom Page HTML</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Custom_Page_Name__c</fullName>
+        <inlineHelpText>This field is used to enable a custom Visualforce page that was created specially for this fundraiser.</inlineHelpText>
+        <label>Custom Page Name</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Display_Fundraising_Progress_Graphic__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Checking this box will display a graphic (such as a thermometer) that indicates your organization&apos;s Fundraising Goal and Amount Raised to Date. Leave this box unchecked if you do not want this graphic displayed.</inlineHelpText>
+        <label>Display Fundraising Progress Graphic</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Donation_Pledged_Not_Paid__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Donation-Pledged (Not Paid)</label>
+        <summarizedField>Correspondence__c.Amount_Donated_through_Org_Website__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>New Correspondence, Correspondence Reviewed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Donations_Pledged_Paid__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Donations (Paid)</label>
+        <summarizedField>Correspondence__c.Amount_Donated_through_Org_Website__c</summarizedField>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Payment Completed</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Donations_Tickets_Requiring_Review__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Donations, Tickets Requiring Review</label>
+        <summaryFilterItems>
+            <field>Correspondence__c.Status__c</field>
+            <operation>equals</operation>
+            <value>New Correspondence</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Event_Admission_Fee__c</fullName>
+        <label>Event Admission Fee</label>
+        <precision>14</precision>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Event_Commentary__c</fullName>
+        <defaultValue>&apos;Event Commentary&apos;</defaultValue>
+        <inlineHelpText>This is a field that can be updated during the event planning process. You can give your attendees info about how many people who have signed up, updates on the weather, etc. (Maximum of 30,000 characters).</inlineHelpText>
+        <label>Event Update</label>
+        <length>30000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Cost_How_Much__c</fullName>
+        <defaultValue>&apos;The price being charged for tickets&apos;</defaultValue>
+        <inlineHelpText>The price you are charging for tickets. Note: only one ticket price is allowed. This is a text field, so it is possible to enter multiple prices, such as an advance price, door price and price for children.</inlineHelpText>
+        <label>Event Cost (How Much)</label>
+        <length>255</length>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_Date_Time_When__c</fullName>
+        <defaultValue>&apos;The Event Date and Time&apos;</defaultValue>
+        <inlineHelpText>This is an open text box, so the Date/ Time can be formatted as you wish. A good format is &quot;January 8, 2011 8pm.&quot;</inlineHelpText>
+        <label>Event Date/Time (When)</label>
+        <length>50</length>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_Date__c</fullName>
+        <label>Event Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Description__c</fullName>
+        <defaultValue>&apos;Event Description&apos;</defaultValue>
+        <inlineHelpText>Describe the event and all the details that attendees may want to know (Maximum of 30,000 characters).</inlineHelpText>
+        <label>Event Description (Body)</label>
+        <length>30000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Location_Where__c</fullName>
+        <defaultValue>&apos;Event Location&apos;</defaultValue>
+        <inlineHelpText>This is generally the address, but can also include building or a detailed description of where you&apos;re meeting.</inlineHelpText>
+        <label>Event Location (Where)</label>
+        <length>500</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Map_Graphic__c</fullName>
+        <formula>Hyperlink(  Event_Map_URL__c  , &quot;Maps and Directions&quot; )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Map</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_Map_URL__c</fullName>
+        <inlineHelpText>Go to a mapping program, such as Maps.google.com, www.mapquest.com or maps.yahoo.com. Enter the address, city state and zip of your event. Copy the URL (it may be necessary to click &quot;Link&quot; to do so).</inlineHelpText>
+        <label>Event Map URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Event_Page_URL__c</fullName>
+        <formula>&apos;https://helpsudan.grforce.cs1.force.com/Fundraising/grf_EventRegistration?id=&apos; &amp;  Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Page URL (ctrl-click to preview)</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_Picture_Graphic__c</fullName>
+        <formula>IMAGE(  Event_Picture_URL__c  , &quot;Event Picture&quot;  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Picture</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_Picture_Height__c</fullName>
+        <inlineHelpText>If your event photo is not the right size for the web page, you can adjust the image size here. If you do this, you will need to set both the height and the width.</inlineHelpText>
+        <label>Optional:Event Photo Height in Pixels</label>
+        <precision>3</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Event_Picture_URL__c</fullName>
+        <inlineHelpText>If you have a photo that you want to include, enter the picture URL here. For instructions see help text under &quot;Chapter Logo URL.&quot;</inlineHelpText>
+        <label>Event Picture URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Event_Picture_Width__c</fullName>
+        <inlineHelpText>If your event photo is not the right size for the web page, you can adjust the image size here. If you do this, you will need to set both the height and the width.</inlineHelpText>
+        <label>Optional: Event Photo Width in Pixels</label>
+        <precision>3</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Event_Plan_Reviewed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Once the plan is marked &apos;completed&apos;, the plan is reviewed and approved at which point in time the site is considered live.</inlineHelpText>
+        <label>Plan Reviewed and Approved</label>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Event_Reason_and_Policies_Why__c</fullName>
+        <inlineHelpText>Describe why you are hosting this event and any relevant policies, including amount that is donated per ticket (Maximum of 32,000 characters).</inlineHelpText>
+        <label>Event Reason and Policies (Why)</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Tagline__c</fullName>
+        <defaultValue>&apos;Event Tagline&apos;</defaultValue>
+        <inlineHelpText>A tagline that describes your event and encourages people to attend (Maximum of 255 characters).</inlineHelpText>
+        <label>Event Tagline</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Event_Title__c</fullName>
+        <defaultValue>&apos;Event Title&apos;</defaultValue>
+        <inlineHelpText>A title that describes your event (Maximum of 60 characters).</inlineHelpText>
+        <label>Event Title</label>
+        <length>60</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Event_has_Occurred__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Check this box as soon as the Event has Occurred.</inlineHelpText>
+        <label>Event has Occurred</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Attendance__c</fullName>
+        <inlineHelpText>Indicate the total number of people that you expect to attend the event. Include volunteers and children.</inlineHelpText>
+        <label>Expected Attendance</label>
+        <precision>10</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Revenue__c</fullName>
+        <inlineHelpText>The total amount of money that you expect to come in for the event (before expenses are deducted).</inlineHelpText>
+        <label>Expected Revenue</label>
+        <precision>14</precision>
+        <scale>0</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Expenses_Entered_to_Date__c</fullName>
+        <inlineHelpText>This is a formula field that is calculated from the Expenses (see below).</inlineHelpText>
+        <label>Expenses Entered to Date</label>
+        <summarizedField>grf01_Expense__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>grf01_Expense__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Expense (Money going out)</value>
+        </summaryFilterItems>
+        <summaryForeignKey>grf01_Expense__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Facebook_Username__c</fullName>
+        <inlineHelpText>Enter your organization&apos;s Facebook Username and people can access your Facebook page through the Facebook icon.</inlineHelpText>
+        <label>Facebook Username</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Flickr_Tags__c</fullName>
+        <inlineHelpText>You can give Flickr photos a &quot;tag&quot;, which is like a keyword or category label. Specifying multiple tags separated by commas shows photos with both tags (an and clause).</inlineHelpText>
+        <label>Flickr Tags</label>
+        <length>150</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Flickr_User_Id__c</fullName>
+        <inlineHelpText>To include a Flickr photo stream enter the user Id.  Go to http://idgettr.com/ to determine the user id of a photo stream.</inlineHelpText>
+        <label>Flickr User Id</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>For_more_information_contact__c</fullName>
+        <defaultValue>&apos;Information regarding who to contact&apos;</defaultValue>
+        <inlineHelpText>Include a person&apos;s name and his/her phone or email (Maximum of 400 characters).</inlineHelpText>
+        <label>For more information contact</label>
+        <length>400</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Funds_Collected_by_Chapter__c</fullName>
+        <label>Funds Collected by Chapter</label>
+        <summarizedField>Correspondence__c.Amount_Paid_to_Chapter__c</summarizedField>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Funds_Collected_by_Organization__c</fullName>
+        <label>Funds Collected by Organization</label>
+        <summarizedField>Correspondence__c.Amount_Paid_to_Chapter__c</summarizedField>
+        <summaryForeignKey>Correspondence__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Funds_Raised_to_Date__c</fullName>
+        <formula>Admission_Fees__c + Admission_Fees_Paid__c + Donation_Pledged_Not_Paid__c + Donations_Pledged_Paid__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is a formula field that is calculated from the Donations, Tickets and Comments (see below).</inlineHelpText>
+        <label>Funds Raised to Date</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Instructions_Managing_the_Event_Site__c</fullName>
+        <defaultValue>&apos;Your site is now live! To make changes to the site (other than the Event Update field) you will need to email the Organization the change. Scroll down to the bottom of the page to enter Donations, Tickets and Comments, as well as Expenses. When the event is complete and you have recorded all Donations, Tickets and Expenses, enter your name in the field Certification Signature, the date of the signature in the field Certification Date, and check the boxes Event Has Occured and Site Closed.&apos;</defaultValue>
+        <label>Instructions for This Page- Site Mgmt.</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Instructions_Site_Planning__c</fullName>
+        <defaultValue>&apos;This page is for the Chapter to create the web-site.  Please enter the fields below.  You can preview the site by holding the &lt;ctrl&gt; key and clicking on the field labeled Event Page URL.  When you are satisfied with the way the site looks, check the Site Planning Completed checkbox.  Scroll down to the bottom of the page to enter Donations, Tickets and Comments as well as Expenses.&apos;</defaultValue>
+        <label>Instructions-Site Planning</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Instructions_for_Site_Set_Up__c</fullName>
+        <defaultValue>&quot;There are a few things the Organization must do to prepare for the Chapter Contact to use this page: 1) Assign a Chapter Contact in the lookup field called Chapter Contact 2) Share the site with the Chapter Contact by clicking on the Sharing button, click Add, under Search, select Partner Users, add the User Name, click Save and 3) Specify the type of site to create (Event or Donation). 4) When #1-3 are specified, the Chapter will have access to the Site and may begin creating their website.&quot;</defaultValue>
+        <label>Instructions for This Page- Site Set Up</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>Fundraising_Events</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Logo_Ch_Alt_Text__c</fullName>
+        <defaultValue>&apos;http://www.helpsudaninternational.org/assets/images/HSlogo_grassrootsforce.jpg&apos;</defaultValue>
+        <label>Organization Logo - If Ch. uses Alt Text</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Logo_Graphic__c</fullName>
+        <formula>IMAGE( Organization_Logo_URL__c , &quot;Organizational Logo&quot; )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Organization Logo</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Logo_Height__c</fullName>
+        <label>Organization Logo Height</label>
+        <precision>3</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Logo_URL__c</fullName>
+        <defaultValue>&apos;http://www.helpsudaninternational.org/assets/images/HSlogo_grassrootsforce.jpg&apos;</defaultValue>
+        <label>Organization Logo URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Organization_Logo_Width__c</fullName>
+        <label>Organization Logo Width</label>
+        <precision>3</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Organization__c</fullName>
+        <label>Organization</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Fundraising Sites (Organization)</relationshipLabel>
+        <relationshipName>Fundraising_Sites</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Method_Chapter__c</fullName>
+        <inlineHelpText>This field is used to indicate and describe a payment method directly to the chapter.  For example &apos;Pay in advance at the community center .&apos;  Leave the field blank if this is not an option.</inlineHelpText>
+        <label>Payment Method:Chapter</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Method_Door__c</fullName>
+        <inlineHelpText>This field is used to indicate and describe a payment method that takes place at the beginning or an event.  For example &apos;Pay at the door&apos;  or &apos;Pay on the bus.&apos;</inlineHelpText>
+        <label>Payment Method:Door</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Method_Organization__c</fullName>
+        <inlineHelpText>This field is used to indicate and describe a payment method directly to the organization.  For example &apos;Send a check to ....&apos;.  Leave the field blank if this is not an option.</inlineHelpText>
+        <label>Payment Method:Organization</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Method_Website__c</fullName>
+        <defaultValue>&apos;Pay by Credit Card&apos;</defaultValue>
+        <inlineHelpText>This field is used to indicate and describe a payment method, for example &apos;Register and Donate Now!&apos; or &apos; Pay by Credit Card.&apos;</inlineHelpText>
+        <label>Payment Method:Website</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Processing_Page__c</fullName>
+        <defaultValue>&apos;https://helpsudan.grforce.cs1.force.com/Fundraising/grf_paymentconnect&apos;</defaultValue>
+        <label>Payment Processing Page</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Plan_Completed_by_Chapter__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Check this when the fundraising site plan and layout has been completed and the site is ready.</description>
+        <inlineHelpText>Check this when the fundraising site plan and layout has been completed and the site is ready</inlineHelpText>
+        <label>Plan Completed</label>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Registration_Description__c</fullName>
+        <inlineHelpText>Details about registration, such as how to register in person, registration deadline, etc.</inlineHelpText>
+        <label>Registration Description</label>
+        <length>500</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Revenue_Entered_to_Date__c</fullName>
+        <label>Revenue Entered to Date</label>
+        <summarizedField>grf01_Expense__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>grf01_Expense__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Revenue (Money coming in)</value>
+        </summaryFilterItems>
+        <summaryForeignKey>grf01_Expense__c.Fundraising_Event__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Site_Archived__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Site Archived</label>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Site_Closed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Check this box when the event is over to make the web site no longer available fir public access.</inlineHelpText>
+        <label>Site Closed</label>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Site_Type__c</fullName>
+        <formula>If(begins($RecordType.Name,&apos;Donation&apos;),&apos;Donation&apos;,&apos;Registration&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Site Type</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Social_Media_Links_Label__c</fullName>
+        <inlineHelpText>This is the header next to the Twitter and Facebook Icon. Possible text: &quot;Click here to follow us on Twitter or Facebook:&quot;</inlineHelpText>
+        <label>Social Media Links Label</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Support__c</fullName>
+        <defaultValue>&apos;Optional description of what the fundraising event supports.&apos;</defaultValue>
+        <inlineHelpText>Describe what the fundraising event supports.</inlineHelpText>
+        <label>Support</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>System_Chapter_Id__c</fullName>
+        <formula>Opportunity__r.Account.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>:System Chapter Id</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>System_Site_Type__c</fullName>
+        <label>:System Site Type</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Twitter_Search_Terms__c</fullName>
+        <inlineHelpText>If you enter a Twitter search term, you will have a rolling list of Twitter searches on your page. Create a hash tag for your event or use a common term for your cause. If you do not want this feature, leave this field blank.</inlineHelpText>
+        <label>Twitter Search Terms</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Twitter_Username__c</fullName>
+        <inlineHelpText>Enter your organization&apos;s Twitter Username and people can access your Twitter page through the Twitter icon.</inlineHelpText>
+        <label>Twitter Username</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <label>Fundraising Site</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Event Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Fundraising Sites</pluralLabel>
+    <recordTypes>
+        <fullName>Donation_Site_Management</fullName>
+        <active>true</active>
+        <description>Donation Site Management - Set by workflow</description>
+        <label>Donation Site Management</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Donation_Site_Planning</fullName>
+        <active>true</active>
+        <description>Donation Site Planning - Set by workflow</description>
+        <label>Donation Site Planning</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Event_Site_Management</fullName>
+        <active>true</active>
+        <description>Event Site Management -  Set by workflow</description>
+        <label>Event Site Management</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Event_Site_Planning</fullName>
+        <active>true</active>
+        <description>Event Site Planning -  Set by workflow</description>
+        <label>Event Site Planning</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Site_Closed</fullName>
+        <active>true</active>
+        <description>Site Closed - Set by workflow</description>
+        <label>Site Closed</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Site_Set_up</fullName>
+        <active>true</active>
+        <description>Initial Site Set-up by Organization</description>
+        <label>Site Set-up</label>
+        <picklistValues>
+            <picklist>Close_Out_Approval__c</picklist>
+            <values>
+                <fullName>Approved - Chapter to be reimbursed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed - No outstanding balance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disapproved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending receipt of funds from Chapter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Create_Site__c</picklist>
+            <values>
+                <fullName>Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Approval_Validation_for_Donation_Site</fullName>
+        <active>true</active>
+        <errorConditionFormula>and( Site_Closed__c=false, Event_Plan_Reviewed__c   , Site_Type__c  =&apos;Donation&apos; ,Or(
+isnull(  Chapter_Contact_Email__c ),isnull( Event_Tagline__c ), isnull(  Event_Title__c  ) ,isnull( Event_Description__c ),isnull(  Support__c  ) ))</errorConditionFormula>
+        <errorMessage>Not all fields have been completed for the Donation Page.  Please review the fields on the page (Chapter Contact Email, Tagline, Title, Description, Support).</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Approval_Validation_for_Event</fullName>
+        <active>true</active>
+        <errorConditionFormula>and( Site_Closed__c=false,  Event_Plan_Reviewed__c   , Site_Type__c  =&apos;Registration&apos; ,Or(
+isnull( Event_Date__c ), isnull(  Chapter_Contact_Email__c ),isnull( Event_Tagline__c ), isnull(  Event_Title__c  ),  isnull( Event_Cost_How_Much__c ),  isnull(  Event_Location_Where__c ), isnull( Registration_Description__c ),isnull( For_more_information_contact__c ) ,isnull( Event_Description__c ),isnull( Event_Admission_Fee__c ) ))</errorConditionFormula>
+        <errorMessage>Not all fields have been completed on the Event Page. Please review the fields on the page(Chapter Contact Email, Tagline, Title, Description, Support, Cost, Location, For more info, contact)..</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Blank_Chapter_Contact_Email</fullName>
+        <active>true</active>
+        <description>The Chapter Contact requires an e-mail address.</description>
+        <errorConditionFormula>and(! Ispickval( Create_Site__c ,&apos;&apos;),isnull(Chapter_Contact_Email__c ))</errorConditionFormula>
+        <errorMessage>The Chapter Contact requires an e-mail address.  Please add a Chapter Contact or update the contacts e-mail address.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Certification</fullName>
+        <active>true</active>
+        <errorConditionFormula>and (not isblank(Certification_Signature__c ), isnull( Certification_Date__c ))</errorConditionFormula>
+        <errorDisplayField>Certification_Date__c</errorDisplayField>
+        <errorMessage>Please enter a certification date.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Chapter_Contact_Completion</fullName>
+        <active>true</active>
+        <errorConditionFormula>and(ispickval( Create_Site__c,&apos;&apos;),isnull( Chapter_Contact__c ))</errorConditionFormula>
+        <errorMessage>The fundraising site must have a Chapter Contact assigned.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Chapter_Logo_Scaling_Field</fullName>
+        <active>true</active>
+        <errorConditionFormula>If(isnull (  Chapter_Logo_URL__c )  ,false   ,If(isnull (Chapter_Logo_Height__c)= isnull( Chapter_Logo_Width__c ),false,true))</errorConditionFormula>
+        <errorDisplayField>Chapter_Logo_Height__c</errorDisplayField>
+        <errorMessage>Please check your scaling values for the Chapter Logo.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Either_Flickr_or_Event_Picture</fullName>
+        <active>true</active>
+        <errorConditionFormula>and( not isblank(Event_Picture_URL__c) , not isblank( Flickr_User_Id__c ))</errorConditionFormula>
+        <errorDisplayField>Flickr_User_Id__c</errorDisplayField>
+        <errorMessage>Due to space limitations, displaying a Flickr requires that the Event Photo be removed.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Event_Photo_Scaling_Field</fullName>
+        <active>true</active>
+        <errorConditionFormula>If(isnull (Event_Picture_Height__c)= isnull( Event_Picture_Width__c ),
+If(Event_Picture_Width__c &gt;250,true, false),true )</errorConditionFormula>
+        <errorDisplayField>Chapter_Logo_Height__c</errorDisplayField>
+        <errorMessage>Please check your scaling values for the Event photo.  The width should not exceed 250 pixels.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Site_closed_prior_to_certification</fullName>
+        <active>true</active>
+        <errorConditionFormula>and (not isblank(Certification_Signature__c ), ! Site_Closed__c )</errorConditionFormula>
+        <errorMessage>The site must be closed prior to certification.</errorMessage>
+    </validationRules>
+</CustomObject>

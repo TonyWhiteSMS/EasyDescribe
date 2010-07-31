@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<meta name="copyright" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="security" content="public"/>
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<link rel="stylesheet" type="text/css" href="help.css"/>
+<link rel="stylesheet" type="text/css" href="/sCSS/Theme2/default/help.css"/>
+<title>PaymentConnect Settings</title>
+<script type="text/javascript" language="JavaScript" src="/js/functions.js"> </script>
+</head>
+
+<body onLoad="" id="paymentx_settings_help"><a name="paymentx_settings_help"><!-- --></a>
+<a name="top"><!-- --></a>
+<h1 class="helpHead1"><a name="d21e4"><!-- --></a><span id="topic-title"><a name="topic-title"><!-- --></a>PaymentConnect Settings</span></h1>
+<div>
+
+<table border="0" cellpadding="0" cellspacing="0" summary="PaymentX Settings Overview" width="100%" class="editionTable">
+<tbody>
+<tr>
+<td class="subHead"><p>The master settings record for PaymentConnect.</p>
+</td>
+</tr>
+</tbody>
+</table><br/>
+<h2 class="helpHead2">General Settings</h2>
+
+<p><strong>Transaction Logging</strong> - Payment processor response data is posted to the "Log" section on each payment 
+record.  Choose "Detailed" or "Brief" to control the level of detail for these entries.</p>
+
+<p><strong>Tax</strong> - Sets the default tax rate that appears in the Payment Terminal.</p>
+
+<p><strong>Admin User (required)</strong> - Error notifications (Tasks) are assigned to the active Salesforce user that you specify in this field. </p>
+
+<p><strong>Assign Events To</strong> - Event notifications from the payment processor that are logged as Salesforce tasks, may be assigned to the PaymentConnect <strong>Admin User</strong> (see above) or to the owner of the related payment or payment profile record.  As payment profiles are dependent on there being an associated Contact (Master-Detail relationship) the owner of the Contact record is used for payment profiles. </p>
+
+<p><strong>Update Opportunity Fields</strong> - PaymentConnect provides custom fields on Opportunity records, such as Number of Payments and Payments Made which 
+are automatically updated when Payment records are added or modified in Salesforce.  The Update Opportunity Fields checkbox enables or disables this feature.
+  If you run into Salesforce governor limits importing Payment records, you may want to disable opportunity field updates temporarily.</p>
+
+<p><strong>Update Shopping Cart Items</strong> - Enables/disables the trigger responsible for updating the Paid Off field on Shopping Cart Items associated with a Payment record.  When Payments are 
+marked Charged or Completed, this trigger fires and marks related Shopping Cart items "paid off".</p>
+
+<p><strong>Gateway Simulation Mode</strong> - Checking the "Gateway Simulation Mode" checkbox instructs PaymentConnect to simulate responses for outbound transactions.  This mode is useful during training exercises and doesn't require that you have an account with a payment 
+processor to use the PaymentX Terminal and other features.  Please note that some features, such as "Request Transaction Details" will not work 
+while you are in Gateway Simulation Mode.  </p>
+
+<p><strong>Debug Mode</strong> - Used for debugging PaymentConnect connection issues.  Checking this box instructs PaymentConnect Apex scripts to write trace messages at various points in the transaction process as Tasks records under the master
+PaymentConnect Settings record, and individual Process Connection records.  Some of the these trace messages may contain sensitive information, so be sure to delete the Tasks after debugging, and leave this box
+unchecked when not performing debug tasks. </p>
+
+<h2 class="helpHead2">Custom Links</h2>
+
+<p><strong>PaymentConnect Downloads</strong> - This link takes you to the Linvio website where you can find the latest PaymentConnect relay scripts and other downloads.</p>
+
+<h2 class="helpHead2">Processor Connections</h2>
+<p>The Processor Connections related list contains individual settings records for each payment processor you have connected to Salesforce through PaymentConnect.
+PaymentConnect supports multiple processor types and allows you to create connections to more than one of each type.</p>
+<ul><li>
+<A HREF="{!$SControl.PaymentX_Processor_Connection_Help}">More on Processor Connections</A>
+</li>
+</ul>
+<p>To create a new connection record, click on "New Processor Connection" on the PaymentConnect Settings detail page.</p>
+
+<fieldset class="note" id="DeprecatedFieldsNote"><a name="DeprecatedFieldsNote"><!-- --></a><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/><span id="DeprecatedFieldsNoteText">
+<a name="DeprecatedFieldsNoteText"><!-- --></a>
+<h3>Deprecated Fields and Links</h3>
+<p>The following fields and custom links on the PaymentConnect Settings object have been deprecated and should be left off of the Settings page layout to avoid confusion.  
+Many of these fields are now available on the Processor Connection object so that configuration of payment processing functionality can be specified for each individual connection.</p>
+<br/>
+<table style="font-size:11px;">
+<tr><td><strong>External Transactions</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Auto Attach</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Unattached External Transactions</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Auto-Create Contacts</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Auto-Create Shopping Cart Items</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Connect Products to Cart Items</strong></td><td>Moved to the Processor Connection object. </td></tr>
+
+<tr><td><strong>AuthNet Notification Relay Method</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>AuthNet Relay Script</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>AuthNet Login Id</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>AuthNet Transaction Key</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>AuthNet Direct Response Delimiter</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>AuthNet Echeck Payments</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Google Notification Relay Method</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Google Relay Script</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Google Merchant Id</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>Google Merchant Key</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>PayPal Notification Relay Method</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>PayPal Relay Script</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>PayPal API Username</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>PayPal API Password</strong></td><td>Moved to the Processor Connection object. </td></tr>
+<tr><td><strong>PayPal Currency Code</strong></td><td>Moved to the Processor Connection object. </td></tr>
+
+<tr><td><strong>Outbound Processor</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>Authorize.Net Test Login Id</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>Authorize.Net Test Transaction Key</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>Google Test Merchant Id</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>Google Test Merchant Key</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>PayPal Test API Username</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>PayPal Test API Password</strong></td><td>No longer used.</td></tr>
+<tr><td><strong>PayPal Test API Signature</strong></td><td>No longer used.</td></tr>
+
+<tr><td><strong>Test AuthNet Relay Script, Test Google Relay Script & Test PayPay Relay Script</strong></td><td>Relay script test methods have been 
+moved from the master settings page to the details page for each Processor Connection object. </td></tr>
+</table>
+ </span></div></fieldset>
+</div>
+
+</div> 
+</div>
+<div class="helpPageFooter">Copyright 2008-2009 Linvio, Inc..  All rights reserved.<br/>Various trademarks held by their respective owners.</div>
+
+
+
+<script language="JavaScript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript></noscript><!--/DO NOT REMOVE/-->
+                      
+                   
+</body>
+</html>

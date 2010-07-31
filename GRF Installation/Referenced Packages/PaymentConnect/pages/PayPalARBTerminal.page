@@ -1,0 +1,487 @@
+<apex:page id="arbTerminal" controller="pymt.PayPalARBTerminalController" tabStyle="pymt__PaymentX__c">
+<script type="text/javascript" src="{!URLFOR($Resource.PaymentConnect, 'includes/tooltip/wz_tooltip.js')}"></script>
+<style>
+
+.labelColumn {
+    text-align:right;
+    width:180px;
+    font-weight:normal;
+}
+
+.pc_shortinputfield {
+    width:50px;
+}
+
+</style>
+
+<script type="text/javascript" >
+function cvvToolTipText() {
+	var imgUrl = "{!URLFOR($Resource.PaymentConnect, 'images/mini_cvv2.gif')}";
+	return "For your safety and security, PayPal may require that you enter your card’s verification number. The verification number is a 3-digit number printed on the back of your card. It appears after and to the right of your card number. <br/><img src=\'"+imgUrl+"\'>";
+}
+
+function oneTimeTipText() {
+	var text = "Enter one-time transactions for charges like setup fees. You can only create them when you create a profile and you won't be able to edit or reactivate your one-time transactions later.";
+	text += "<br/><br/>PayPal processes one-time transactions almost immediately and doesn't wait for the profile start date.";
+	text += "<br/><br/><strong>Example:</strong> If you create a profile on May 15 and the profile's start date is May 29, PayPal will process the one-time transaction on May 15.";
+	return text;
+}
+
+function occurencesTipText() {
+	var text = "(Optional) The number of billing cycles for payment period.";
+	text += "<br/><ul><li>For the regular payment period, if no value is specified or the value is 0, the regular payment period continues until the profile is canceled or deactivated.</li>";
+	text += "<li>For the regular payment period, if the value is greater than 0, the regular payment period will expire after the trial period is finished and continue at the billing frequency for TotalBillingCycles cycles.</li>";
+	text += "</ul>";
+	return text;
+}
+
+function gatewaySimTipText() {
+   var txt = "PaymentConnect is currently in \<strong>gateway simulation mode</strong>. \<br/>";
+   
+   txt += "In this mode PaymentConnect will simulate responses from your payment processor ";
+   txt += "and by-pass actual credit card charges, refunds, etc. To run live transactions, ";
+   txt += "have your Salesforce administrator turn gateway simulation mode \<strong>off\</strong> ";
+   txt += "under PaymentConnect Settings.";
+   return txt;
+}
+
+</script>
+
+
+<!-- Title Bar -->
+<div class="bPageTitle" style="margin-bottom: 0px">
+	<div class="ptBody secondaryPalette">
+		<div class="content" style="float: left">
+			<img title="PayPal ARB Terminal" class="pageTitleIcon" alt="PayPal ARB Terminal" src="/s.gif"/>
+			<h1 class="pageType">PayPal ARB Terminal<span class="titleSeparatingColon">:</span></h1>
+			<h2 class="pageDescription">Set up a recurring payments profile</h2>
+		</div>
+		<div style="float: left; margin-left: 150px">
+			<apex:form id="selectProcessor">
+				<span style="{!IF(simulationMode,'color:red;font-weight:bold;','')}">Processor Connection: &nbsp;<apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" disabled="false">
+					<apex:actionSupport event="onchange" rerender="cardType, currencyCode, soloMaestroFields" status="formActionStatus"/>
+					<apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+				</apex:selectList></span>
+                <apex:outputPanel id="gatewaySimIcon" rendered="{!simulationMode}">
+                <span  id="gatewaySimPopup-_help" class="helpbutton" onMouseover="Tip(gatewaySimTipText(), WIDTH, -250);" onMouseout="UnTip();" >
+                <apex:image style="vertical-align:text-top;" url="{!URLFOR($Resource.pymt__PaymentConnect, 'images/error.png')}"  />
+                </span> 
+                </apex:outputPanel>
+			</apex:form>		
+		</div>
+	</div>
+</div>
+<apex:pageMessages id="pageMessages"/>
+&nbsp;
+<apex:form id="terminalForm" onsubmit="return validateForm();">
+<script language="javascript">
+var enableValidation=false;
+function validateForm() {
+
+	if (!enableValidation) return true;
+	enableValidation=false;  
+
+	// check required fields
+	var field = document.getElementById("{!$component.terminalForm.terminalPageBlock.startDate}");
+	if (field.value == "") {
+		alert("Please enter a subscription start date.");
+		return false;
+	}
+
+	field = document.getElementById("{!$component.terminalForm.terminalPageBlock.cardNumber}");
+	if (field.value == "") {
+		alert("Please enter a credit card number.");
+		return false;
+	}
+
+	field = document.getElementById("{!$component.terminalForm.terminalPageBlock.amount}");
+	if (field.value == "") {
+		alert("Please enter a recurring amount.");
+		return false;
+	}
+	
+	return true;
+}
+</script>
+
+<apex:pageBlock id="terminalPageBlock">
+            <div style="width: 650px; text-align: right;"><apex:actionStatus id="formActionStatus">
+                <apex:facet name="start">
+                    <apex:outputPanel >&nbsp;
+              <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"
+                            style="vertical-align:middle;" alt="busy..." />
+              &nbsp;Updating Page</apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:image value="{!URLFOR('/s.gif')}" alt="" style="height:17px;" />
+                </apex:facet>
+            </apex:actionStatus></div>
+    <table >
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="subscr_name">Subscription Name
+				<span id="recurringAmount-_help" class="helpbutton" onMouseover="Tip('Merchant-assigned name for the subscription.  This is usually the product or service being purchased.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="subscr_name" value="{!profile.Name}" >
+            </apex:inputField>
+          </td>
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="opportunity">{!$ObjectType.Opportunity.Label}&nbsp;</apex:outputLabel>
+          </td>
+          <td><apex:inputField id="opportunity" value="{!profile.pymt__Opportunity__c}" >
+            </apex:inputField>
+          </td>
+        </tr>
+         <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="description">Description
+				<span id="description-_help" class="helpbutton" 
+					onMouseover="Tip('(Optional) Merchant notes regarding this profile.  This description will be stored in the description field of the Payment Profile record.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="description" value="{!profile.pymt__Description__c}" style="height:18px;" >
+            </apex:inputField>
+          </td>
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="account">{!$ObjectType.Account.Label}&nbsp;</apex:outputLabel>
+          </td>
+          <td><apex:inputField id="account" value="{!profile.pymt__Account__c}" >
+                    <apex:actionSupport event="onblur" action="{!loadAccount}" 
+                        rerender="addresses, pageMessages" status="formActionStatus" />
+            </apex:inputField>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+        </tr>
+       <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="startDate">Subscription Start Date
+				<span id="startDate-_help" class="helpbutton" onMouseover="Tip('The date when billing for this profile begins.  Note: The profile may take up to 24 hours for activation.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="startDate" value="{!profile.pymt__Subscription_Start_Date__c}" >
+            </apex:inputField>
+          </td>
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="contact">{!$ObjectType.Contact.Label}&nbsp;</apex:outputLabel>
+          </td>
+          <td><apex:inputField id="contact" value="{!profile.pymt__Contact__c}" >
+                    <apex:actionSupport event="onblur" action="{!loadContact}" 
+                        rerender="addresses, pageMessages, buttons" status="formActionStatus" />
+            </apex:inputField>
+          </td>
+        </tr>
+        <tr>
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="profileReference">Profile Reference
+				<span id="profileReference-_help" class="helpbutton" onMouseover="Tip('(Optional) Merchant-assigned profile reference number.  This may be an invoice number or similar identifier.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputText id="profileReference" value="{!refId}" >
+            </apex:inputText>
+          </td>
+        	<td>
+        	
+        	</td>
+        	<td>
+        	
+        	</td>
+        </tr>
+    </table>
+	<br/>
+    <table>
+         <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="amount">Initial One-Time Amount
+				<span id="oneTimeAmount-_help" class="helpbutton" 
+					onMouseover="Tip(oneTimeTipText(), WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="initialAmount" value="{!profile.pymt__Initial_Amount__c}" >
+            </apex:inputField>
+          </td>
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="trial_amount">Trial Amount
+				<span id="trialAmount-_help" class="helpbutton" 
+					onMouseover="Tip('Billing amount for each billing cycle during this payment period; required if you specify an optional trial period. This amount does not include shipping and tax amounts.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="trial_amount" value="{!profile.pymt__Trial_Amount__c}" >
+            </apex:inputField>
+          </td>
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="trialFrequency">Make Trial Payments Every 
+				<span id="trialInterval-_help" class="helpbutton" 
+					onMouseover="Tip('Required if you specify an optional trial period.  SemiMonth billing is done on the 1st and 15th of the month and should be assigned a frequency of 1.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="trialFrequency" value="{!profile.pymt__Trial_Frequency__c}" styleclass="pc_shortinputfield">
+            </apex:inputField>&nbsp;
+            <apex:selectList value="{!profile.pymt__Trial_Period__c}" size="1">
+                <apex:selectOptions value="{!periodOptions}" /> 
+            </apex:selectList>
+          </td>
+        </tr>        
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="trial_occurrences">Trial Occurrences
+				<span id="trialOccurences-_help" class="helpbutton" 
+					onMouseover="Tip('(Optional) The number of billing cycles for trial payment period.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="trial_occurrences" value="{!profile.pymt__Trial_Occurrences__c}"  styleclass="pc_shortinputfield">
+            </apex:inputField>
+          </td>
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="amount">Recurring Amount
+				<span id="recurringAmount-_help" class="helpbutton" 
+					onMouseover="Tip('(Required) Billing amount for each billing cycle during this payment period.  The currency code selected will apply to all amounts on the recurring payments profile.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="amount" value="{!profile.pymt__Amount__c}"  styleclass="pc_shortinputfield" >
+            </apex:inputField>&nbsp;
+            <apex:selectList id="currencyCode" value="{!profile.pymt__Currency_ISO_Code__c}" size="1">
+                <apex:selectOptions value="{!currencyOptions}" />
+            </apex:selectList>
+          </td>
+        </tr>
+        <tr>
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="billingFrequency">Schedule Payments Every 
+				<span id="regularInterval-_help" class="helpbutton" 
+					onMouseover="Tip('(Required) Unit for billing during this subscription period.   SemiMonth billing is done on the 1st and 15th of the month and should be assigned a frequency of 1.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="billingFrequency" value="{!profile.pymt__Frequency__c}"  styleclass="pc_shortinputfield">
+            </apex:inputField>&nbsp;
+            <apex:selectList value="{!profile.pymt__Period__c}" size="1">
+                <apex:selectOptions value="{!periodOptions}" />
+            </apex:selectList>
+          </td>     
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="total_occurrences">Total Occurrences
+				<span id="totalOccurrences-_help" class="helpbutton" 
+					onMouseover="Tip(occurencesTipText(), WIDTH, -325);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputField id="total_occurrences" value="{!profile.pymt__Total_Occurrences__c}"  styleclass="pc_shortinputfield" >
+            </apex:inputField>
+          </td>
+        </tr>
+          <tr >
+            <td class="labelColumn" style="vertical-align:middle;"><br/><apex:outputLabel for="cardType" >Card Type: </apex:outputLabel>
+            </td>
+            <td><br/>
+            <apex:selectList id="cardType" value="{!cardType}" size="1"> 
+                <apex:selectOptions value="{!cardTypeOptions}" />
+                <apex:actionSupport event="onchange" action="{!nullAction}" rerender="soloMaestroFields" />
+            </apex:selectList> 
+            </td>
+          </tr>
+
+       </table>
+        <table>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardNumber">Card Number</apex:outputLabel>
+          </td>
+          <td><apex:inputText id="cardNumber" value="{!cardNumber}" >
+            </apex:inputText>
+          </td>
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="expirationDate">Card Expiration </apex:outputLabel>
+          </td>
+          <td>
+            <apex:selectList id="expMonth" value="{!expirationMonth}" size="1"> 
+                <apex:selectOptions value="{!expMonthOptions}" />
+            </apex:selectList> &nbsp;
+            <apex:selectList id="expYear" value="{!expirationYear}" size="1"> 
+                <apex:selectOptions value="{!expYearOptions}" />
+            </apex:selectList> 
+          </td>
+        </tr>
+        <tr >
+          <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardCode">Card Code
+				<span id="cvvHelpPopup-_help" class="helpbutton" 
+					onMouseover="Tip(cvvToolTipText(), WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>
+          </apex:outputLabel>
+          </td>
+          <td><apex:inputText id="cardCode" value="{!cardCode}"  styleclass="pc_shortinputfield">
+            </apex:inputText>
+          </td>
+        </tr>
+        </table>
+        
+        <apex:outputPanel id="soloMaestroFields" >
+            <apex:outputPanel rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">
+            <br/>       
+                <table>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel >Card Issue Date
+				<span id="issueDate-_help" class="helpbutton" onMouseover="Tip('Required for Maestro and Solo cards.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>                        
+                        </apex:outputLabel></td>
+                        <td>
+                            <apex:selectList id="issueMonth" value="{!cardStartMonth}" size="1"> 
+                                <apex:selectOptions value="{!expMonthOptions}" />
+                             </apex:selectList> &nbsp;
+                            <apex:selectList id="issueYear" value="{!cardStartYear}" size="1"> 
+                                <apex:selectOptions value="{!issueYearOptions}" />
+                            </apex:selectList> 
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td class="labelColumn" style="vertical-align: middle;"><apex:outputLabel for="issueNumber">Issue Number
+				<span id="issueNumber-_help" class="helpbutton" onMouseover="Tip('Required for Maestro and Solo cards.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>                        
+                        
+                        </apex:outputLabel></td>
+                        <td><apex:inputText styleclass="pc_short_input_field" id="issueNumber" value="{!cardIssueNumber}"   /></td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>  
+      
+    <apex:outputPanel id="addresses" > 
+      <table>
+        <tr>
+          <td><table>
+
+              <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="loadBillingFrom">Load Address From:</apex:outputLabel>
+                </td>
+                <td><apex:outputPanel >
+                    <apex:selectRadio id="selectBillingFrom" value="{!loadBillingFrom}" >
+                      <apex:selectOptions value="{!billingAddressFromOptions}" />
+                      <apex:actionSupport event="onchange" action="{!loadBillingAddressFields}" rerender=" billingstreet, billingcity, billingstate, billingpostalcode, billingcountry" status="formActionStatus" />
+                      <apex:actionSupport event="onclick" action="{!loadBillingAddressFields}" rerender=" billingstreet, billingcity, billingstate, billingpostalcode, billingcountry" status="formActionStatus" />
+                    </apex:selectRadio>
+                  </apex:outputPanel>
+                </td>
+              </tr>
+            </table></td>
+          <td><table>
+              <tr>
+                <td class="labelColumn"></td>
+                <td><apex:selectRadio id="selectShippingFrom" value="{!loadShippingFrom}">
+                    <apex:selectOptions value="{!shippingAddressFromOptions}" />
+                    <apex:actionSupport event="onchange" action="{!loadShippingAddressFields}" rerender="shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry" status="formActionStatus" />
+                    <apex:actionSupport event="onclick" action="{!loadShippingAddressFields}" rerender="shippingstreet, shippingcity, shippingstate, shippingpostalcode, shippingcountry" status="formActionStatus" />
+                  </apex:selectRadio>
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td><table>
+              <tr>
+                <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="billingstreet">Billing Address</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="billingstreet" value="{!billingstreet}" />
+                </td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="billingcity">City</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="billingcity" value="{!billingcity}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="billingstate">State</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="billingstate" value="{!billingstate}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="billingpostalcode">Postal Code</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="billingpostalcode" value="{!billingpostalcode}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="billingcountry">Country</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="billingcountry" value="{!billingcountry}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"></td>
+                <td><apex:commandButton value="Store Address" styleclass="btnSharing" action="{!saveBillingAddress}" rerender="addresses, pageMessages" status="formActionStatus" rendered="{!NOT(personAccountMode)}"/>
+                </td>
+              </tr>
+              <tr >
+                <td></td>
+                <td></td>
+              </tr>
+            </table></td>
+          <td><table>
+              <tr>
+                <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="shippingstreet">Shipping Address</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="shippingstreet" value="{!shippingstreet}" />
+                </td>
+              </tr>
+              <tr>
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="shippingcity">City</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="shippingcity" value="{!shippingcity}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="shippingstate">State</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="shippingstate" value="{!shippingstate}" />
+                </td>
+              </tr> 
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="shippingpostalcode">Postal Code</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="shippingpostalcode" value="{!shippingpostalcode}" />
+                </td>
+              </tr>
+              <tr >
+                <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="shippingcountry">Country</apex:outputLabel>
+                </td>
+                <td><apex:inputText id="shippingcountry" value="{!shippingcountry}" />
+                </td>
+              </tr>
+              <tr >
+                <td></td>
+                <td><apex:commandButton value="Store Address" styleclass="btnSharing"  action="{!saveShippingAddress}" rerender="addresses, pageMessages" status="formActionStatus" rendered="{!NOT(personAccountMode)}" />
+                </td>
+              </tr>
+              <tr >
+                <td></td>
+                <td></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+
+    <apex:outputPanel id="buttons">
+      <table>
+        <tr>
+          <td class="labelColumn" >&nbsp;</td>
+          <td><apex:commandButton id="cancel" value="Cancel" action="{!cancelFromTerminal}" onclick="enableValidation=false;"/>
+            <apex:commandButton id="continue" value="Create Subscription" action="{!createSubscription}" disabled="{!disableForm}" onclick="enableValidation=true;"/>
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </apex:outputPanel>
+</apex:pageBlock>              
+</apex:form>
+
+</apex:page>

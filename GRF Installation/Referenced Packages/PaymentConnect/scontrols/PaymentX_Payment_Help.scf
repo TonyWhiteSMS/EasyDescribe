@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<meta name="copyright" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="security" content="public"/>
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<link rel="stylesheet" type="text/css" href="help.css"/>
+<link rel="stylesheet" type="text/css" href="/sCSS/Theme2/default/help.css"/>
+<title>PaymentConnect Payments</title>
+<script type="text/javascript" language="JavaScript" src="/js/functions.js"> </script>
+</head> 
+
+<body onLoad="" id="paymentx_payment_help"><a name="paymentx_payment_help"><!-- --></a>
+<a name="top"><!-- --></a>
+<h1 class="helpHead1"><a name="d21e4"><!-- --></a><span id="topic-title"><a name="topic-title"><!-- --></a>Working With PaymentConnect Payments</span></h1>
+<div>
+
+<table border="0" cellpadding="0" cellspacing="0" summary="Salesforce editions needed for the documented functionality" width="100%" class="editionTable">
+<tbody>
+<tr>
+<td class="subHead"><p>PaymentConnect payment records are used to keep track of transaction details, including the time, date and amount of 
+the transaction, and the current status.  </p>
+</td>
+</tr>
+</tbody>
+</table><br/>
+
+<h2 class="helpHead2">Creating Payments</h2>
+
+<p><strong>Using the Payment Terminal</strong> - The Payment Terminal s-control can be accessed from Account, Contact and Opportunity records, and can be used 
+to process credit cards and eChecks from inside of Salesforce.  Transaction information is entered via the terminal and posted to your payment processor.  Then, 
+when the processor responds with transaction approval or denial information, PaymentConnect will post the response and information about the payment to a new or 
+existing payment record.</p>
+
+<p><strong>Scheduling Payments</strong> - Users can build multiple scheduled payment records (where Status = 'Scheduled') from the Opportunities detail page using the <strong>Schedule Payments</strong> s-control.  This
+s-control creates 1 or more payment records, splits the opportunity amount into multiple payment amounts, and sets the status of each new payment record to "Scheduled".</p>
+
+<p><strong>Creating Payment Records Manually</strong> - Payment records can also be created and configured manually.  Just click on the "New" button above the Payments section on any Account,
+Contact or Opportunity record, and fill in the payment information.</p>
+
+
+<fieldset class="note" id="InboundNotificationsNote"><a name="InboundNotificationsNote"><!-- --></a><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/><span id="InboundNotificationsNoteText">
+<a name="InboundNotificationsNoteText"><!-- --></a>If you have configured PaymentConnect to handling inbound 
+notifications from your payment processor(s), payment records may also be created automatically when a new transaction 
+is posted by the payment processor to your Salesforce account.  </span></div></fieldset>
+</div>
+
+<fieldset class="note" id="PaymentLog"><a name="PaymentLog"><!-- --></a><legend>Tip </legend><div class="noteBody"><img src="/img/help/helpTips_icon.gif" align="left"/>
+Expand the <strong>Log</strong> section on any payment record details page to see the history of that payment.  The log can be used 
+to trace the history of a payment after it has changed state and can help in figuring out why a payment might have been 
+declined or rejected.  <br/><br/>The <strong>Transaction Logging</strong> field on the PaymentConnect Settings record can be used to 
+control the amount of information (Detailed or Brief) entered into the <strong>Log</strong> field on each payment.</div></fieldset>
+</div>
+
+<h2 class="helpHead2">The Payment Status Field</h2>
+
+<p>Payment record status values are set to "In Process" just prior to submitting transactions to your payment processor.  Then as transaction 
+results and update notifications are received, PaymentConnect updates the status field accordingly.  For example: An authorization request may be changed to "Authorized" when the payment processor
+approves the authorization request, and then updated to "Expired" if the transaction is not captured within the 30 day authorization hold period. </p>
+<p>
+ Please note that not every state listed below is available 
+in the status picklist for payment records, as these are intended as informational status values send by your payment processor.
+</p>
+<br/>
+<table class="permTable" cellpadding="0" cellspacing="0" summary="Payment record status values" width="100%" border="0">
+<thead align="left">
+<tr>
+<th class="permTableHeader" colspan="2" id="d21e76">Payment Record Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Scheduled</td>
+<td class="permRowRight" headers="d21e76 ">Not yet submitted to a payment processor - but scheduled to be paid.  Workflow rules can be constructed to check this state value and the "Scheduled Date" field to initiate payment reminders and other collections activities. </td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">In Process</td>
+<td class="permRowRight" headers="d21e76 ">The payment has been submitted to the payment processor, but a response has not yet been received.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Completed</td>
+<td class="permRowRight" headers="d21e76 ">The transaction has been processed successfully. </td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Error</td>
+<td class="permRowRight" headers="d21e76 ">An error occurred either during the process of transmitting a payment to the payment processor, or at the processor.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Failure</td>
+<td class="permRowRight" headers="d21e76 ">An error was returned from the payment processor.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Pending</td>
+<td class="permRowRight" headers="d21e76 ">The payment is being held for review at the payment processor.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Authorized</td>
+<td class="permRowRight" headers="d21e76 ">The payment has been authorized, but not captured.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Voided</td>
+<td class="permRowRight" headers="d21e76 ">The payment has been voided.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Expired</td>
+<td class="permRowRight" headers="d21e76 ">The authorization for this payment has expired.  Check with your payment processor to determine their policy for how long an authorization can be kept open.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Reviewing</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) REVIEWING is the default financial state for all new Google Checkout orders. 
+Upon receiving a new order, Google reviews the order to confirm that it is chargeable. After determining that the 
+order is chargeable, Google will update the financial order state to CHARGEABLE.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Chargeable</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The CHARGEABLE state indicates that you may charge the 
+customer for an order by sending a Charge Order request. You may also cancel the order by sending a Cancel Order
+request.
+</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Charging</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The CHARGING state indicates that Google is in the 
+process of charging the customer. Any actions taken on an order in this state will be invalid. Once the charge 
+has been completed, Google will send a notification to PaymentConnect to update the financial order state to CHARGED, 
+even if you only charged the customer for part of the order. However, in the case of a partial charge, the 
+remaining balance on the order will still be chargeable even though the financial order state is CHARGED rather 
+than CHARGEABLE.
+</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Charged</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The CHARGED state indicates that you have fully or partially 
+charged the customer for an order. If you have partially charged the customer, the order will still be chargeable 
+until you have charged the customer for the full order amount.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Payment_Declined</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The PAYMENT_DECLINED state indicates that Google's effort 
+to authorize or charge the customer's credit card failed. If this happens, Google will email the customer to 
+request a new credit card. The customer will have 72 hours to submit a new card.<br/>
+<ul><li>If the customer submits a new credit card for an order that previously failed authorization, Google will send you an order-state-change-notification indicating that the order's financial update status has been updated to CHARGEABLE.
+</li><li>
+If the customer submits a new credit card for an order that previously failed to charge, Google will charge the credit card and send you an order-state-change-notification indicating that the order's financial update status has been updated to CHARGED.
+</li></ul></td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Cancelled</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The CANCELLED state indicates that the merchant issued a 
+cancel-order command, canceling the order. Once an order is cancelled, you may no longer update the order's financial 
+order state.<br/>
+
+You may cancel an order that is in either the CHARGEABLE or the PAYMENT_DECLINED financial state. You may not cancel an order that has already been charged until you have already issued a refund for the offer.
+
+</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Refunded</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The Refunded state indicates that you have fully refunded a previously charged transaction.<br/>
+
+
+</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Cancelled_by_google</td>
+<td class="permRowRight" headers="d21e76 ">(Google Checkout) The CANCELLED_BY_GOOGLE state indicates that Google cancelled
+ an order. Google may cancel an order if the credit card authorization fails and the customer does not provide a new 
+ credit card within 72 hours. Google will send PaymentConnect a notification indicating that the order was cancelled, 
+ and the reason tag in the notification will explain why Google cancelled the order.
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<fieldset class="note"><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/>Once a transaction has been 
+submitted to your payment processor, action buttons will appear on the payment details page allowing you to submit follow-on 
+transaction requests such as Void, Charge, and Approve.  The options available to you will depend on the services supported by payment processor used to initiate the 
+transaction (see below).
+</div></fieldset>
+
+<h2 class="helpHead2">PayPal</h2>
+
+<p>PaymentConnect provides the following action buttons for working with PayPal transactions. </p>
+<br/>
+<table class="permTable" cellpadding="0" cellspacing="0" summary="PayPal Action Buttons" width="100%" border="0">
+<thead align="left">
+<tr>
+<th class="permTableHeader" colspan="2" id="d21e76">PayPal Action Buttons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Capture</td>
+<td class="permRowRight" headers="d21e76 ">Sends a partial or complete capture request to PayPal.  The amount of the capture must be less than or equal to the 
+authorized amount.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Void</td>
+<td class="permRowRight" headers="d21e76 ">Sends a void request to PayPal.  If you are voiding a transaction that has been reauthorized, be sure to perform the void from the parent
+transaction (using the original transaction Id).</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Refund</td>
+<td class="permRowRight" headers="d21e76 ">Sends a partial or complete refund request to PayPal.  The amount of the refund must be less than or equal to the 
+charged amount.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Get Transaction Details</td>
+<td class="permRowRight" headers="d21e76 ">Requests current transaction information from PayPal and displays it in a dialog box.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 class="helpHead2">Authorize.Net</h2>
+
+<p>PaymentConnect provides the following action buttons for working with Authorize.Net transactions. </p>
+<br/>
+<table class="permTable" cellpadding="0" cellspacing="0" summary="Authorize.Net Action Buttons" width="100%" border="0">
+<thead align="left">
+<tr>
+<th class="permTableHeader" colspan="2" id="d21e76">Authorize.Net Action Buttons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Capture</td>
+<td class="permRowRight" headers="d21e76 ">Used to complete an Authorization Only transaction that was successfully 
+authorized through the payment gateway.  Prompts for a capture amount and submits the request to Authorize.Net.  The 
+transaction status must be 'Authorized', cannot be captured, expired or errored,  and the 
+capture amount must be less than or equal to the authorization amount.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Void</td>
+<td class="permRowRight" headers="d21e76 ">Prompts the user for a reason (optional) and submits a void request to Authorize.Net.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Refund</td>
+<td class="permRowRight" headers="d21e76 ">Prompts the user for a refund amount and a reason (optional) and submits a refund request to Authorize.Net.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 class="helpHead2">Google Checkout</h2>
+
+<p>PaymentConnect provides the following action buttons for working with Google Checkout transactions. </p>
+<br/>
+<table class="permTable" cellpadding="0" cellspacing="0" summary="Google Checkout Action Buttons" width="100%" border="0">
+<thead align="left">
+<tr>
+<th class="permTableHeader" colspan="2" id="d21e76">Google Checkout Action Buttons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Authorize</td>
+<td class="permRowRight" headers="d21e76 ">Sends a request to Google Checkout to explicitly reauthorize a customer's credit card for the uncharged balance of an order to verify that funds for the order are available. You may issue an Authorize Order request for an order that is in either CHARGEABLE or CHARGED.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Charge</td>
+<td class="permRowRight" headers="d21e76 ">For payments with status = 'Chargeable'.  Sends a request to Google Checkout to accept the transaction and run the charge.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Refund</td>
+<td class="permRowRight" headers="d21e76 ">Prompts the user for a refund amount, reason, and comments (optional) and sends a refund request to Google Checkout.  The refund amount must be less than or equal to the amount charged.</td>
+</tr>
+<tr>
+<td class="permRowLeft" headers="d21e76 ">Cancel</td>
+<td class="permRowRight" headers="d21e76 ">Prompts the user for a reason and comments regarding the cancellation and sends a cancel request to Google Checkout.</td>
+</tr>
+</tbody>
+</table>
+<p>PaymentConnect has to wait for a response to post back from Google before updating the payment record, so it may be necessary to refresh the page sometimes before seeing an update from Google.</p>
+
+<h2 class="helpHead2">Test Transactions</h2>
+<p>The “Test Transaction” checkbox on payment records is used to indicate payments that were create while in test mode.  This box is checked for transactions created using the payment terminal (while in test mode) and for inbound Authorize.net and PayPal test transactions.
+Inbound transactions from PayPal must have the ‘test_ipn’ field set, and transactions coming from Authorize.net must have the x_test_response field set to true in order to have the Test Transaction checkbox checked.
+</p><p>NOTE: Inbound Google Checkout notifications do not include a test or live status value, so the Test Transaction checkbox is not currently set for Google Checkout sandbox transactions.
+</p>
+
+</div>
+<div><div class="relinfo">See Also:<br/>
+<div>{!LINKTO("PaymentConnect Settings Help",  $SControl.PaymentX_Settings_Help , null)}</div>
+</div>
+</div>
+<div class="helpPageFooter">Copyright 2008-2009 Linvio, Inc..  All rights reserved.<br/>Various trademarks held by their respective owners.</div>
+
+
+
+<script language="JavaScript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript></noscript><!--/DO NOT REMOVE/-->
+                      
+                   
+</body>
+</html>

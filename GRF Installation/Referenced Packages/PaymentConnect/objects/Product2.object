@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>On_Payment_Completed__c</fullName>
+        <inlineHelpText>PaymentConnect Action to perform after this product has been paid for.</inlineHelpText>
+        <label>On Payment Completed</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+</CustomObject>

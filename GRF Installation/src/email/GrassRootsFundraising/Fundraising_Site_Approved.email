@@ -1,0 +1,1 @@
+{!Fundraising_Event__c.Name} Website has been approved and available for use. The URL link for sponsors and participants is:  {!Fundraising_Event__c.Event_Page_URL__c}.

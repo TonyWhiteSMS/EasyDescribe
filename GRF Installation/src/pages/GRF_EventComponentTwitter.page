@@ -1,0 +1,54 @@
+<apex:page controller="GRF_EventRegistrationController" showHeader="false"
+ sidebar="false" standardStylesheets="false" title="HELPSudan Benefit Event">
+
+<!-- Twitter Widget Script and Parameters -->
+
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+
+<script>
+new TWTR.Widget({
+  version: 2,
+  <apex:outputText rendered="{!if(theEvent.Twitter_Search_Terms__c=
+      theEvent.Twitter_Username__c,false,true)}">
+  type: 'search',
+  search: '{!theEvent.Twitter_Search_Terms__c}',
+  </apex:outputText>
+   <apex:outputText rendered="{!if(theEvent.Twitter_Search_Terms__c=
+      theEvent.Twitter_Username__c,true,false)}">
+  type: 'profile',
+ 
+  </apex:outputText> 
+  interval: 6000,
+  title: '',
+ 
+  theme: {
+    shell: {
+      background: '#999999',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#f7f7f7',
+      color: '#262626',
+      links: '#b00000'
+    }
+  },
+ features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    toptweets: true,
+    behavior: 'default'
+  }
+})
+ <apex:outputText rendered="{!if(theEvent.Twitter_Search_Terms__c=
+      theEvent.Twitter_Username__c,false,true)}">.render().start();
+  </apex:outputText>
+   <apex:outputText rendered="{!if(theEvent.Twitter_Search_Terms__c=
+      theEvent.Twitter_Username__c,true,false)}">
+      .render().setuser('{!theEvent.Twitter_Username__c}').start();
+  </apex:outputText> 
+</script>
+</apex:page>

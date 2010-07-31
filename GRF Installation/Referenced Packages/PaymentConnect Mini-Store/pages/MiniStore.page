@@ -1,0 +1,214 @@
+<apex:page standardController="Campaign" extensions="cmpgn.MiniStorePageController" showHeader="false" sidebar="false" cache="false" standardStylesheets="false">
+<title>{!campaign.cmpgn__LP_Title__c}</title>
+<meta description="DESCRIPTION" content="{!campaign.LP_Meta_Description__c}"/>
+<meta name="KEYWORDS" content="{!campaign.LP_Meta_Keywords__c}"/>
+
+<script src="{!URLFOR($Resource.LinvioCampaignsResources, 'includes/fancyzoom/js-global/FancyZoom.js')}" type="text/javascript"/>
+<script src="{!URLFOR($Resource.LinvioCampaignsResources, 'includes/fancyzoom/js-global/FancyZoomHTML.js')}" type="text/javascript"/>
+<script type="text/javascript">
+
+function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = func;
+    } else {
+        window.onload = function() {
+            oldonload();
+            func();
+        }
+    }
+}
+
+zoomImagesURI = "{!URLFOR($Resource.LinvioCampaignsResources, 'includes/fancyzoom/images-global/zoom/')}";
+
+addLoadEvent(setupZoom);
+</script>
+<apex:composition template="{!$Site.Template}"> 
+  <apex:define name="body">
+<div class="pc_page_content_top"></div>
+<div class="pc_page_content"  id="pc_ministore_page">
+<div class="pc_page_content_inner">
+
+    <apex:outputPanel id="errorState" rendered="{!IF(((viewState <>'campaign_not_found') && (viewState <>'get_shopper_info')), true,false)}" >
+        <apex:messages styleClass="message" id="messageBox1" />
+    </apex:outputPanel>
+
+    <apex:outputPanel id="campaignNotFound" rendered="{!IF(viewState =='campaign_not_found', true,false)}" >
+    <h1>The requested page could not found.</h1>
+    <p>Perhaps you were looking for one of these?</p>
+        <apex:repeat value="{!otherCampaigns}" var="campaign" >
+            <p><apex:outputLink value="{!$Page.cmpgn__MiniStore}?id={!campaign.Id}">{!campaign.cmpgn__LP_Title__c}</apex:outputLink> </p>
+        </apex:repeat>
+    </apex:outputPanel> 
+
+    <apex:form id="pc_ministore_form" onsubmit="return validateForm();">
+    
+    <apex:outputPanel id="campaignHtmlContent"
+        rendered="{!IF(viewState == 'get_shopper_info',true,false)}">
+        <apex:outputText value="{!campaign.cmpgn__LP_HTML_Content__c}" escape="false" />
+    </apex:outputPanel> 
+
+    <apex:outputPanel id="pc_ministore_products_panel"
+            rendered="{!IF(viewState == 'get_shopper_info',true,false)}"> 
+        
+        
+        <table class="pc_ministore_products_table"> 
+        <apex:repeat value="{!wrappedItems}" var="wItem"> 
+            <tr><td style="pc_product_image_column">
+                <apex:outputPanel rendered="{!AND(NOT(ISBLANK(wItem.productPic)),ISBLANK(wItem.productPicURL))}" >
+                    <a href="{!URLFOR($Action.Attachment.Download,wItem.productPic)}" rel="zoom">
+                    <img class="pc_product_pic"  src="{!URLFOR($Action.Attachment.Download,wItem.productPic)}" />
+                    </a>                    
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!NOT(ISBLANK(wItem.productPicURL))}" >
+                    <a href="{!wItem.productPicURL}" rel="zoom">
+                    <img class="pc_product_pic"  src="{!wItem.productPicURL}" />
+                    </a>                    
+                </apex:outputPanel>
+            </td>
+            <td style="pc_product_description_column"><apex:outputPanel id="productDetails" >            
+                    <apex:outputText styleClass="pc_product_name" value="{!wItem.miniStoreProductName}" />
+                    <br/>
+                    <apex:outputText styleClass="pc_product_description" value="{!wItem.description}" /><br/>
+                    <div class="pc_product_price_quantity_box">
+                    <span class="pc_price_label">Price:</span>&nbsp; 
+                    <apex:outputPanel rendered="{!NOT(multiCurrencyFix)}">
+                        <apex:outputField styleClass="pc_price_value" value=" {!wItem.cartItem.pymt__Unit_Price__c}" />
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!multiCurrencyFix}">
+                     <apex:outputText styleClass="pc_price_value" value="{!currencyCode} {0,number,#,###.##}">
+                            <apex:param value="{!wItem.unitPrice}" />
+                    </apex:outputText> 
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!NOT(wItem.outOfStock)}">
+                    <span class="pc_quantity_label">Quantity:</span>&nbsp;<apex:inputText value="{!wItem.qty}" styleClass="pc_qty_input_field" />
+                    </apex:outputPanel> 
+                    <apex:outputPanel styleClass="pc_out_of_stock" rendered="{!(wItem.outOfStock)}">
+                         Out of Stock
+                    </apex:outputPanel>
+                    </div>
+                </apex:outputPanel>
+
+            </td>
+            </tr>
+        </apex:repeat>
+        </table>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="buyerInformation" rendered="{!IF(viewState =='get_shopper_info', true,false)}" styleClass="pc_buyer_info_panel">
+
+    <apex:messages styleClass="message" id="messageBox2" />
+    <br/>
+       <script language="javascript">
+          function validateForm() {
+              // check required fields
+              var fname = document.getElementById("{!$Component.pc_ministore_form.mailingfirstname}");
+              var lname = document.getElementById("{!$Component.pc_ministore_form.mailinglastname}");
+              if (fname.value == "" || lname.value == "") {
+                  alert("Please enter your name.");
+                  return false;
+              }
+          
+              var emailaddress = document.getElementById("{!$Component.pc_ministore_form.emailaddress}");
+              if (emailaddress.value == "") {
+                  alert("Please provide your email address.");
+                  return false;
+              }
+          
+              var address = document.getElementById("{!$Component.pc_ministore_form.mailingstreet}");
+              if (address.value == "") {
+                  alert("Please provide your street address.");
+                  return false;
+              }
+          
+              var city = document.getElementById("{!$Component.pc_ministore_form.mailingcity}");
+              if (city.value == "") {
+                  alert("Please provide your city.");
+                  return false;
+              }
+          
+              var state = document.getElementById("{!$Component.pc_ministore_form.mailingstate}");
+              if (state.value == "") {
+                  alert("Please provide your state/province.");
+                  return false;
+              }
+          
+              var zip = document.getElementById("{!$Component.pc_ministore_form.mailingpostalcode}");
+              if (zip.value == "") {
+                  alert("Please provide your postal code.");
+                  return false;
+              }
+          
+              var country = document.getElementById("{!$Component.pc_ministore_form.mailingcountry}");
+              if (country.value == "") {
+                  alert("Please provide your 2 character country code.");
+                  return false;
+              }
+          
+              
+              return true;
+          }
+          </script>
+             <h2>Contact Information</h2>
+            <p>Please provide your contact information below:</p>
+            <table class="pc_buyer_information_table">
+                <tr>
+                    <td>First Name:</td>
+                    <td><apex:inputText id="mailingfirstname" styleclass="pc_medium_input_field" value="{!contact.firstname}" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td><apex:inputText id="mailinglastname" styleclass="pc_medium_input_field" value="{!contact.lastname}" /></td>
+                </tr>
+                <tr>
+                    <td>Email Address:</td>
+                    <td><apex:inputText id="emailaddress" styleclass="pc_medium_input_field" value="{!contact.email}" /></td>
+                </tr>
+                <tr>
+                    <td>Street:</td>
+                    <td><apex:inputText id="mailingstreet" styleclass="pc_long_input_field" value="{!contact.mailingstreet}" /></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><apex:inputText id="mailingcity" styleclass="pc_medium_input_field" value="{!contact.mailingcity}" /></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><apex:inputText id="mailingstate" styleclass="pc_short_input_field" value="{!contact.mailingstate}" /></td>
+                </tr>
+                <tr>
+                    <td>Postal Code:</td>
+                    <td><apex:inputText id="mailingpostalcode" styleclass="pc_medium_input_field" value="{!contact.mailingpostalcode}" /></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><apex:inputText id="mailingcountry" styleclass="pc_short_input_field" value="{!contact.mailingcountry}" /></td>
+                </tr>
+            </table> 
+
+
+            <p>&nbsp;</p> 
+            <apex:commandButton id="ccButton" value="Purchase with Credit Card"
+                action="{!creditCardPurchase}"
+                rendered="{!IF(AND(disableForm == false,OR(processorName =='paypal',processorName =='authorize.net')),true,false)}" 
+                 
+                />
+             <apex:commandLink action="{!paypalPurchase}" >
+                <apex:image style="vertical-align:middle;" url="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif"
+                rendered="{!IF(AND(disableForm == false,processorName =='paypal', showPayPalButton ==true),true,false)}" />
+                </apex:commandLink>
+            <apex:commandButton value="Google Checkout"
+                action="{!googleCheckoutPurchase}"
+                rendered="{!IF(AND(disableForm == false,processorName =='google'),true,false)}" />
+        
+    </apex:outputPanel> 
+    
+    </apex:form>
+
+
+    </div>  <!-- end page_content_inner div -->
+    </div>  <!-- end page_content div -->
+
+   </apex:define>
+   </apex:composition>
+</apex:page>
