@@ -1,0 +1,216 @@
+<apex:page standardController="pymt__Payment_Profile__c" extensions="pymt.PaymentProfileExtPayPalController" showHeader="false" sidebar="false" >
+<style>
+    body {
+       font-size:.75em;
+    }
+    p {
+	   margin:6px 0px 6px 0px;
+	   padding:0;    
+    }
+	.ppc_inner {
+		padding:4px;
+	}
+    .pbBody {
+     /*   background:#f3f3ec; */
+    }
+    .reasonbox {
+        width:400px;
+    }
+    .ppc_button_bar {
+    	background-color:#e0e0e0;
+    	border: solid 1px #a4a4a4;
+    	padding:4px;
+    }
+    
+
+.message {
+	border: 1px solid #e8e8e8;
+	padding: 4px;
+}
+
+.messageCell h4 {
+	display:inline;
+	
+}
+
+.errorM3 .msgIcon {
+	height:16px;
+	width: 16px;
+	margin-right:4px;
+	background-image: url('{!URLFOR($Resource.PaymentConnect, "images/exclamation.png")}');
+}
+
+.infoM3 .msgIcon {
+	height:16px;
+	width: 16px;
+	margin-right:4px;
+	background-image: url('{!URLFOR($Resource.PaymentConnect, "images/help.png")}');
+}
+
+.confirmM3 .msgIcon {
+	height:16px;
+	width: 16px;
+	margin-right:4px;
+	background-image: url('{!URLFOR($Resource.PaymentConnect, "images/accept.png")}');
+}
+
+.warningM3 .msgIcon {
+	height:16px;
+	width: 16px;
+	margin-right:4px;
+	background-image: url('{!URLFOR($Resource.PaymentConnect, "images/error.png")}');
+}    
+</style>
+    <script type="text/javascript">
+    
+    
+    function promptForCancel() {
+        var reason = prompt("Enter a reason (option) and click 'OK' to cancel this recurring payment profile:");
+    }
+
+    function promptForSuspend() {
+        var reason = prompt("Enter a reason (option) and click 'OK' to suspend this recurring payment profile:");
+    }
+
+    </script>
+<body>
+<script type="text/javascript" src="{!URLFOR($Resource.PaymentConnect, 'includes/tooltip/wz_tooltip.js')}"></script>
+    
+<apex:form id="profileControlForm" style="height:250px">
+<div class="ppc_button_bar">
+    <apex:commandButton value="Get Details" id="getDetailsButton" action="{!requestRecurringPaymentDetails}" status="formActionStatus" rerender="contentArea, detailsView" />
+    <apex:commandButton value="Cancel" id="cancelButton" action="{!cancelRecurringPaymentConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, cancelRecurringView"/>
+    <apex:commandButton value="Suspend" id="suspendButton" action="{!suspendRecurringPaymentConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Active',false,true)}"   rerender="contentArea, suspendRecurringView"/>
+    <apex:commandButton value="Reactivate" id="reactivateButton" action="{!reactivateRecurringPaymentConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Suspended',false,true)}" rerender="contentArea, reactivateRecurringView"/>
+    <apex:commandButton value="Update Card Info"  action="{!UpdateRecurringPaymentConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, updateCardNumView"/>
+    <apex:actionStatus id="formActionStatus" >
+         <apex:facet name="start" >
+           <apex:outputPanel >&nbsp;
+             <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet>
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+    </div>
+ <apex:outputPanel id="contentArea"  >
+    <apex:messages id="pageMessages" styleClass="message" style="margin-top:5px;"/> 
+    <apex:outputPanel id="detailsView" rendered="{!IF(currentAction == 'GetRecurringPaymentDetails',true,false)}">
+        
+        <div style="border:thin solid #cccccc;background:white;overflow:scroll;height:210px;padding-left:4px;">
+        <h3>Recurring Payment Profile Details:</h3><br/>
+        <apex:outputText value="{!profileDetails}" escape="false" />
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="cancelRecurringView"  rendered="{!IF(currentAction == 'CancelRecurringPayment',true,false)}">
+    	<div class="ppc_inner">
+        <p>Enter a reason for canceling this recurring payment profile (optional) and click the button below to complete this action:</p>
+        <apex:inputText styleclass="reasonbox" value="{!reason}" /><br/><br/>
+        <apex:commandButton value="Cancel Recurring Payment" styleClass="btnImportant" action="{!cancelRecurringPaymentExecute}" status="formActionStatus" />
+        </div>
+    </apex:outputPanel>
+    <apex:outputPanel id="suspendRecurringView" rendered="{!IF(currentAction == 'SuspendRecurringPayment',true,false)}">
+    	<div class="ppc_inner">
+        <p>When you suspend a profile all payment requests will stop, but you can reactivate the profile later.  Enter a reason for suspending this recurring payment profile (optional) and click the button below to complete this action:</p>
+        <apex:inputText styleclass="reasonbox" value="{!reason}" /><br/><br/>
+        <apex:commandButton value="Suspend Recurring Payment" action="{!suspendRecurringPaymentExecute}"  status="formActionStatus"/>
+		</div>
+    </apex:outputPanel>
+    <apex:outputPanel id="reactivateRecurringView" rendered="{!IF(currentAction == 'ReactivateRecurringPayment',true,false)}">
+    	<div class="ppc_inner">
+        <p>Enter a reason for resuming this recurring payment profile (optional) and click the button below to complete this action:</p>
+        <apex:inputText styleclass="reasonbox" value="{!reason}" /><br/><br/>
+        <apex:commandButton value="Reactivate Recurring Payment" action="{!reactivateRecurringPaymentExecute}"  status="formActionStatus"/>
+		</div>
+    </apex:outputPanel>
+    <apex:outputPanel id="updateCardNumView" rendered="{!IF(currentAction == 'UpdateRecurringPayment',true,false)}">
+    	<div class="ppc_inner">
+        <p>Enter a new card number and expiration date for this subscription profile:</p>
+        <apex:panelGrid columns="4" id="updateProfileGrid">
+        	<apex:outputText value="Card Number:"/>
+			<apex:panelGroup >
+        	<apex:inputText value="{!cardNumber}" />&nbsp;
+        	<apex:selectList value="{!cardType}" multiselect="false" size="1" >
+        		<apex:selectOptions value="{!cardTypeOptions}"/>
+                <apex:actionSupport event="onchange" action="{!nullAction}" status="formActionStatus" rerender="updateProfileGrid" />
+       		</apex:selectList>
+       		</apex:panelGroup>
+			<apex:outputText value="" />			
+			<apex:outputText value="" />			
+
+			<apex:outputText value="Expiration:" />        
+			<apex:panelGroup >
+			    <apex:selectList value="{!expMonth}" size="1">
+               		<apex:selectOptions value="{!monthList}"/> 
+        		</apex:selectList>
+        
+        		&nbsp;<apex:selectList value="{!expYear}" size="1">
+                        <apex:selectOptions value="{!yearList}"/>
+                 </apex:selectList>
+			
+			</apex:panelGroup>
+			<apex:outputText value="" />			
+			<apex:outputText value="" />		
+			
+			<apex:outputLabel >CVV:
+				<span id="cvv_help" class="helpbutton" onMouseover="Tip('Card Verification Value, version 2. Your Merchant Account settings determine
+whether this field is required. Character length for Visa, MasterCard, and Discover: exactly three digits. Character length for American Express: exactly four digits.', WIDTH, -240);" 
+								onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>                        
+			</apex:outputLabel>        
+			<apex:panelGroup >
+		       	<apex:inputText value="{!cardCode}" style="width:50px;"/>
+			
+			</apex:panelGroup>
+			<apex:outputText value="" />			
+			<apex:outputText value="" />		
+			
+			<apex:outputLabel rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">
+					Card Issue Date:<span id="issueDate_help" class="helpbutton" onMouseover="Tip('Required for Maestro and Solo cards.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+					</span>                        
+			</apex:outputLabel>        
+			<apex:panelGroup rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">
+                            <apex:selectList id="issueMonth" value="{!cardStartMonth}" size="1"> 
+                                <apex:selectOptions value="{!monthList}" />
+                             </apex:selectList> &nbsp;
+                            <apex:selectList id="issueYear" value="{!cardStartYear}" size="1"> 
+                                <apex:selectOptions value="{!issueYearOptions}" />
+                            </apex:selectList> 
+			
+			</apex:panelGroup>
+			<apex:outputText value="" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}"/>			
+			<apex:outputText value="" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}"/>		
+
+			<apex:outputLabel for="issueNumber" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">Issue Number:
+				<span id="issueNumber_help" class="helpbutton" onMouseover="Tip('Required for Maestro and Solo cards.', WIDTH, -240);" onMouseout="UnTip();" ><apex:image url="/s.gif" styleClass="helpOrb" />
+				</span>                        
+            </apex:outputLabel>
+			<apex:panelGroup rendered="{!(cardType == 'Solo' || cardType=='Maestro')}">
+				<apex:inputText styleclass="pc_short_input_field" id="issueNumber" value="{!cardIssueNumber}"   />
+			</apex:panelGroup>
+			<apex:outputText value="" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}"/>			
+			<apex:outputText value="" rendered="{!(cardType == 'Solo' || cardType=='Maestro')}"/>		
+            
+			<apex:outputText value=""/>
+	        <apex:commandButton value="Update Recurring Payments Profile" action="{!updateRecurringPaymentExecute}"  status="formActionStatus"/>
+				
+        </apex:panelGrid>
+
+		</div>
+    </apex:outputPanel>    
+    <apex:outputPanel id="introView" rendered="{!IF(currentAction == 'intro',true,false)}">
+    	<div class="ppc_inner">
+        <p>Use the buttons above to manage this PayPal Recurring Payments Profile, or log into your <a  href="https://www.paypal.com" target="_blank">PayPal account</a> for more options.</p>
+		</div>
+    </apex:outputPanel>
+    <apex:outputPanel id="reloadView" rendered="{!IF(currentAction == 'ReloadPage',true,false)}">
+    	<div class="ppc_inner">
+        <p>It may be necessary to reload the current page to see the latest updates to this payment profile.</p>
+        <apex:commandButton value="Reload Page" action="{!clearCurrentAction}" status="formActionStatus" oncomplete="window.parent.location='{!URLFOR($Action.Payment_Profile__c.View, pymt__Payment_Profile__c.Id)}'" />
+		</div>
+    </apex:outputPanel>
+</apex:outputPanel>
+</apex:form>
+</body>
+</apex:page>

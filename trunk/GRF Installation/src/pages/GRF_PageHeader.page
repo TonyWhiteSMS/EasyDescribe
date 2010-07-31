@@ -1,0 +1,48 @@
+<apex:page controller="GRF_EventRegistrationController" showHeader="false"
+  sidebar="false" standardStylesheets="true" title="{!theEvent.Name}">
+  
+<!-- Page Header for Supplemental Web Pages -->
+
+<apex:stylesheet value="http://www.helpsudaninternational.org/assets/css/grassrootsforce.css"/> 
+ 
+<div id="container"> 
+ <div id="header"> 
+
+  <div class="HSlogo" >
+   <apex:image url="{!theEvent.Organization_Logo_URL__c}"
+           rendered="{!if(theEvent.Chapter_Logo_URL__c='',false,true)}"  
+           width="{!theEvent.Organization_Logo_Width__c}" 
+           height="{!theEvent.Organization_Logo_Height__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>
+   <apex:image rendered="{!if(theEvent.Chapter_Logo_URL__c='',true,false)}"
+           url="{!theEvent.Organization_Logo_Ch_Alt_Text__c}"
+           width="{!theEvent.Organization_Logo_Width__c}" 
+           height="{!theEvent.Organization_Logo_Height__c}"
+           onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>  
+  </div> 
+  
+  <div class="otherLogo">
+   <apex:outputPanel rendered="{!if(theEvent.Chapter_Logo_URL__c='',false,true)}">
+   <apex:image rendered="{!if(theEvent.Chapter_Logo_Height__c=null,false,true)}"
+       url="{!theEvent.Chapter_Logo_URL__c}"
+       width="{!theEvent.Chapter_Logo_Width__c}" 
+       height="{!theEvent.Chapter_Logo_Height__c}"
+       onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>
+   <apex:image rendered="{!if(theEvent.Chapter_Logo_Height__c=null,true,false)}"
+      url="{!theEvent.Chapter_Logo_URL__c}"
+      onclick="window.open('http://www.helpsudaninternational.org', 'HELPSudan')"/>       
+    </apex:outputPanel>
+  </div>
+
+  <p> <apex:outputText rendered="{!if(theEvent.Chapter_Logo_URL__c='',true,false)}" 
+      value="{!theEvent.Chapter_Logo_Alt_Text__c}" /></p>
+         
+  <div id="headline">
+    <div class="text"><apex:outputText value="{!theEvent.Event_Title__c}"/> </div>
+  </div>
+ </div> <!-- End of Header -->
+
+
+ 
+</div>
+</apex:page>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>grf01_Event_Description__c</fullName>
+        <label>Event Description</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>grf01_Fundraising_Event_Attendance_Goal__c</fullName>
+        <label>Fundraising Event Attendance Goal</label>
+        <precision>4</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>grf01_Fundraising_Event_Name__c</fullName>
+        <label>Fundraising Event Name</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>grf01_Fundraising_Event_Proposed_Date__c</fullName>
+        <label>Fundraising Event Proposed Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>grf01_Fundraising_Goal_Dollars__c</fullName>
+        <label>Fundraising Goal (Dollars)</label>
+        <precision>8</precision>
+        <scale>0</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>grf_Correspondence__c</fullName>
+        <label>Correspondence</label>
+        <referenceTo>Correspondence__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <recordTypes>
+        <fullName>Fundraising_Event</fullName>
+        <active>true</active>
+        <businessProcess>Event</businessProcess>
+        <description>Use this for a Fundraising Event</description>
+        <label>Fundraising Event</label>
+        <picklistValues>
+            <picklist>ForecastCategoryName</picklist>
+            <values>
+                <fullName>Best Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Commit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Omitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pipeline</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Fundraising_Event_Payments</fullName>
+        <active>false</active>
+        <businessProcess>Donations</businessProcess>
+        <label>Fundraising Event Payments</label>
+        <picklistValues>
+            <picklist>ForecastCategoryName</picklist>
+            <values>
+                <fullName>Best Case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Commit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Omitted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pipeline</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Contact Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HELPSudan Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web - Donation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web - Email Signup</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Grant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Major Gift</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Matching</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Membership - Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Membership - Family</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Membership - Individual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Membership - Lifetime</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pledge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Recurring</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Single</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+</CustomObject>

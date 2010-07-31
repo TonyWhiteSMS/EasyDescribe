@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Formula_HouseholdMailingAddress__c</fullName>
+        <formula>Household__r.Formula_MailingAddress__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Household Mailing Address</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Formula_HouseholdPhone__c</fullName>
+        <formula>Household__r.HouseholdPhone__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Household Phone</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Household__c</fullName>
+        <label>Household</label>
+        <referenceTo>Household__c</referenceTo>
+        <relationshipLabel>Household Members</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Languages__c</fullName>
+        <label>Languages - DEPRECATED</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Level__c</fullName>
+        <label>Level - DEPRECATED</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Secondary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tertiary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Primary</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SystemHouseholdProcessor__c</fullName>
+        <description>Used to set if Households should get created for all Contacts, or just those which are connected to an individual account</description>
+        <label>_SYSTEM: HOUSEHOLD PROCESSOR</label>
+        <picklist>
+            <picklistValues>
+                <fullName>All Individual Contacts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>All New or Edited Contacts</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No Contacts</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+</CustomObject>

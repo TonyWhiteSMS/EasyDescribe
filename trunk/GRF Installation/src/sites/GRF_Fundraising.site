@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSite xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowHomePage>false</allowHomePage>
+    <allowStandardIdeasPages>false</allowStandardIdeasPages>
+    <allowStandardLookups>false</allowStandardLookups>
+    <allowStandardSearch>false</allowStandardSearch>
+    <authorizationRequiredPage>Unauthorized</authorizationRequiredPage>
+    <bandwidthExceededPage>BandwidthExceeded</bandwidthExceededPage>
+    <description>GrassRoots Fundraising</description>
+    <favoriteIcon>Favicon</favoriteIcon>
+    <fileNotFoundPage>FileNotFound</fileNotFoundPage>
+    <genericErrorPage>Exception</genericErrorPage>
+    <inMaintenancePage>InMaintenance</inMaintenancePage>
+    <inactiveIndexPage>UnderConstruction</inactiveIndexPage>
+    <indexPage>GRF_EventRegistration</indexPage>
+    <masterLabel>GrassRoots Fundraising</masterLabel>
+    <requireInsecurePortalAccess>false</requireInsecurePortalAccess>
+    <siteAdmin>martin@helpsudaninternational.org.grforce</siteAdmin>
+    <siteTemplate>HELPSudan_Donate_Page_Template</siteTemplate>
+    <subdomain>helpsudan</subdomain>
+    <urlPathPrefix>Fundraising</urlPathPrefix>
+</CustomSite>

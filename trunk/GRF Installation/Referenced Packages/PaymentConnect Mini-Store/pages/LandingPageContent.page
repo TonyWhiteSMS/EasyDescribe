@@ -1,0 +1,10 @@
+<apex:page standardController="Campaign" extensions="cmpgn.CampaignLandingPageController" sidebar="false" showHeader="false" standardStyleSheets="false">
+<style>
+body {
+    font-family: arial;
+}
+</style>
+<apex:form >
+<apex:outputText value="{!Campaign.cmpgn__LP_HTML_Content__c}" escape="false"/>
+</apex:form>
+</apex:page>

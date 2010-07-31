@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>References Salesforce Products to be included in the current Campaign Mini-Store.</description>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Campaign__c</fullName>
+        <label>Campaign</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipName>Campaign_Store_Products</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <inlineHelpText>Product description.  If blank and product lookup has a value, the product description will be pulled from the Product2 record.</inlineHelpText>
+        <label>Description</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Image_URL__c</fullName>
+        <inlineHelpText>Add or edit an image attachment to this mini-store product to include an image on the mini-store landing page, or override any image attachments by entering the URL of an image on another server here.  Clear this field to use image attachments.</inlineHelpText>
+        <label>Image URL</label>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Image__c</fullName>
+        <formula>IMAGE(BLANKVALUE(Image_URL__c,&apos;/servlet/servlet.FileDownload?file=&apos;+Product_Image__c), &apos;Product Image&apos; ,60 ,60)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Image</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>On_Payment_Completed__c</fullName>
+        <inlineHelpText>Value is copied to the On Payment Completed field for each Shopping Cart Item during checkout.  Used to trigger custom workflow after the purchase of cart items has completed.  Values should be semi-colon delimited.</inlineHelpText>
+        <label>On Payment Completed</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Out_of_Stock__c</fullName>
+        <defaultValue>false</defaultValue>
+        <label>Out of Stock</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Price__c</fullName>
+        <inlineHelpText>Item price.  If left blank, the mini-store will attempt to display the standard price book value of the product instead.</inlineHelpText>
+        <label>Price</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Product_Image__c</fullName>
+        <inlineHelpText>Attach an image file to this mini-store product record to populate this field with an attachment Id.  If a value has been set for the Image URL field, this value will be ignored.</inlineHelpText>
+        <label>Product Image</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <label>Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Mini-Store Products</relationshipLabel>
+        <relationshipName>Campaign_Store_Products</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Sequence__c</fullName>
+        <inlineHelpText>Determines the order in which mini-store items are displayed on the mini-store landing page.</inlineHelpText>
+        <label>Sequence</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <label>Mini-Store Product</label>
+    <nameField>
+        <label>Mini-Store Product Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Mini-Store Products</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

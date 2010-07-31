@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <customHelp>PaymentX_Payment_Help</customHelp>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used by PaymentConnect to keep track of payment information and to process payments through an online payment gateway.  Payment objects may be connected with Opportunities, Contacts and Accounts using lookup fields.</description>
+    <enableActivities>true</enableActivities>
+    <enableReports>true</enableReports>
+    <fields>
+        <fullName>Account__c</fullName>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Amount__c</fullName>
+        <inlineHelpText>Total transaction amount (including tax, shipping and fees)</inlineHelpText>
+        <label>Amount</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Auth_Amount__c</fullName>
+        <inlineHelpText>Amount authorized for this transaction.</inlineHelpText>
+        <label>Authorization Amount</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Auth_Expiration__c</fullName>
+        <inlineHelpText>Authorization expiration date returned from payment processor.</inlineHelpText>
+        <label>Auth Expiration</label>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Authorization_Id__c</fullName>
+        <inlineHelpText>Authorization ID returned from payment processor.</inlineHelpText>
+        <label>Authorization Id</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Check_Number__c</fullName>
+        <label>Check Number</label>
+        <length>12</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Connection_Error__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Set whenever a connection error occurs between Salesforce and the payment processor.  Check the payment log for details when this flag is set.</inlineHelpText>
+        <label>Connection Error</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Currency_ISO_Code__c</fullName>
+        <label>Currency ISO Code</label>
+        <picklist>
+            <picklistValues>
+                <fullName>AUD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CAD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CHF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CZK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>DKK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>EUR</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>GBP</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HKD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>HUF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ILS</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>JPY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>MXN</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NOK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>NZD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PLN</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SEK</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SGD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>USD</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Date__c</fullName>
+        <inlineHelpText>Actual date of payment.</inlineHelpText>
+        <label>Payment Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Number__c</fullName>
+        <label>Invoice Number</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Is_Test_Transaction__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Checked if this is a test transaction.</inlineHelpText>
+        <label>Test Transaction</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Last_4_Digits__c</fullName>
+        <inlineHelpText>Last 4 digits of credit card.</inlineHelpText>
+        <label>Last 4 Digits</label>
+        <length>4</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Last_Response_Status__c</fullName>
+        <description>Used to keep track of last response status value.  Allows PaymentXchange to filter out redundant notifications.</description>
+        <label>Last Response Status</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Log__c</fullName>
+        <inlineHelpText>Transaction results returned from payment processor and other related information.</inlineHelpText>
+        <label>Log</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Memo__c</fullName>
+        <inlineHelpText>Details about the transaction.</inlineHelpText>
+        <label>Memo</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Merchant_Custom_Data__c</fullName>
+        <inlineHelpText>Custom fields and values passed in with the new payment notification through the PaymentConnect relay handlers.</inlineHelpText>
+        <label>Merchant Custom Data</label>
+        <length>32000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>OnPaymentCompleted_Trigger__c</fullName>
+        <inlineHelpText>Custom action(s) to perform when payment is completed.</inlineHelpText>
+        <label>On Payment Completed</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Email Receipt</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>MultiselectPicklist</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <description>The opportunity record this payment is related to.</description>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Payments</relationshipLabel>
+        <relationshipName>Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Transaction__c</fullName>
+        <inlineHelpText>This look-up field is set for credit card captures and other transactions that have a &apos;parent&apos; transaction or payment record.</inlineHelpText>
+        <label>Parent Transaction</label>
+        <referenceTo>PaymentX__c</referenceTo>
+        <relationshipLabel>Related Payments</relationshipLabel>
+        <relationshipName>Related_Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Processor__c</fullName>
+        <inlineHelpText>The payment processor or merchant account used to process this payment.  This field is set automatically when external payments are received and recorded, and when payments are processed using the Payment Terminal.</inlineHelpText>
+        <label>Payment Processor</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Authorize.Net</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Google</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>PayPal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>WorldPay</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Profile__c</fullName>
+        <label>Payment Profile</label>
+        <referenceTo>Payment_Profile__c</referenceTo>
+        <relationshipLabel>Payments</relationshipLabel>
+        <relationshipName>Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Type__c</fullName>
+        <label>Payment Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Cash</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Check or Money Order</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ECheck</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Electronic Funds Transfer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Processor_Connection__c</fullName>
+        <label>Processor Connection</label>
+        <referenceTo>Processor_Connection__c</referenceTo>
+        <relationshipLabel>Payments</relationshipLabel>
+        <relationshipName>Payments</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Scheduled_Payment_Date__c</fullName>
+        <inlineHelpText>Scheduled Payment Date is the date on which payment is expected to be paid, and may be used to trigger payment reminders using workflow rules.</inlineHelpText>
+        <label>Scheduled Payment Date</label>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_City__c</fullName>
+        <label>Ship To City</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Company__c</fullName>
+        <label>Ship To Company</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Country__c</fullName>
+        <label>Ship To Country</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Name__c</fullName>
+        <label>Ship To Name</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Phone__c</fullName>
+        <label>Ship To Phone</label>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Postal_Code__c</fullName>
+        <label>Ship To Postal Code</label>
+        <length>25</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_State__c</fullName>
+        <label>Ship To State</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Ship_To_Street__c</fullName>
+        <label>Ship To Street</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Shipping_Calc_Result__c</fullName>
+        <inlineHelpText>Result of last shipping calculation attempt. [Success|Error]:[Error Code]:[Message]</inlineHelpText>
+        <label>Shipping Calc Result</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Shipping__c</fullName>
+        <inlineHelpText>Shipping total for transaction.</inlineHelpText>
+        <label>Shipping</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Scheduled</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Authorized</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Error</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Reversed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Voided</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Subscription_Id__c</fullName>
+        <inlineHelpText>For recurring or subscription payments, this is the recurring payment profile Id.</inlineHelpText>
+        <label>Subscription Id</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Calc_Result__c</fullName>
+        <inlineHelpText>Result of last tax calculation attempt.</inlineHelpText>
+        <label>Tax Calc Result</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Method__c</fullName>
+        <inlineHelpText>Used with the Trigger Tax Calc checkbox to determine which custom tax calculations to use.</inlineHelpText>
+        <label>Tax Method</label>
+        <picklist>
+            <picklistValues>
+                <fullName>State/Province Lookup</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Tax__c</fullName>
+        <inlineHelpText>Tax amount on transaction.</inlineHelpText>
+        <label>Tax</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Fee__c</fullName>
+        <inlineHelpText>Payment processor transaction fee.</inlineHelpText>
+        <label>Transaction Fee</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Id__c</fullName>
+        <inlineHelpText>Transaction Id returned from payment processor.</inlineHelpText>
+        <label>Transaction Id</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Type__c</fullName>
+        <label>Transaction Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Payment</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Authorization</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Refund</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Trigger_Shipping_Calc__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Used to trigger custom shipping calculations for payments with Shopping Cart Items.</inlineHelpText>
+        <label>Trigger Shipping Calc</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Trigger_Tax_Calc__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Used to trigger custom tax calculations for payments with Shopping Cart Items.</inlineHelpText>
+        <label>Trigger Tax Calc</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>Payment</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Amount__c</columns>
+        <columns>Transaction_Id__c</columns>
+        <columns>Scheduled_Payment_Date__c</columns>
+        <columns>Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Payment_Type__c</columns>
+        <columns>Payment_Processor__c</columns>
+        <columns>Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Today_s_Payments</fullName>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Scheduled_Payment_Date__c</columns>
+        <columns>Date__c</columns>
+        <columns>Amount__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Account__c</columns>
+        <columns>Transaction_Id__c</columns>
+        <columns>Transaction_Type__c</columns>
+        <columns>Status__c</columns>
+        <columns>Payment_Type__c</columns>
+        <columns>Payment_Processor__c</columns>
+        <columns>Processor_Connection__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <filters>
+            <field>Scheduled_Payment_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>Today&apos;s Payments</label>
+    </listViews>
+    <nameField>
+        <label>Payment Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Payments</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Scheduled_Payment_Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Date__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Amount__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Transaction_Id__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Transaction_Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Payment_Processor__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Contact__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Opportunity__c</customTabListAdditionalFields>
+        <listViewButtons>Delete</listViewButtons>
+        <lookupDialogsAdditionalFields>Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Delete</fullName>
+        <availability>online</availability>
+        <description>Deletes payments selected in a list view</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Delete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/12.0/connection.js&quot;)} 
+
+var records = {!GETRECORDIDS( $ObjectType.PaymentX__c)}; 
+
+ 
+if (records[0] == null) { 
+alert(&quot;Please select at least one record.&quot;) } 
+else { 
+
+var errors = []; 
+var result = sforce.connection.deleteIds(records); 
+if (result &amp;&amp; result.length){ 
+var numFailed = 0; 
+var numSucceeded = 0; 
+for (var i = 0; i &lt; result.length; i++){ 
+var res = result[i]; 
+if (res &amp;&amp; res.success == &apos;true&apos;){ 
+numSucceeded++; 
+} else { 
+var es = res.getArray(&quot;errors&quot;); 
+if (es.length &gt; 0) { 
+errors.push(es[0].message); 
+} 
+numFailed++; 
+} 
+} 
+if (numFailed &gt; 0){ 
+alert(&quot;Failed: &quot; + numFailed + &quot;\nSucceeded: &quot; + numSucceeded + &quot; \n Due to: &quot; + errors.join(&quot;\n&quot;)); 
+} else { 
+alert(&quot;Number of records deleted: &quot; + numSucceeded); 
+} 
+} 
+window.location.reload(); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Payment_Terminal</fullName>
+        <availability>online</availability>
+        <description>Opens the PaymentConnect virtual terminal.</description>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Payment Terminal</masterLabel>
+        <openType>replace</openType>
+        <page>PaymentTerminal</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

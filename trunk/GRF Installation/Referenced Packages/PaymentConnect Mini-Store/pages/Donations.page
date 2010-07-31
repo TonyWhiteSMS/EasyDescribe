@@ -1,0 +1,121 @@
+<apex:page standardController="Campaign" extensions="cmpgn.DonationPageController" showHeader="false" sidebar="false" cache="false" standardStylesheets="false" >
+<title>{!campaign.cmpgn__LP_Title__c}</title>
+
+<apex:composition template="{!$Site.Template}">
+  <apex:define name="body">
+    <div class="pc_page_content_top"></div>
+    <div class="pc_page_content" id="pc_donations_page"> 
+    <div class="pc_page_content_inner"> 
+
+    <apex:outputPanel id="campaignNotFound" rendered="{!IF(viewState =='campaign_not_found', true,false)}" >
+    <h2>The requested campaign could not found.</h2>
+    <p>Perhaps you were looking for one of these?</p>
+        <apex:repeat value="{!otherCampaigns}" var="campaign" >
+            <p><apex:outputLink value="{!$Page.cmpgn__Donations}?id={!campaign.Id}">{!campaign.cmpgn__LP_Title__c}</apex:outputLink> </p>
+        </apex:repeat>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="campaignHtmlContent"
+        rendered="{!IF(viewState == 'get_donor_info',true,false)}">
+        <apex:outputText value="{!campaign.cmpgn__LP_HTML_Content__c}" escape="false" />
+    </apex:outputPanel> 
+    <apex:messages styleClass="message" id="messageBox" /> 
+    <apex:outputPanel id="donorInformation"
+            rendered="{!IF(viewState == 'get_donor_info',true,false)}">
+        <apex:form id="donationForm" styleclass="pc_billing_info_form">
+            <h2>Billing Information</h2>
+            <p>Please provide your billing information and donation amount below:</p>
+            <table>
+                <tr>
+                    <td>First Name:</td>
+                    <td><apex:inputText styleclass="pc_medium_input_field" value="{!contact.firstname}" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td><apex:inputText styleclass="pc_medium_input_field" value="{!contact.lastname}" /></td>
+                </tr>
+                <tr>
+                    <td>Email Address:</td>
+                    <td><apex:inputText styleclass="pc_medium_input_field" value="{!contact.email}" /></td>
+                </tr>
+                <tr>
+                    <td>Company Name (optional):</td>
+                    <td><apex:inputText styleclass="pc_medium_input_field" value="{!companyName}" /></td>
+                </tr>
+                <tr>
+                    <td>Street:</td>
+                    <td><apex:inputText styleclass="pc_long_input_field" value="{!contact.mailingstreet}" /></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><apex:inputText styleclass="pc_medium_input_field" value="{!contact.mailingcity}" /></td>
+                </tr>
+                <tr>
+                    <td>State/Province:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field" value="{!contact.mailingstate}" /></td>
+                </tr>
+                <tr>
+                    <td>Postal Code:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field" value="{!contact.mailingpostalcode}" /></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><apex:inputText styleclass="pc_short_input_field" value="{!contact.mailingcountry}" /></td>
+                </tr>
+            </table>
+
+
+            <apex:outputPanel id="contributionOptions"
+                rendered="{!IF(viewState = 'get_donor_info',true,false)}">
+                <div id="pc_contribution_options">
+                    <h2>Donation Amount</h2>
+                    <p>
+                    <apex:selectRadio id="suggestedDonationOptions" 
+                                        value="{!selectedDonationAmount}" layout="pageDirection">
+                                        <apex:selectOptions value="{!suggestedDonationOptions}"  />
+                                        <apex:ActionSupport event="onclick"
+                                            action="{!nullAction}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButton" />
+                                        
+                                    </apex:selectRadio> &nbsp;&nbsp;&nbsp; <apex:outputText value="{!currencySymbol}" />&nbsp; 
+                                    <apex:inputText id="otherDonationAmount" styleclass="pc_short_input_field" value="{!otherDonationAmount}">
+                                        <apex:ActionSupport event="onclick"
+                                            action="{!clickOtherAmount}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButton" />
+                                        <apex:ActionSupport event="onchange"
+                                            action="{!clickOtherAmount}" immediate="false"
+                                            rerender="suggestedDonationOptions, ccButtont" />
+                                    </apex:inputText>
+                                     
+                    </p><br/>
+                     <apex:outputPanel id="recurringCheckbox" rendered="{!showRecurring}" >
+                    <p><apex:inputCheckbox value="{!isRecurring}" /> Make this a recurring donation ({!recurringPeriod}). 
+                    </p>
+                    <p id="pc_donation_occurrences">Number of recurring donations (optional): <apex:inputText styleclass="pc_short_input_field"  value="{!occurrences}" />
+                    </p>
+                    </apex:outputPanel>
+                </div> 
+            </apex:outputPanel>
+            <p>&nbsp;</p>
+
+            <apex:commandButton id="ccButton" value="Credit Card Donation"
+                action="{!creditCardDonation}"
+                rendered="{!IF(AND(viewState =='get_donor_info',OR(processorName =='paypal',processorName =='authorize.net')),true,false)}" 
+                
+                />
+             <apex:commandLink action="{!paypalDonation}"  target="_top">
+                <apex:image style="vertical-align:middle;" url="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif"
+                rendered="{!IF(AND(viewState =='get_donor_info', processorName =='paypal', showPayPalButton ==true),true,false)}" />
+                </apex:commandLink>
+            <apex:commandButton value="Google Checkout Donation"
+                action="{!googleDonation}"
+                rendered="{!IF(AND(viewState =='get_donor_info', processorName =='google'),true,false)}" />
+        </apex:form>
+    </apex:outputPanel>
+    
+
+    </div>  <!-- end pc_page_content_inner div -->
+    </div>  <!-- end pc_page_content div -->
+    </apex:define>
+    </apex:composition>
+</apex:page>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableHistory>true</enableHistory>
+    <fields>
+        <fullName>Account_Id__c</fullName>
+        <formula>Contact__r.AccountId</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Id</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Admission_Fee_Per_Person__c</fullName>
+        <formula>Fundraising_Event__r.Event_Admission_Fee__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Admission Fee Per Person</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Admissions_Fee_Paid_Through_Org_Website__c</fullName>
+        <label>Total Admissions Fee</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Donated_through_Org_Website__c</fullName>
+        <label>Pledge (Donation) Amount</label>
+        <precision>17</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Due__c</fullName>
+        <formula>Admissions_Fee_Paid_Through_Org_Website__c + Amount_Donated_through_Org_Website__c -( Amount_Paid_to_Chapter__c + Amount_Paid_to_Charity_Org__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Amount Due</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Paid_to_Chapter__c</fullName>
+        <label>Amount Paid to Chapter</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Paid_to_Charity_Org__c</fullName>
+        <label>Amount Paid to Charity Org.</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <label>Comments</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipName>Event_Participants</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Email__c</fullName>
+        <label>Email</label>
+        <type>Email</type>
+    </fields>
+    <fields>
+        <fullName>First_Name__c</fullName>
+        <label>First Name</label>
+        <length>30</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Fundraising_Event__c</fullName>
+        <label>Fundraising Event</label>
+        <referenceTo>Fundraising_Event__c</referenceTo>
+        <relationshipName>Event_Participants</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+    </fields>
+    <fields>
+        <fullName>Last_Name__c</fullName>
+        <label>Last Name</label>
+        <length>30</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Number_Planning_to_Attend__c</fullName>
+        <defaultValue>1</defaultValue>
+        <label>Number Planning to Attend</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <trackHistory>true</trackHistory>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Id__c</fullName>
+        <formula>Fundraising_Event__r.Opportunity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Id</label>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipName>Correspondence</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Order_Number__c</fullName>
+        <label>Order Number</label>
+        <length>100</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Method__c</fullName>
+        <label>Payment Method</label>
+        <length>50</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Note__c</fullName>
+        <label>Payment Note</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Type__c</fullName>
+        <label>Payment Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Cash at Door</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Cash in Advance</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Check</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Phone__c</fullName>
+        <label>Phone</label>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Reference_Number__c</fullName>
+        <label>Reference Number</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Source__c</fullName>
+        <label>Source</label>
+        <length>20</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <inlineHelpText>Review this correspondence and update the status as payments are made, web registrations are reviewed etc.</inlineHelpText>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>New Correspondence</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Payment Completed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Valid</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Correspondence Reviewed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total__c</fullName>
+        <formula>Admissions_Fee_Paid_Through_Org_Website__c +  Amount_Donated_through_Org_Website__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Id__c</fullName>
+        <label>Transaction Id</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <label>Donations, Tickets and Comments</label>
+    <nameField>
+        <label>Correspondence Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Donations, Tickets and Comments</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Email_Not_Specified</fullName>
+        <active>true</active>
+        <errorConditionFormula>and(isblank ( Email__c ), Source__c = &quot;Website&quot;)</errorConditionFormula>
+        <errorMessage>Please enter your email</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>First_Name</fullName>
+        <active>true</active>
+        <errorConditionFormula>and(isblank( First_Name__c ), Source__c = &quot;Website&quot;)</errorConditionFormula>
+        <errorMessage>Please enter your first name</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Last_Name_is_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>and(isblank (Last_Name__c), Source__c = &quot;Website&quot;)</errorConditionFormula>
+        <errorMessage>Please enter your last name</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Payment_Method_Not_Specified</fullName>
+        <active>true</active>
+        <description>If when paying on the web the payment method was not specified.</description>
+        <errorConditionFormula>and(  ISBLANK( Payment_Method__c )   ,Source__c = &apos;Website&apos; ,or(nullvalue(Amount_Donated_through_Org_Website__c,0 )&gt; 0,     nullvalue(Number_Planning_to_Attend__c,0)&gt;0))</errorConditionFormula>
+        <errorMessage>Please specify the Payment Method</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Attach_a_Revenue_Line_Item</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <hasScrollbars>true</hasScrollbars>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Attach a Revenue Line Item</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <url>a0R/e?CF00NS0000000ctB0={! Correspondence__c.Fundraising_Event__c }&amp;CF00NS0000000ctB0_lkid={!Correspondence__c.Fundraising_EventId__c}
+  &amp;CF00NS0000000mFOE=&amp;CF00NS0000000mFOE_lkid={!Correspondence__c.Id}</url>
+    </webLinks>
+</CustomObject>

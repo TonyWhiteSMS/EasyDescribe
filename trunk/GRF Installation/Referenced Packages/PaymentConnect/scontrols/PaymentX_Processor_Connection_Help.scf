@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
+<meta name="copyright" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2008 Linvio, Inc..  All rights reserved. 2008"/>
+<meta name="security" content="public"/>
+<meta name="Robots" content="index,follow"/>
+<meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' />
+<link rel="stylesheet" type="text/css" href="help.css"/>
+<link rel="stylesheet" type="text/css" href="/sCSS/Theme2/default/help.css"/>
+<title>PaymentConnect Processor Connection Settings</title>
+<script type="text/javascript" language="JavaScript" src="/js/functions.js"> </script>
+</head>
+
+<body onLoad="" id="paymentx_connection_settings_help"><a name="paymentx_connection_settings_help"><!-- --></a>
+<a name="top"><!-- --></a>
+<h1 class="helpHead1"><a name="d21e4"><!-- --></a><span id="topic-title"><a name="topic-title"><!-- --></a>PaymentConnect Processor Connection Settings</span></h1>
+<div>
+
+<table border="0" cellpadding="0" cellspacing="0" summary="PaymentX Settings Overview" width="100%" class="editionTable">
+<tbody>
+<tr>
+<td class="subHead"><p>The Processor Connection object is used to store individual payment processor account information and settings.</p>
+</td>
+</tr>
+</tbody>
+</table><br/>
+
+<p>PaymentConnect uses the Processor Connection object to keep track of account information and settings for each payment processor connected to your Salesforce account.   
+Multiple payment processor accounts may be added to PaymentConnect (even multiple accounts with the same payment processor) using this object.
+
+<h2 class="helpHead2">Record Types</h2>
+<p>When creating new Processor Connection records, choose the record type that matches your payment processor (PayPal, Authorize.Net, Google Checkout).  These record types
+define the page layout for each record and display only the fields apply to the payment processor you are configuring.</p>
+<p>Provided Record Types:</p>
+<ul>
+<li>Authorize.Net</li>
+<li>Google Checkout</li>
+<li>PayPal</li>
+<li>WorldPay</li>
+</ul>
+<p>Also, when creating new Processor Connection records, be sure to add them as related records (child records) to your master PaymentConnect Settings record.</p>
+
+<h2 class="helpHead2">General Processor Connection Settings</h2>
+<p><strong>Assigned to Terminal</strong> - The Assigned To Terminal checkbox is used to make a Processor Connection available for use in the Payment Terminal.  Processor connections will appear in a dropdown in the 
+Payment Terminal interface, and more than one processor connection can be 
+assigned to the Payment Terminal.  Currently, only PayPal and Authorize.Net connections may be assigned the the terminal. </p>
+
+<p><strong>Default Connection</strong> - If checked, this field indicates that the current Processor Connection should be used as the default connection for shopping carts, donation pages, sales quote payment pages and other
+customer-facing PaymentConnect interfaces.</p>
+
+<p><strong>Enabled Card Types</strong> - If card types are selected in this field, payment interfaces (such as the Payment Terminal or Sites Checkout Page will only display those card types.  If left blank, a default list of card types
+will be displayed.  For example: When using PayPal, the default list of card types includes Visa, Mastercard, Discover, and Amex.  To include Solo and Maestro in the list, you would add Visa, Mastercard, Discover, Amex, Solo and Maestro
+to the Enabled Card Types multipick list.</p>
+
+<p><strong>Processor</strong> - The name of the payment processor you are enabling through the current processor connection record (PayPal, Authorize.net, etc.)</p>
+
+<p><strong>Default Currency</strong> - Default currency to use in payment terminals and checkout pages.  Be sure to check with your payment processor to make sure you account is enabled for a specific currency.</p>
+
+<p><strong>Enable Echeck Payments</strong> - Check this box if your provider account allows eCheck transactions (currently PaymentConnect supports eCheck approval requests through Authorize.Net).
+Enable eCheck Payments is used to turn on/off the eCheck transaction option in the Payment Terminal.</p>
+
+<p><strong>Test Account</strong> - Checking the "Test Account" checkbox instructs PaymentConnect to use test server or sandbox URLs for 
+transactions related to the processor connection.   Check the documentation 
+provided by your payment processor for test credit card numbers, charge amounts used to generate error responses and other testing features. </p>
+
+<h2 class="helpHead2">Notification Relay Configuration</h2>
+
+<p><strong>Notification Relay Method</strong> - The notification relay method determines the method that will be used to 
+receive external transaction originating from the selected processor.  If "API" is selected, PaymentConnect will expect to receive 
+notifications from a relay script through the Salesforce API. If "Visualforce" is selected, PaymentConnect will ignore API
+notifications and expect them through a Salesforce Sites Visualforce page.  And if you want to disable handling of external 
+transaction notifications from the payment processor, set this field to '--None--'.</p>
+
+<p><strong>Relay Script</strong> - This is the URL pointing to the script you have/or will install to forward notification
+messages to PaymentConnect.  Use the PaymentConnect Downloads link on the PaymentConnect Settings page to download the relay 
+scripts for your PHP or ASP.Net server, or consult the Payment Connect Configuration Guide for instructions on setting up a Visualforce Sites page to handling inbound
+payment notifications.  </p>
+
+
+<fieldset class="note"><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/>Your payment processor merchant account will
+have to be configured to send payment notifications and updates to your relay script: <br/><br/>
+<ul>
+<li>For Authorize.Net: Be sure to configure the 'Silent Post' option in your Authorize.Net merchant account to send 
+transaction notifications to this URL.  Please see the PaymentConnect Configuration Guide for detailed instructions on setting up 
+PaymentConnect relay scripts.
+</li>
+<li>For Google Checkout: Be sure to configure the 'API Callback URL' setting under "Settings >> Integration" in your Google Checkout merchant account to 
+send transaction notifications to this URL.   </li>
+<li>For PayPal: Be sure to configure the 'Instance Payment Notification (IPN) URL' setting under "My Account >> Profile >> Instance Payment Notification Preferences" in your Google Checkout merchant account to 
+send transaction notifications to this URL.</li>
+</ul>
+</div></fieldset>
+
+<p><strong>Relay Id</strong> - PaymentConnect supports the configuration of more than one payment processor account, and uses the Relay Id to keep track of which payment processor account goes with the payment notifications processed 
+by each relay script.  A separate relay script is required for each payment processor connection.  See the PaymentConnect Configuration Guide for more information on setting up multiple payment processors and relay scripts. </p>
+
+<h2 class="helpHead2">Custom Links</h2>
+<p><strong>Test AuthNet Relay Script, Test Google Relay Script & Test PayPay Relay Script</strong> - Custom links have been provided
+ on the Settings detail page to help with testing of relay scripts during the PaymentConnect configuration process.  Each of these 
+ links sends a dummy notification to the address of the corresponding relay script and listens for a response.  If the relay script(s) 
+ have been installed and configured correctly,  PaymentConnect will see the script response and create closed task attached to the 
+ PaymentConnect Settings record, indicating a successful round trip.  
+Note: If the network is slow, you may need refresh the Settings record page a few times to see the "Success" task.</p>
+
+<h2 class="helpHead2">Inbound Notification Handling</h2>
+
+<p><strong>External Transactions</strong> - External transactions are payments that originate from outside of your Salesforce 
+instance (e.g. through a web shopping cart, or a payment processor's virtual terminal).  If you have set up and configured a
+relay script for your payment processor (Google, PayPal, Authorize.Net), the External Transaction Handling options will 
+determine how PaymentConnect handles new transactions as they arrive.  </p>
+<br/>
+<table cellpadding="4" cellspacing="0" summary="" class="featureTable">
+<thead align="left">
+<tr>
+<th class="featureTableHeader" valign="top" id="d1535e45">Option</th>
+<th class="featureTableHeader" valign="top" id="d1535e48">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td headers="d1535e45 d1535e48 ">Leave Unattached</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>If the transaction does not match an existing Payment record, PaymentConnect creates a new payment record and stops there.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Auto Attach</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>If the transaction does not match an existing payment record, PaymentConnect creates a new payment record and attempts to find related Contact and Opportunity records based on the option selected in the  "Auto Attach" picklist. 
+</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Discard</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>If the transaction does not match an existing payment record, PaymentConnect discards the inbound transaction. 
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>Auto Attach</strong> - Auto Attach settings apply if the External Transactions picklist is set to "Auto Attach".  Your options are to  
+look for related Opportunity records using the transaction invoice number, related Opportunity records using the Opportunity record
+name, and/or Contact records with a matching processor-assigned Id or email address.</p>
+<br/>
+<table cellpadding="4" cellspacing="0" summary="" class="featureTable">
+<thead align="left">
+<tr>
+<th class="featureTableHeader" valign="top" id="d1535e45">Option</th>
+<th class="featureTableHeader" valign="top" id="d1535e48">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td headers="d1535e45 d1535e48 ">Contact using Google Buyer Id</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Attempts to find a unique contact with a Google Buyer Id matching the Id on the inbound transaction.  If more than one matching contact is found, the system will regard the match as ambiguous and ignore all the matches.  PaymentConnect checks this matching criteria before matching on email address.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Contact using PayPal Payer Id</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Attempts to find a unique contact with a PayPal Payer Id matching the Id on the inbound transaction.  If more than one matching contact is found, the system will regard the match as ambiguous and ignore all the matches.  PaymentConnect checks this matching criteria before matching on email address.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Contact using email</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Attempts to find a unique contact with the same email as the customer email on the inbound transaction.  If more than one matching contact is found, the system will regard the match as ambiguous and ignore all the matches.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Opportunity using invoice number</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Attempts to find a unique opportunity with the same invoice number as the inbound transaction.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Opportunity using name</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Attempts to find a unique opportunity with the same name as the inbound transaction.  If more than one matching opportunity is found, the system will find the match ambiguous and ignore all the matches.</li>
+</ul>
+</div>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+
+<p><strong>Unattached External Transactions</strong> - This setting determines what will be done with records that could not be 
+auto-attached.  Your options are to "Keep" transactions and create a payment record without any related Contact or Opportunity,
+and to "Discard" unattached transactions.  If auto-attach fails to connect an inbound transaction, a report can be used to view unattached 
+payment records that have been kept using this setting. </p>
+
+<p><strong>Auto-Create Contacts</strong> - Checking the "Auto-Create Contacts" checkbox instructs PaymentConnect to use contact 
+information in external transactions to create a new contact in Salesforce and attach it to the new payment record.  This feature
+only applies if auto-attach rules fail to find a related contact record.</p>
+
+<p><strong>Auto-Create Account</strong> - If 'Auto-Create Contacts' has been enabled, this picklist can be used to instruct PaymentConnect to automatically create
+an Account record for each auto-created Contact.  Options include:</p>
+<br/>
+<table cellpadding="4" cellspacing="0" summary="" class="featureTable">
+<thead align="left">
+<tr>
+<th class="featureTableHeader" valign="top" id="d1535e45">Option</th>
+<th class="featureTableHeader" valign="top" id="d1535e48">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td headers="d1535e45 d1535e48 ">Use Default Account</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Tells PaymentConnect to attach auto-created contacts to the Account record provided in the Payment Settings <strong>Default Account</strong> field.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Create Individual Account</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Tells PaymentConnect to create an Individual Account, setting the account name to the name of the 
+Contact and checking the <strong>Convert To Person Account</strong> checkbox on the Account record.  
+If the payment notification includes a company name, it will be ignored.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Create Business Account</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Tells PaymentConnect to create a regular business Account record if the payment notification includes the payer's company name.  If not, PaymentConnect will not create an Account.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr>
+<td headers="d1535e45 d1535e48 ">Create Business or Individual Account</td>
+<td headers="d1535e45 d1535e48 "><div class="list_in_table_cell"><ul>
+<li>Tells PaymentConnect to create a regular business Account record if the payment notification includes the payer's company name.  If not, PaymentConnect will create an Individual Account, setting the account name to the name of the 
+Contact and checking the <strong>Convert To Person Account</strong> checkbox.</li>
+</ul>
+</div>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<p><strong>Default Account</strong> - This lookup field is used to specify the Account you want to assign to new Contacts as they are auto-created.  If you leave this field blank, the Account field on all auto-created
+Contacts will also be left blank.</p>
+
+<p><strong>Auto-Create Shopping Cart Items</strong> - Checking the "Auto-Create Cart Items" checkbox instructs PaymentConnect to 
+parse shopping cart information included in inbound transaction notifications and create corresponding Cart Item records attached to 
+the new Payment record.  </p>
+
+<p><strong>Connect Products to Cart Items</strong> - If shopping cart items in your inbound transaction detail include product codes,
+enabling this option will have PaymentConnect connect Cart Items with matching Salesforce Product records using a look up field on
+each Cart Item.  PaymentConnect will also copy the On_Payment_Completed__c field value on each related Product record to its corresponding field on the
+Shopping Cart Item when this setting is enabled.   
+ </p>
+
+<h2 class="helpHead2">Authorize.Net</h2>
+
+
+<p><strong>Authorize.Net Login Id</strong> - This is the Login Id provided to you by Authorize.Net to conduct live transactions. </p>
+
+<p><strong>Authorize.Net Transaction Key</strong> - This is the Transaction Key provided to you by Authorize.Net to conduct live transactions.</p>
+
+<p><strong>Direct Response Delimiter</strong> - The Authorize.Net direct response delimited is used by Authorize.Net to separate values returned
+to PaymentConnect in transaction responses.  The default "|" will probably work fine for you.  But if you pass data to Authorize.Net that contains this
+character, you may need to change this delimiter to a different character.</p>
+
+<fieldset class="note"><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/>Authorize.Net recommends 
+periodically regenerating your transaction key to prevent unauthorized access to your account.  If you regenerate your transaction key, be sure
+to update it here and, if you are using the <strong>Email</strong> notification relay method, in the config.ini.php file installed with your relay script(s).
+</div></fieldset>
+
+<h2 class="helpHead2">Google Checkout</h2>
+
+<p><strong>Google Merchant Id</strong> - This is the merchant Id provided to you by Google to conduct live transactions. </p>
+
+<p><strong>Google Merchant Key</strong> - This is the merchant key provided to you by Google to conduct live transactions.</p>
+
+<fieldset class="note"><legend>Note </legend><div class="noteBody"><img src="/img/help/helpNote_icon.gif" align="left"/>As of version 3.2, 
+API keys stored in each PaymentConnect processor connection record are automatically moved to a secure storage area and replaced 
+with a string of asterisks.  To activate this feature for processor connection records created prior to version 3.2, just edit and 
+save the records and the API key fields will be updated.  To update your API keys, just overwrite the asterisks with new values and save the 
+processor connection settings.
+</div></fieldset>
+
+<h2 class="helpHead2">PayPal</h2>
+
+<p><strong>PayPal API Username</strong> - This is the API Username provided to you by PayPal to conduct live transactions. </p>
+
+<p><strong>PayPal API Password</strong> - This is the API Password provided to you by PayPal to conduct live transactions.</p>
+
+<p><strong>PayPal API Signature</strong> - This is the API Signature provided to you by PayPal to conduct live transactions.</p>
+
+<p><strong>PayPal Currency Code</strong> - You can control the default currency for outbound transactions through PayPal using this option.  
+This should normally be set to the default currency of your account with PayPal.</p>
+
+</div>
+</div>
+<div class="helpPageFooter">Copyright 2008 Linvio, Inc..  All rights reserved.<br/>Various trademarks held by their respective owners.</div>
+
+
+
+<script language="JavaScript"><!--
+if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')
+//--></script><noscript></noscript><!--/DO NOT REMOVE/-->
+                      
+                   
+</body>
+</html>

@@ -1,0 +1,116 @@
+<apex:page standardController="pymt__Payment_Profile__c" extensions="pymt.PaymentProfileExtAuthNetController" showHeader="false" sidebar="false" >
+<style>
+    body {
+       font-size:.75em;
+    }
+    p {
+	   margin:6px 0px 6px 0px;
+	   padding:0;    
+    }
+	.ppc_inner {
+		padding:4px;
+	}
+    .pbBody {
+     /*   background:#f3f3ec; */
+    }
+    .reasonbox {
+        width:400px;
+    }
+    .ppc_button_bar {
+    	background-color:#e0e0e0;
+    	border: solid 1px #a4a4a4;
+    	padding:4px;
+    }
+</style>
+    <script type="text/javascript">
+    //resizeIframe();
+    function resizeIframe() {
+        var me = window.name;
+        
+        if (me){
+            var iframes = parent.document.getElementsByName(me);
+            if (iframes && iframes.length == 1) {
+                var height = document.body.scrollHeight;
+                iframes[0].style.height = height + "px";
+            }
+        }
+    } 
+    
+    function promptForCancel() {
+        var reason = prompt("Enter a reason (option) and click 'OK' to cancel this recurring payment profile:");
+    }
+
+
+    </script>
+<apex:form id="profileControlForm" style="height:250px">
+<div class="ppc_button_bar">
+    <apex:commandButton value="Cancel"  action="{!cancelRecurringPaymentConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, cancelRecurringView"/>
+    <apex:commandButton value="Update Card Info"  action="{!updateSubscriptionConfirm}" status="formActionStatus"  disabled="{!IF(pymt__Payment_Profile__c.pymt__Subscription_Status__c =='Active',false,true)}"  rerender="contentArea, updateCardNumView"/>
+    <apex:actionStatus id="formActionStatus" >
+         <apex:facet name="start" >
+           <apex:outputPanel >&nbsp; 
+             <apex:image value="{!URLFOR($Resource.pymt__PaymentConnect, 'images/icon-spinner.gif')}"  style="vertical-align:top;" alt="busy..." />
+             &nbsp;Updating </apex:outputPanel>
+         </apex:facet>
+         <apex:facet name="stop">
+           <apex:image value="{!URLFOR('/s.gif')}"  alt="" style="height:12px;" />
+         </apex:facet>
+    </apex:actionStatus>
+</div>
+    <apex:outputPanel id="contentArea">
+    <apex:messages id="pageMessages" styleClass="message" style="margin-top:15px;"/> 
+    <apex:outputPanel id="cancelRecurringView" rendered="{!IF(currentAction == 'CancelRecurringPayment',true,false)}">
+		<div class="ppc_inner">
+        <p>Enter a reason for canceling this recurring payment profile (optional) and click the button below to complete this action:</p>
+        <apex:inputText styleclass="reasonbox" value="{!reason}" /><br/><br/>
+        <apex:commandButton value="Cancel Recurring Payment" styleClass="btnImportant" action="{!cancelRecurringPaymentExecute}" status="formActionStatus" />
+		</div>
+    </apex:outputPanel>
+    <apex:outputPanel id="updateCardNumView" rendered="{!IF(currentAction == 'UpdateSubscription',true,false)}">
+		<div class="ppc_inner">
+        <p>Enter a new card number and expiration date for this subscription profile:</p>
+        <table>
+        <tr><td>
+        <p>Card Number:</p>
+        </td>
+        <td><apex:inputText value="{!cardNumber}" /></td>
+        </tr>
+        <tr>
+        <td><p>Expiration:</p></td>
+        <td><apex:selectList value="{!expMonth}" size="1">
+                            <apex:selectOptions value="{!monthList}"/>
+                        </apex:selectList>
+        
+        &nbsp;<apex:selectList value="{!expYear}" size="1">
+                            <apex:selectOptions value="{!yearList}"/>
+                        </apex:selectList>
+        </td>
+        </tr>
+        <tr>
+        <td><p>Card Security Code:</p></td>
+        <td><apex:inputText value="{!cardCode}" style="width:50px;"/></td>
+        </tr>
+        <tr><td>&nbsp;</td>
+        <td>
+        <apex:commandButton value="Update Subscription" action="{!updateRecurringPaymentExecute}"  status="formActionStatus"/>
+        </td>
+        </tr>
+        </table>
+		</div>
+    </apex:outputPanel>
+    <apex:outputPanel id="introView" rendered="{!IF(currentAction == 'intro',true,false)}">
+		<div class="ppc_inner">
+        <p>Use the button(s) above to manage this AuthNet Subscription Profile, or log into your <a  href="https://www.authorize.net" target="_blank">Authorize.Net account</a> for more options.</p>
+		</div>
+
+    </apex:outputPanel>
+    <apex:outputPanel id="reloadView" rendered="{!IF(currentAction == 'ReloadPage',true,false)}">
+		<div class="ppc_inner">
+        <p>It may be necessary to reload the current page to see the latest updates to this payment profile.</p>
+        <apex:commandButton value="Reload Page" action="{!clearCurrentAction}" status="formActionStatus" oncomplete="window.parent.location='{!URLFOR($Action.Payment_Profile__c.View, pymt__Payment_Profile__c.Id)}'" />
+		</div>
+    </apex:outputPanel>
+    </apex:outputPanel>
+</apex:form>
+
+</apex:page>

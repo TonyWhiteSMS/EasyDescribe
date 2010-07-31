@@ -1,0 +1,8 @@
+A transaction has been completed through PaymentConnect.
+
+
+
+<correspondence>{!pymt__PaymentX__c.Name}</correspondence>
+<payment> {!pymt__PaymentX__c.Id}</payment>
+<order> {!pymt__PaymentX__c.pymt__Transaction_Id__c}</order>
+<amount> {!pymt__PaymentX__c.pymt__Amount__c}</amount>

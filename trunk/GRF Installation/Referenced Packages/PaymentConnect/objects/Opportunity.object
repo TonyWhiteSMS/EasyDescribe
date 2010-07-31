@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Frequency__c</fullName>
+        <inlineHelpText>Recurring payments frequency</inlineHelpText>
+        <label>Frequency</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Number__c</fullName>
+        <label>Invoice Number</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Payments_Made__c</fullName>
+        <inlineHelpText>Total number of settled or completed payments related to this opportunity. Updated automatically when a payment record is added, updated or removed.</inlineHelpText>
+        <label>Number of Payments Made</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Occurrences__c</fullName>
+        <inlineHelpText>Number of recurring payment occurrences.</inlineHelpText>
+        <label>Occurrences</label>
+        <precision>18</precision>
+        <scale>0</scale>
+        <type>Number</type>
+    </fields>
+    <fields>
+        <fullName>Paid_Off__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Checked by PaymentConnect when payments equal or exceed the opportunity amount (if &gt;0).</inlineHelpText>
+        <label>Paid Off</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Payments_Made__c</fullName>
+        <inlineHelpText>Total of settled payments related to this opportunity. This field is updated automatically when a payment record is added, updated or removed.</inlineHelpText>
+        <label>Payments Made</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Period__c</fullName>
+        <inlineHelpText>Recurring payments period.</inlineHelpText>
+        <label>Period</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Day</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Week</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>SemiMonth</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Month</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Amount__c</fullName>
+        <label>Recurring Amount</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>SiteQuote_Expiration__c</fullName>
+        <inlineHelpText>Date that the web-accessible quote on this opportunity expires.  Leave blank to disable the site quote entirely.</inlineHelpText>
+        <label>SiteQuote Expiration</label>
+        <type>Date</type>
+    </fields>
+    <webLinks>
+        <fullName>AuthNet_Recurring_Billing</fullName>
+        <availability>online</availability>
+        <description>Authorize.net recurring billing setup terminal</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>AuthNet Recurring Billing</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/apex.js&quot;)} 
+
+var accountId = &apos;{!Account.Id}&apos;;
+var contactId = &apos;{!Contact.Id}&apos;;
+var amount = &apos;{!Text(Opportunity.Amount)}&apos;;
+var recurringAmount = &apos;{!Text(Opportunity.Recurring_Amount__c)}&apos;;
+if (amount !== &apos;&apos; &amp;&amp; recurringAmount !== &apos;&apos; &amp;&amp; parseInt(amount)&gt;parseInt(recurringAmount)) {
+   var initAmount = parseInt(amount) - parseInt(recurringAmount);
+   trialParm = &quot;&amp;trialOccurrences=1&amp;trialAmount=&quot;+initAmount;
+}
+var cidParm = &quot;&quot;;
+var aidParm = &quot;&quot;;
+var trialParm = &quot;&quot;;
+var name = &apos;{!Opportunity.Name}&apos;;
+if (name !== &apos;&apos;) {
+   nameParm= &apos;&amp;name=&apos;+name;
+}
+
+
+if (contactId == &apos;&apos;) {
+    contactId = checkForPersonContactId(accountId);
+}
+if (contactId !== &apos;&apos;) {
+cidParm = &apos;&amp;cid=&apos;+contactId;
+}
+if (accountId !== &apos;&apos;) {
+aidParm = &apos;&amp;aid=&apos;+accountId;
+} 
+if (cidParm == &quot;&quot;) {
+   alert(&apos;No Contact Id could be pulled from the current opportunity.  Please make sure you have added a primary contact to the opportunity before opening the recurring billing terminal&apos;);
+} else {
+window.location.href=&quot;/apex/pymt__AuthNetARBTerminal?oid={!Opportunity.Id}&quot;+cidParm+aidParm+trialParm+nameParm+&quot;&amp;cancelURL=%2F{!Opportunity.Id}&amp;invNum={!Opportunity.Invoice_Number__c}&amp;frequency={!Opportunity.Frequency__c}&amp;period={!Opportunity.Period__c}&amp;occurrences={!Opportunity.Occurrences__c}&amp;amount={!TEXT(Opportunity.Recurring_Amount__c)}&quot;;
+}
+
+function checkForPersonContactId(aid) {
+    if (aid == null || aid == &apos;&apos;) return &apos;&apos;;
+    try {
+        var connection = sforce.connection; 
+        var q = &quot;Select Id, IsPersonAccount, PersonContactId from Account where Id = &apos;&quot;+aid+&quot;&apos; and IsPersonAccount = true&quot;;
+        var queryResult = sforce.connection.query(q); 
+        var records = queryResult.getArray(&apos;records&apos;); 
+        return records[0].get(&quot;PersonContactId&quot;);
+    } catch(err) {
+         // PersonAccounts not supported or invalid account Id
+    }
+    return &apos;&apos;;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>PayPal_Recurring_Billing</fullName>
+        <availability>online</availability>
+        <description>PayPal recurring billing setup terminal</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>PayPal Recurring Billing</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/apex.js&quot;)} 
+
+var accountId = &apos;{!Account.Id}&apos;;
+var contactId = &apos;{!Contact.Id}&apos;;
+var name = &apos;{!Opportunity.Name}&apos;;
+if (name !== &apos;&apos;) {
+   nameParm= &apos;&amp;name=&apos;+name;
+}
+var amount = &apos;{!Text(Opportunity.Amount)}&apos;;
+var recurringAmount = &apos;{!Text(Opportunity.Recurring_Amount__c)}&apos;;
+var initParm = &apos;&apos;;
+if (amount !== &apos;&apos; &amp;&amp; recurringAmount !== &apos;&apos; &amp;&amp; parseInt(amount)&gt;parseInt(recurringAmount)) {
+   var initAmount = parseInt(amount) - parseInt(recurringAmount);
+   initParm = &quot;&amp;initialAmount=&quot;+initAmount;
+}
+
+var cidParm = &quot;&quot;;
+var aidParm = &quot;&quot;;
+if (contactId == &apos;&apos;) {
+    contactId = checkForPersonContactId(accountId);
+}
+if (contactId !== &apos;&apos;) {
+cidParm = &apos;&amp;cid=&apos;+contactId;
+}
+if (accountId !== &apos;&apos;) {
+aidParm = &apos;&amp;aid=&apos;+accountId;
+} 
+
+if (cidParm == &quot;&quot;) {
+   alert(&apos;No Contact Id could be pulled from the current opportunity.  Please make sure you have added a primary contact to the opportunity before opening the recurring billing terminal&apos;);
+} else {
+window.location.href=&quot;/apex/pymt__PayPalARBTerminal?oid={!Opportunity.Id}&quot;+cidParm+aidParm+initParm+nameParm+&quot;&amp;cancelURL=%2F{!Opportunity.Id}&amp;initialAmount={!TEXT(Opportunity.Amount)}&amp;amount={!TEXT(Opportunity.Recurring_Amount__c)}&amp;period={!Opportunity.Period__c}&amp;frequency={!Opportunity.Frequency__c}&amp;occurrences={!Opportunity.Occurrences__c}&amp;invNum={!Opportunity.Invoice_Number__c}&quot;;
+}
+
+function checkForPersonContactId(aid) {
+    if (aid == null || aid == &apos;&apos;) return &apos;&apos;;
+    try {
+        var connection = sforce.connection; 
+        var q = &quot;Select Id, IsPersonAccount, PersonContactId from Account where Id = &apos;&quot;+aid+&quot;&apos; and IsPersonAccount = true&quot;;
+        var queryResult = sforce.connection.query(q); 
+        var records = queryResult.getArray(&apos;records&apos;); 
+        return records[0].get(&quot;PersonContactId&quot;);
+    } catch(err) {
+         // PersonAccounts not supported or invalid account Id
+    }
+    return &apos;&apos;;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Payment_Terminal</fullName>
+        <availability>online</availability>
+        <description>Opens the PaymentConnect virtual terminal.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Payment Terminal</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/17.0/apex.js&quot;)} 
+
+var accountId = &apos;{!Account.Id}&apos;;
+var contactId = &apos;{!Contact.Id}&apos;;
+var cidParm = &quot;&quot;;
+var aidParm = &quot;&quot;;
+var name = &apos;{!Opportunity.Name}&apos;;
+if (name !== &apos;&apos;) {
+   nameParm= &apos;&amp;name=&apos;+name;
+}
+if (contactId == &apos;&apos;) {
+    contactId = checkForPersonContactId(accountId);
+}
+if (contactId !== &apos;&apos;) {
+  cidParm = &apos;&amp;cid=&apos;+contactId;
+} else {
+   alert(&apos;A related Contact record could not be found to pass to the payment terminal.  To make a contact accessible to this script, please add a primary opportunity contact or add a PersonAccount to the Account lookup for this opportunity.&apos;);
+}
+if (accountId !== &apos;&apos;) {
+  aidParm = &apos;&amp;aid={!Account.Id}&apos;;
+}
+window.location.href=&quot;/apex/pymt__PaymentTerminal?oid={!Opportunity.Id}&quot;+cidParm+aidParm+nameParm+&quot;&amp;cancelURL=%2F{!Opportunity.Id}&quot;;
+
+function checkForPersonContactId(aid) {
+    if (aid == null || aid == &apos;&apos;) return &apos;&apos;;
+    try {
+        var connection = sforce.connection; 
+        var q = &quot;Select Id, IsPersonAccount, PersonContactId from Account where Id = &apos;&quot;+aid+&quot;&apos; and IsPersonAccount = true&quot;;
+        var queryResult = sforce.connection.query(q); 
+        var records = queryResult.getArray(&apos;records&apos;); 
+        return records[0].get(&quot;PersonContactId&quot;);
+    } catch(err) {
+         // PersonAccounts not supported or invalid account Id
+    }
+    return &apos;&apos;;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Schedule_Payments</fullName>
+        <availability>online</availability>
+        <description>Sets up multiple Payment records for the current opportunity.</description>
+        <displayType>link</displayType>
+        <hasScrollbars>true</hasScrollbars>
+        <height>420</height>
+        <isResizable>true</isResizable>
+        <linkType>sControl</linkType>
+        <masterLabel>Schedule Payments</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <scontrol>Schedule_Payments</scontrol>
+        <width>400</width>
+    </webLinks>
+</CustomObject>

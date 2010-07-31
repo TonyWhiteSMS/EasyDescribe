@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>HELPSudanLetterhead</letterhead>
+    <name>New Payment Notification</name>
+    <style>freeForm</style>
+    <subject>Credit Card Payment Alert</subject>
+    <textOnly>HELPSudan has received a new Credit Card payment in Salesforce.
+
+https://na5.salesforce.com/a00{!pymt__PaymentX__c.Id}
+
+Contact: {!pymt__PaymentX__c.pymt__Contact__c}
+Amount: {!pymt__PaymentX__c.pymt__Amount__c}
+Status: {!pymt__PaymentX__c.pymt__Status__c}
+Campaign: {!pymt__PaymentX__c.cmpgn__Campaign__c}</textOnly>
+    <type>html</type>
+</EmailTemplate>

@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <customHelp>PaymentX_Settings_Help</customHelp>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Master settings object for PaymentConnect.</description>
+    <enableActivities>true</enableActivities>
+    <fields>
+        <fullName>Admin_User__c</fullName>
+        <inlineHelpText>The administrative user assigned to receive error notifications from PaymentConnect.</inlineHelpText>
+        <label>Admin User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>PaymentConnect_Setup</relationshipName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Apex_Test_Mode__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Enables debugging methods in PaymentConnect.  This box should be unchecked unless troubleshooting the application.</inlineHelpText>
+        <label>Debug Mode</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Assign_Events_To__c</fullName>
+        <inlineHelpText>When event tasks are created (payments skipped, dispute notifications, etc), this setting determines who each task will be assigned to.</inlineHelpText>
+        <label>Assign Events To</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Admin User</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Record Owner</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Direct_Response_Delim__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>|</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Enable_Echecks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Login_Id__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Notification_Relay_Method__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Visualforce</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Relay_Script__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Test_Login_Id__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Test_Trans_Key__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>AuthNet_Trans_Key__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Attach_Products__c</fullName>
+        <defaultValue>true</defaultValue>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Attach__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Contact using email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>MultiselectPicklist</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Auto_Create_Cart_Items__c</fullName>
+        <defaultValue>true</defaultValue>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_Create_Contacts__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>External_Transactions__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Leave Unattached</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Gateway_Simulation_Mode__c</fullName>
+        <defaultValue>false</defaultValue>
+        <inlineHelpText>When the Test Mode box is checked, this option allows you to run test transactions without actually sending transactions to payment processor gateway.</inlineHelpText>
+        <label>Gateway Simulation Mode</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Google_Merchant_Id__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Google_Merchant_Key__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Google_Notification_Relay_Method__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Visualforce</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Google_Relay_Script__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Google_Test_Merchant_Id__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Google_Test_Merchant_Key__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Orphaned_Payments__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Keep</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PP_API_Password__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>PP_API_Signature__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>PP_API_Username__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>128</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>PP_Currency_Code__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>USD</fullName>
+                <default>true</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PP_Notification_Relay_Method__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Visualforce</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>PP_Relay_Script__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>255</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>PP_Test_API_Password__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>64</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>PP_Test_API_Signature__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>PP_Test_API_Username__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <length>128</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Processor__c</fullName>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <picklist>
+            <picklistValues>
+                <fullName>PayPal</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Tax__c</fullName>
+        <inlineHelpText>Default tax percentage to display in payment terminal.</inlineHelpText>
+        <label>Tax</label>
+        <precision>18</precision>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Test_Mode__c</fullName>
+        <defaultValue>true</defaultValue>
+        <inlineHelpText>Field deprecated.</inlineHelpText>
+        <label>Deprecated</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Transaction_Logging__c</fullName>
+        <inlineHelpText>Controls the level of detail in log entries for each transaction.</inlineHelpText>
+        <label>Transaction Logging</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Detailed</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Brief</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Update_Opp_Fields__c</fullName>
+        <defaultValue>true</defaultValue>
+        <inlineHelpText>Enables the trigger to auto-update payment-related fields on opportunities.</inlineHelpText>
+        <label>Update Opportunity Fields</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Update_Shopping_Cart_Items__c</fullName>
+        <defaultValue>true</defaultValue>
+        <inlineHelpText>Enables the auto-update of related shopping cart items when a payment record is processed.</inlineHelpText>
+        <label>Update Shopping Cart Items</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>PaymentConnect Settings</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Transaction_Logging__c</columns>
+        <columns>Gateway_Simulation_Mode__c</columns>
+        <columns>Update_Opp_Fields__c</columns>
+        <columns>Update_Shopping_Cart_Items__c</columns>
+        <columns>Admin_User__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>PaymentConnect Settings</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Update_Opp_Fields__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Update_Shopping_Cart_Items__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Gateway_Simulation_Mode__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Transaction_Logging__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Admin_User__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Download_Relay_Script_Code</fullName>
+        <availability>online</availability>
+        <description>Download link for downloading the relay script(s).</description>
+        <displayType>link</displayType>
+        <hasScrollbars>true</hasScrollbars>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>PaymentConnect Downloads</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <url>https://www.linvio.com/paymentconnect/downloads</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Test_AuthNet_Relay_Script</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Deprecated</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>alert(&apos;This control link has been disabled.  Relay script tests can now be run from each Processor Connection details page.&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Test_Google_Relay_Script</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Deprecated</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>alert(&apos;This control link has been disabled.  Relay script tests can now be run from each Processor Connection details page.&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Test_PayPal_Relay_Script</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Deprecated</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>alert(&apos;This control link has been disabled.  Relay script tests can now be run from each Processor Connection details page.&apos;);</url>
+    </webLinks>
+</CustomObject>

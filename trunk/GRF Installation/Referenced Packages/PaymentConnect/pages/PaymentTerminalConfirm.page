@@ -1,0 +1,242 @@
+<apex:page standardController="pymt__PaymentX__c" extensions="pymt.PaymentTerminalController" >
+<style>
+
+
+.labelColumn {
+    text-align:right;
+    width:150px;
+    font-weight:normal; 
+}
+</style>
+
+<!-- Title Bar -->
+<div class="bPageTitle" style="margin-bottom: 0px">
+    <div class="ptBody secondaryPalette">
+        <div class="content" style="float: left">
+            <img title="Payment Terminal" class="pageTitleIcon" alt="Payment Terminal" src="/s.gif"/>
+            <h1 class="pageType">Payment Terminal<span class="titleSeparatingColon">:</span></h1>
+            <h2 class="pageDescription">Transaction Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+        </div>
+        <div style="float: left; margin-left: 100px">
+            <apex:form id="selectProcessor">
+                <span style="color:white;">Processor Connection: &nbsp;<apex:selectList size="1" multiselect="false" value="{!processorConnectionId}" disabled="true">
+                    <apex:actionSupport event="onchange" rerender="cardType, paymentTypePanel, currencyCode, paymentTypePanels" status="formActionStatus"/>
+                    <apex:selectOptions id="processorOptions" value="{!processorConnectionOptions}" />
+                </apex:selectList>
+                <apex:outputLink target="_blank"
+                    value="{!$SControl.PaymentX_Terminal_Help}')">
+                    <apex:image style="vertical-align:text-top;" url="{!URLFOR($Resource.pymt__PaymentConnect, 'images/help.png')}" />
+                </apex:outputLink>
+                </span>
+            </apex:form>        
+        </div>
+    </div>
+</div>
+
+<apex:form id="terminalForm">
+<apex:pageMessages /><br/>
+<apex:outputPanel id="heading">
+    <apex:outputPanel rendered="{!(submitStatus == 'ready')}">
+        <p>Please review the transaction details below and click 'Submit Transaction' to process this payment.</p> 
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!(submitStatus == 'failed')}">
+        <h1>Transaction Failed</h1>
+        <p>Click the 'Back' button to make any required changes to this transaction and re-submit.</p> 
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!(submitStatus == 'completed')}">
+        <h1>Transaction Completed</h1>
+    </apex:outputPanel>
+</apex:outputPanel>
+
+<apex:pageBlock >
+<table >
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="opportunity">Opportunity:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="opportunity" value="{!pymt__PaymentX__c.pymt__Opportunity__c}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="account">Account:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="account" value="{!pymt__PaymentX__c.pymt__Account__c}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="contact">Contact:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="contact" value="{!pymt__PaymentX__c.pymt__Contact__c}" />
+       </td>
+   </tr>
+   <tr><td>&nbsp;</td><td></td></tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="contact">Payment Name:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="name" value="{!pymt__PaymentX__c.name}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="amount">Amount:</apex:outputLabel>
+       </td>
+       <td><apex:outputText id="amount" value="{!preTaxAmount}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="tax">Tax:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="tax" value="{!pymt__PaymentX__c.pymt__Tax__c}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="shippingAmount">Shipping:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="shippingAmount" value="{!pymt__PaymentX__c.pymt__Shipping__c}" />
+       </td>
+   </tr>
+   <tr >
+       <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="totalAmount">Total Amount:</apex:outputLabel>
+       </td>
+       <td><apex:outputField id="totalAmount" value="{!pymt__PaymentX__c.pymt__Amount__c}" />&nbsp;<apex:outputField id="currencyCode" value="{!pymt__PaymentX__c.pymt__Currency_ISO_Code__c}" />
+       </td>
+   </tr>
+    </table>
+    <br/>
+    
+    
+   <apex:outputPanel id="cardInfo" rendered="{!(paymentType == 'creditcard' || paymentType == 'creditcardauth')}">
+       <table>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType">Payment Type:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="paymentType" value="{! IF(paymentType == 'creditcard','Credit Card', 'Credit Card Authorization')}"/>
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="ccNumber">Credit Card Number:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="ccNumber" value="{!creditCardNumber}"/>
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardType">Credit Card Type:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="cardType" value="{!cardType}"/>
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cvvNumber">CVV Number:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="cvvNumber" value="{!cvv}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="cardExp">Expiration Month/Year:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="expMonth" value="{!expirationMonth}"/>&nbsp;<apex:outputText id="expYear" value="{!expirationYear}"/>
+               </td>
+           </tr>
+       </table>
+   </apex:outputPanel>
+   
+   <apex:outputPanel id="echeckInfo" rendered="{!(paymentType == 'echeck')}">
+        <table>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="paymentType2">Payment Type:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="paymentType2" value="eCheck"/>
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="accountType">Account Type:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="accountType" value="{!selectedBankAccountType}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="echeckType">eCheck Type:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="echeckType" value="{!selectedECheckType}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankName">Bank Name:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="bankName" value="{!bankName}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankAccountNumber">Bank Account Number:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="bankAccountNumber" value="{!bankAccountNumber}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="bankRoutingNumber">Bank Routing Number:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="bankRoutingNumber" value="{!bankRoutingNumber}" />
+               </td>
+           </tr>
+           <tr>
+               <td class="labelColumn" style="vertical-align:middle;"><apex:outputLabel for="checkNumber">Check Number:</apex:outputLabel>
+               </td>
+               <td><apex:outputText id="checkNumber" value="{!pymt__PaymentX__c.pymt__Check_Number__c}" />
+               </td>
+           </tr>
+        </table>
+   </apex:outputPanel>
+   
+   <table>
+       <tr >
+           <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="billingaddress">Billing Address:</apex:outputLabel>
+           </td>
+           <td><apex:outputText id="billingaddress" value="{!billingstreet}" />
+           </td>
+           <td class="labelColumn" style="vertical-align:top;"><apex:outputLabel for="shippingaddress">Shipping Address:</apex:outputLabel>
+           </td>
+           <td><apex:outputText id="shippingaddress" value="{!pymt__PaymentX__c.pymt__Ship_To_Street__c}" />
+           </td>
+       </tr>
+       <tr >
+           <td class="labelColumn" style="vertical-align:middle;">
+           </td>
+           <td><apex:outputText id="billingcity" value="{!billingcity}" />, <apex:outputText id="billingstate" value="{!billingstate}" />&nbsp;<apex:outputText id="billingpostalcode" value="{!billingpostalcode}" />
+           </td>
+           <td class="labelColumn" style="vertical-align:middle;">
+           </td>
+           <td><apex:outputText id="shippingcity" value="{!pymt__PaymentX__c.pymt__Ship_To_City__c}" />, <apex:outputText id="shippingstate" value="{!pymt__PaymentX__c.pymt__Ship_To_State__c}" />&nbsp;<apex:outputText id="shippingpostalcode" value="{!pymt__PaymentX__c.pymt__Ship_To_Postal_Code__c}" />
+           </td>
+       </tr>
+       <tr >
+           <td  class="labelColumn" style="vertical-align:middle;">
+           </td>
+           <td><apex:outputText id="billingcountry" value="{!billingcountry}" />
+           </td>
+           <td class="labelColumn" style="vertical-align:middle;">
+           </td>
+           <td><apex:outputText id="shippingcountry" value="{!pymt__PaymentX__c.pymt__Ship_To_Country__c}" />
+           </td>
+       </tr>
+    </table>
+    <br/>
+    <table>
+       <tr> 
+           <td class="labelColumn">
+           </td>
+           <td><apex:outputPanel id="buttons">
+                    <apex:outputPanel rendered="{!(submitStatus == 'ready')}">
+                        <apex:commandButton id="cancel_1" value="Cancel" action="{!cancelFromTerminal}" /><apex:commandButton id="back_1" value="<<Back" action="{!backOnSubmitPage}"/><apex:commandButton id="submitPayment" value="Submit Transaction" action="{!submitPayment}" />
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!(submitStatus == 'failed')}">
+                        <apex:commandButton id="cancel_2" value="Cancel" action="{!cancelFromTerminal}" /><apex:commandButton id="back_2" value="<<Back" action="{!backOnSubmitPage}"/>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!(submitStatus == 'completed')}">
+                        <apex:commandButton id="continue" value="Continue" action="{!continueFromTerminal}" />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+           </td>
+       </tr>
+    </table>
+    </apex:pageBlock>
+</apex:form>
+
+</apex:page>
